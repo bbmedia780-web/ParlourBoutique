@@ -1,0 +1,117 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../constants/app_colors.dart';
+import '../../../constants/app_sizes.dart';
+import '../../../common/common_button.dart';
+import '../../constants/app_strings.dart';
+import '../../constants/app_text_style.dart';
+import '../../controller/write_review_controller.dart';
+
+class WriteReviewScreen extends StatelessWidget {
+  final WriteReviewController controller = Get.find<WriteReviewController>();
+
+  WriteReviewScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      appBar: AppBar(
+        backgroundColor: AppColors.white,
+        elevation: 0,
+        title: Text(AppStrings.writeReview, style: AppTextStyles.appBarText),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: AppColors.black,
+            size: AppSizes.spacing20,
+          ),
+          onPressed: () => Get.back(),
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(AppSizes.spacing20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(AppStrings.addPhoto, style: AppTextStyles.titleSmall),
+            const SizedBox(height: AppSizes.spacing8),
+
+            Obx(() {
+              return GestureDetector(
+                onTap: () {},
+                child: Container(
+                  width: double.infinity,
+                  height: AppSizes.size120,
+                  decoration: BoxDecoration(
+                    color: AppColors.extraLightGrey,
+                    borderRadius: BorderRadius.circular(AppSizes.spacing12),
+                  ),
+                  child: controller.selectedMedia.value == null
+                      ? Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children:  [
+                            Icon(
+                              Icons.cloud_upload_sharp,
+                              color: AppColors.neutralGrey,
+                              size: AppSizes.spacing40,
+                            ),
+                            SizedBox(height: AppSizes.spacing4),
+                            Text(
+                              AppStrings.upload,
+                              style: AppTextStyles.cardSubTitle,
+                            ),
+                          ],
+                        )
+                      : Image.file(
+                          controller.selectedMedia.value!,
+                          fit: BoxFit.cover,
+                        ),
+                ),
+              );
+            }),
+
+            const SizedBox(height: AppSizes.spacing16),
+            Text(AppStrings.writeYourReview, style: AppTextStyles.titleSmall),
+            const SizedBox(height: AppSizes.spacing8),
+
+            TextField(
+              maxLines: 5,
+              cursorColor: AppColors.primary,
+              decoration: InputDecoration(
+                hintText: AppStrings.reviewHint,
+                hintStyle: AppTextStyles.hintText,
+                filled: true,
+                fillColor: AppColors.extraLightGrey,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(AppSizes.spacing12),
+                  borderSide: BorderSide.none,
+                ),
+              ),
+              onChanged: controller.updateReview,
+            ),
+
+            const Spacer(),
+
+            Builder(
+              builder: (context) {
+                final bottomInset = MediaQuery.of(context).viewPadding.bottom;
+                return Padding(
+                  padding: EdgeInsets.only(bottom: bottomInset),
+                  child: AppButton(
+                    width: double.infinity,
+                    height: AppSizes.size50,
+                    textStyle: AppTextStyles.buttonText,
+                    text: AppStrings.submitReview,
+                    onPressed: controller.submitReview,
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

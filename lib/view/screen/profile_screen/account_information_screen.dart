@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../common/common_button.dart';
 import '../../../common/common_container_text_field.dart';
 import '../../../constants/app_assets.dart';
@@ -140,59 +139,61 @@ class AccountInformationPageView extends StatelessWidget {
   }
 
   Widget _buildFormFields(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          AppStrings.fullName,
-          style: AppTextStyles.profilePageText,
-        ).paddingOnly(bottom: AppSizes.spacing8),
-        CommonContainerTextField(
-          controller: controller.fullNameController,
-          keyboardType: TextInputType.name,
-          textStyle: AppTextStyles.hintText,
-        ).paddingOnly(bottom: AppSizes.spacing20),
-        Text(
-          AppStrings.yourEmail,
-          style: AppTextStyles.profilePageText,
-        ).paddingOnly(bottom: AppSizes.spacing8),
-        CommonContainerTextField(
-          controller: controller.emailController,
-          textStyle: AppTextStyles.hintText,
-          keyboardType: TextInputType.emailAddress,
-        ).paddingOnly(bottom: AppSizes.spacing20),
-        Text(
-          AppStrings.dateOfBirth,
-          style: AppTextStyles.profilePageText,
-        ).paddingOnly(bottom: AppSizes.spacing8),
-        CommonContainerTextField(
-          controller: controller.dateOfBirthController,
-          textStyle: AppTextStyles.hintText,
-          keyboardType: TextInputType.none,
-          readOnly: true,
-          onTap: () => controller.selectDate(context),
-          suffixIcon: Container(
-            height: AppSizes.size100,
-            width: AppSizes.size50,
-            decoration: BoxDecoration(
-              color: AppColors.lightPink,
-              borderRadius: BorderRadius.only(
-                topRight: Radius.circular(AppSizes.buttonRadius),
-                bottomRight: Radius.circular(
-                  AppSizes.buttonRadius,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            AppStrings.fullName,
+            style: AppTextStyles.profilePageText,
+          ).paddingOnly(bottom: AppSizes.spacing8),
+          CommonContainerTextField(
+            controller: controller.fullNameController,
+            keyboardType: TextInputType.name,
+            textStyle: AppTextStyles.hintText,
+          ).paddingOnly(bottom: AppSizes.spacing20),
+          Text(
+            AppStrings.yourEmail,
+            style: AppTextStyles.profilePageText,
+          ).paddingOnly(bottom: AppSizes.spacing8),
+          CommonContainerTextField(
+            controller: controller.emailController,
+            textStyle: AppTextStyles.hintText,
+            keyboardType: TextInputType.emailAddress,
+          ).paddingOnly(bottom: AppSizes.spacing20),
+          Text(
+            AppStrings.dateOfBirth,
+            style: AppTextStyles.profilePageText,
+          ).paddingOnly(bottom: AppSizes.spacing8),
+          CommonContainerTextField(
+            controller: controller.dateOfBirthController,
+            textStyle: AppTextStyles.hintText,
+            keyboardType: TextInputType.none,
+            readOnly: true,
+            onTap: () => controller.selectDate(context),
+            suffixIcon: Container(
+              height: AppSizes.size100,
+              width: AppSizes.size50,
+              decoration: BoxDecoration(
+                color: AppColors.lightPink,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(AppSizes.buttonRadius),
+                  bottomRight: Radius.circular(
+                    AppSizes.buttonRadius,
+                  ),
                 ),
               ),
+              alignment: Alignment.center,
+              child: Image.asset(
+                AppAssets.calender,
+                color: AppColors.primary,
+                height: AppSizes.spacing26,
+              ),
             ),
-            alignment: Alignment.center,
-            child: Image.asset(
-              AppAssets.calender,
-              color: AppColors.primary,
-              height: AppSizes.spacing26,
-            ),
-          ),
-        ).paddingOnly(bottom: AppSizes.spacing20),
-      ],
-    ).paddingSymmetric(horizontal: AppSizes.spacing20);
+          ).paddingOnly(bottom: AppSizes.spacing20),
+        ],
+      ).paddingSymmetric(horizontal: AppSizes.spacing20),
+    );
   }
 
 }

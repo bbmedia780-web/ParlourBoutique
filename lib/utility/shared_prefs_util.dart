@@ -20,6 +20,7 @@ class SharedPrefsUtil {
   /// Clears all session-related keys from SharedPreferences
   static Future<void> clearSession() async {
     final prefs = await SharedPreferences.getInstance();
+    print('[SharedPrefsUtil] 🔄 Clearing session keys from SharedPreferences...');
     await Future.wait([
       prefs.remove(keyMobileNumber),
       prefs.remove(keyAccessToken),
@@ -35,6 +36,7 @@ class SharedPrefsUtil {
       prefs.remove(keyIsLoggedIn),
       prefs.remove(keyLoginTime),
     ]);
+    print('[SharedPrefsUtil] ✅ Session cleared.');
   }
 }
 

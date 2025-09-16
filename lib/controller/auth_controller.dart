@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
+import 'package:parlour_app/controller/sign_in_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../services/auth_services.dart';
 import '../utility/shared_prefs_util.dart';
 import '../routes/app_routes.dart';
 import '../model/auth/auth_verify_response.dart';
+import '../services/auth_services.dart';
 
 /// Controller to manage authentication state and user session
 class AuthController extends GetxController {
@@ -137,6 +139,53 @@ class AuthController extends GetxController {
     );
   }
 
+  /// Update tokens only
+  Future<bool> updateTokens({
+    required String accessToken,
+    required String refreshToken,
+    required String tokenType,
+    required int expiresIn,
+  }) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await Future.wait([
+        prefs.setString(_keyAccessToken, accessToken),
+        prefs.setString(_keyRefreshToken, refreshToken),
+        prefs.setString(_keyTokenType, tokenType),
+        prefs.setInt(_keyExpiresIn, expiresIn),
+      ]);
+      this.accessToken.value = accessToken;
+      this.refreshToken.value = refreshToken;
+      this.tokenType.value = tokenType;
+      this.expiresIn.value = expiresIn;
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Try to refresh tokens
+  Future<bool> tryRefreshTokens() async {
+    try {
+      if (refreshToken.value.isEmpty) return false;
+      final service = AuthServices();
+      final refreshed = await service.refreshTokens();
+      if (refreshed != null && refreshed.success && refreshed.data != null) {
+        final data = refreshed.data!;
+        final updated = await updateTokens(
+          accessToken: data.accessToken,
+          refreshToken: data.refreshToken,
+          tokenType: data.tokenType,
+          expiresIn: data.expiresIn,
+        );
+        return updated;
+      }
+      return false;
+    } catch (_) {
+      return false;
+    }
+  }
+
   /// Load user data from SharedPreferences on app start
   Future<void> _loadUserData() async {
     try {
@@ -194,10 +243,15 @@ class AuthController extends GetxController {
   Future<void> logout() async {
     try {
       isLoading.value = true;
-      // Call API (optional) and clear local session always
-      await AuthServices().logout();
+      print('[AuthController] 🚪 Logout initiated');
+      // Call Logout API and ignore failures per guide
+      final apiResult = await AuthServices().logout();
+      print('[AuthController] 📡 Logout API called → success=$apiResult');
+
+      // Clear persisted session
       await SharedPrefsUtil.clearSession();
 
+      // Reset in-memory observables
       isLoggedIn.value = false;
       mobileNumber.value = '';
       accessToken.value = '';
@@ -211,7 +265,18 @@ class AuthController extends GetxController {
       userDob.value = '';
       profileCompleted.value = false;
 
-      Get.offAllNamed(AppRoutes.signIn);
+      // Also clear SignIn phone controller if registered
+      if (Get.isRegistered<SignInController>()) {
+        try {
+          final signIn = Get.find<SignInController>();
+          signIn.phoneController.text = '';
+          print('[AuthController] 🧹 Cleared phone controller');
+        } catch (_) {}
+      }
+
+      // Navigate to Welcome screen so next launch starts fresh
+      print('[AuthController] 🧭 Navigating to Welcome screen');
+      Get.offAllNamed(AppRoutes.welcome);
       Get.snackbar('Success', 'Logged out successfully');
     } finally {
       isLoading.value = false;

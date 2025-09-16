@@ -15,6 +15,8 @@ class ApiConfig {
   static const String verifyOtp = 'VerifyOtp.php';
   static const String completeProfile = 'CompleteProfile.php';
   static const String logout = 'Logout.php';
+  static const String checkTokenStatus = 'CheckTokenStatus.php';
+  static const String refreshToken = 'RefreshToken.php';
   static const String getReels = '/reels';
   static const String trendingReels = '/reels/trending';
   static const String searchReels = '/reels/search';

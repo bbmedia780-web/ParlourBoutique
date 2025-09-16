@@ -7,10 +7,10 @@ import '../services/auth_services.dart';
 import 'auth_controller.dart';
 
 class InformationController extends GetxController {
-  final fullNameController = TextEditingController(text: AppStrings.defaultUserName);
-  final emailController = TextEditingController(text: AppStrings.defaultUserEmail);
-  final dateOfBirthController = TextEditingController(text: AppStrings.defaultUserDateOfBirth);
-  final genderController = TextEditingController(text: AppStrings.female);
+  final fullNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final dateOfBirthController = TextEditingController();
+  final genderController = TextEditingController();
   
   final RxString selectedGender = AppStrings.female.obs;
   final Rx<DateTime?> selectedDate = DateTime(2024, 6, 22).obs;
@@ -28,7 +28,7 @@ class InformationController extends GetxController {
     super.onInit();
     // Set initial values
     selectedGender.value = AppStrings.female;
-    selectedDate.value = DateTime(2024, 6, 22);
+    selectedDate.value = DateTime(2000, 6, 22);
   }
   
   void selectDate(BuildContext context) async {
@@ -85,7 +85,7 @@ class InformationController extends GetxController {
             ...genderOptions.map((gender) => ListTile(
               title: Text(gender),
               trailing: selectedGender.value == gender
-                  ? const Icon(Icons.check, color: Color(0xFFD74C7C))
+                  ? const Icon(Icons.person, color: Color(0xFFD74C7C))
                   : null,
               onTap: () {
                 selectedGender.value = gender;
@@ -126,11 +126,17 @@ class InformationController extends GetxController {
     
     try {
       isSubmitting.value = true;
+      // Normalize values for API
+      final String apiGender = (selectedGender.value).toLowerCase();
+      final String apiDob = selectedDate.value != null
+          ? "${selectedDate.value!.year.toString().padLeft(4, '0')}-${selectedDate.value!.month.toString().padLeft(2, '0')}-${selectedDate.value!.day.toString().padLeft(2, '0')}"
+          : dateOfBirthController.text.trim();
+
       final response = await _authServices.updateProfile(
         fullName: fullNameController.text.trim(),
         email: emailController.text.trim(),
-        gender: genderController.text.trim(),
-        dateOfBirth: dateOfBirthController.text.trim(),
+        gender: apiGender,
+        dateOfBirth: apiDob,
       );
 
       if (!response.success || response.data == null) {

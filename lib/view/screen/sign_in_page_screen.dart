@@ -10,6 +10,7 @@ import '../../constants/app_text_style.dart';
 import '../../controller/sign_in_controller.dart';
 import '../../utility/global.dart';
 import '../widget/social_button_widget.dart';
+import 'package:flutter/services.dart';
 
 class SignInScreen extends StatelessWidget {
   SignInScreen({super.key});
@@ -60,6 +61,10 @@ class SignInScreen extends StatelessWidget {
                           CommonTextField(
                             controller: controller.phoneController,
                             keyboardType: TextInputType.phone,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(10),
+                            ],
                             prefixIcon: Padding(
                               padding: const EdgeInsets.all(AppSizes.spacing8),
                               child: Container(

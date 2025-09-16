@@ -38,6 +38,20 @@ class OtpVerificationController extends GetxController {
     });
   }
 
+  /// Clear OTP inputs and related state before showing the bottom sheet
+  void clearOtpFields() {
+    print('[OtpVerificationController] 🧹 Clearing OTP input fields');
+    for (final c in otpControllers) {
+      c.text = '';
+    }
+    showError.value = false;
+    errorMessage.value = '';
+    isVerifying.value = false;
+    for (final n in focusNodes) {
+      n.unfocus();
+    }
+  }
+
   void resendOtp() async {
     if (!isResendEnabled.value) return;
 

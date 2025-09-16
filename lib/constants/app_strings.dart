@@ -326,9 +326,9 @@ class AppStrings {
   static const takePhoto = "Take Photo";
 
   // Default User Data
-  static const defaultUserName = "Juhi Still";
-  static const defaultUserEmail = "juhistill12@gmail.com";
-  static const defaultUserDateOfBirth = "22 Jun, 2024";
+  static const defaultUserName = "Navya Singhaniya";
+  static const defaultUserEmail = "navya@gmail.com";
+  static const defaultUserDateOfBirth = "22 dec, 2000";
 
   // Helper method to get month name
   static String getMonthName(int month) {
@@ -923,6 +923,8 @@ class AppStrings {
   static String noItemsFor(String category) => "No $category items available";
   static const details = "Details";
   static const rentNow = "Rent Now";
+
+
 
 
 }

@@ -4,9 +4,9 @@ import 'package:image_picker/image_picker.dart';
 import '../../constants/app_strings.dart';
 
 class AccountInformationController extends GetxController {
-  final fullNameController = TextEditingController(text: AppStrings.defaultUserName);
-  final emailController = TextEditingController(text: AppStrings.defaultUserEmail);
-  final dateOfBirthController = TextEditingController(text: AppStrings.defaultUserDateOfBirth);
+  final fullNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final dateOfBirthController = TextEditingController();
 
   final Rx<DateTime?> selectedDate = DateTime(2024, 6, 22).obs;
   final RxString selectedImagePath = ''.obs;

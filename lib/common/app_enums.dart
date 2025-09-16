@@ -1,6 +1,6 @@
 enum BusinessType { parlour, boutique }
 
-enum GenderType { male, female }
+enum GenderType { male, female,other }
 
 /// Parlour-only service type shown under the business name on the header
 /// Boutique businesses should not use this

@@ -94,6 +94,38 @@ class InformationScreen extends StatelessWidget {
                           ),
                         ),
                       ).paddingOnly(bottom: AppSizes.spacing24),
+
+                      // Gender Field
+                      Text(
+                        AppStrings.gender,
+                        style: AppTextStyles.profilePageText,
+                      ).paddingOnly(bottom: AppSizes.spacing8),
+                      CommonContainerTextField(
+                        controller: controller.genderController,
+                        textStyle: AppTextStyles.hintText,
+                        keyboardType: TextInputType.none,
+                        readOnly: true,
+                        onTap: controller.selectGender,
+                        suffixIcon: Container(
+                          height: AppSizes.size100,
+                          width: AppSizes.size50,
+                          decoration: BoxDecoration(
+                            color: AppColors.lightPink,
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(AppSizes.buttonRadius),
+                              bottomRight: Radius.circular(
+                                AppSizes.buttonRadius,
+                              ),
+                            ),
+                          ),
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Icons.keyboard_arrow_down,
+                            color: AppColors.primary,
+                            size: AppSizes.spacing20,
+                          ),
+                        ),
+                      ).paddingOnly(bottom: AppSizes.spacing24),
                     ],
                   ),
                 ),

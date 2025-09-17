@@ -123,7 +123,7 @@ class ServiceDetailsBottomSheet extends StatelessWidget {
                         ),
                       ),
                       child: Image.asset(
-                        AppAssets.arrow,
+                        AppAssets.shareArrow,
                         height: AppSizes.spacing16,
                         width: AppSizes.spacing16,
                       ),

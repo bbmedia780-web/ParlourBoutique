@@ -87,7 +87,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
       title: Text(
         title,
         style: isSelected 
-            ? AppTextStyles.primaryButtonText 
+            ? AppTextStyles.priceText
             : AppTextStyles.hintText,
       ),
       selectedColor: AppColors.primary,

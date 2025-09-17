@@ -10,15 +10,12 @@ import '../../controller/popular_details_controller.dart';
 import '../widget/details_widgets.dart';
 
 class DetailsScreen extends StatelessWidget {
-   DetailsScreen({super.key});
+  DetailsScreen({super.key});
 
   final DetailsController controller = Get.find<DetailsController>();
 
-
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: controller.isRentCategory
@@ -33,67 +30,69 @@ class DetailsScreen extends StatelessWidget {
               centerTitle: true,
             )
           : null,
-      body: Obx(() {
-        final businessDetails = controller.businessDetails.value;
+      body: SafeArea(
+        child: Obx(() {
+          final businessDetails = controller.businessDetails.value;
 
-        if (businessDetails == null) {
-          return const Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircularProgressIndicator(),
-                SizedBox(height: AppSizes.spacing16),
-                Text(AppStrings.loadingDetails),
-              ],
-            ),
-          );
-        }
+          if (businessDetails == null) {
+            return const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: AppSizes.spacing16),
+                  Text(AppStrings.loadingDetails),
+                ],
+              ),
+            );
+          }
 
-        if (controller.isRentCategory) {
-          return _buildRentDetailsLayout(
-            context,
-            businessDetails,
-            controller,
-          );
-        }
+          if (controller.isRentCategory) {
+            return _buildRentDetailsLayout(
+              context,
+              businessDetails,
+              controller,
+            );
+          }
 
-        return CustomScrollView(
-          slivers: [
-            BusinessHeaderWidget(
-              businessDetails: businessDetails,
-              onBackPressed: controller.onBackPressed,
-              onSharePressed: controller.onSharePressed,
-              onFavoritePressed: controller.onFavoritePressed,
-              isFavorite: controller.isFavorite.value,
-              onTitlePressed: controller.onTitleTapped,
-            ),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.all(AppSizes.spacing16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      businessDetails.description,
-                      style: AppTextStyles.reviewTextTitle,
-                    ),
-                    const SizedBox(height: AppSizes.spacing10),
-                    _buildPromotionsSection(controller, businessDetails),
-                    const SizedBox(height: AppSizes.spacing12),
-                    if (controller.isBoutique.value) ...[
-                      _buildGenderSelectionSection(controller),
+          return CustomScrollView(
+            slivers: [
+              BusinessHeaderWidget(
+                businessDetails: businessDetails,
+                onBackPressed: controller.onBackPressed,
+                onSharePressed: controller.onSharePressed,
+                onFavoritePressed: controller.onFavoritePressed,
+                isFavorite: controller.isFavorite.value,
+                onTitlePressed: controller.onTitleTapped,
+              ),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.all(AppSizes.spacing16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        businessDetails.description,
+                        style: AppTextStyles.reviewTextTitle,
+                      ),
+                      const SizedBox(height: AppSizes.spacing10),
+                      _buildPromotionsSection(controller, businessDetails),
+                      const SizedBox(height: AppSizes.spacing12),
+                      if (controller.isBoutique.value) ...[
+                        _buildGenderSelectionSection(controller),
+                        const SizedBox(height: AppSizes.spacing24),
+                      ],
+                      _buildCategorySection(controller),
                       const SizedBox(height: AppSizes.spacing24),
+                      _buildServicesGrid(controller),
                     ],
-                    _buildCategorySection(controller),
-                    const SizedBox(height: AppSizes.spacing24),
-                    _buildServicesGrid(controller),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        );
-      }),
+            ],
+          );
+        }),
+      ),
     );
   }
 
@@ -164,7 +163,8 @@ class DetailsScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSizes.spacing8),
-          if (controller.rentDiscountText.value != null && controller.rentDiscountText.value!.isNotEmpty)
+          if (controller.rentDiscountText.value != null &&
+              controller.rentDiscountText.value!.isNotEmpty)
             Text(
               '${AppStrings.offerLabel} ${controller.rentDiscountText.value}',
               style: AppTextStyles.reviewTextTitle,
@@ -189,7 +189,9 @@ class DetailsScreen extends StatelessWidget {
           ),
           const SizedBox(height: AppSizes.spacing16),
           Obx(() {
-            final isRent = controller.businessDetails.value?.category == AppStrings.rentType;
+            final isRent =
+                controller.businessDetails.value?.category ==
+                AppStrings.rentType;
             return SizedBox(
               width: double.infinity,
               child: AppButton(
@@ -197,7 +199,9 @@ class DetailsScreen extends StatelessWidget {
                 height: AppSizes.spacing45,
                 textStyle: AppTextStyles.buttonText,
                 text: AppStrings.rentNow.tr,
-                onPressed: isRent ? controller.onRentNowPressed : controller.onSharePressed,
+                onPressed: isRent
+                    ? controller.onRentNowPressed
+                    : controller.onSharePressed,
               ),
             );
           }),
@@ -256,14 +260,13 @@ class DetailsScreen extends StatelessWidget {
 
   Widget _buildServicesGrid(DetailsController controller) {
     final services = controller.getCurrentItems();
-
     return GridView.builder(
       padding: EdgeInsets.zero,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
-        childAspectRatio: 0.90,
+        childAspectRatio: 0.95,
         crossAxisSpacing: AppSizes.spacing8,
         mainAxisSpacing: AppSizes.spacing8,
       ),

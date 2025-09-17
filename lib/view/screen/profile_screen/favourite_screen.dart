@@ -14,7 +14,7 @@ import '../../widget/category_card_widget.dart';
 class FavouriteScreen extends StatelessWidget {
   FavouriteScreen({super.key});
 
-  final FavouriteController controller = Get.put(FavouriteController());
+  final FavouriteController controller = Get.find<FavouriteController>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,25 +36,6 @@ class FavouriteScreen extends StatelessWidget {
           style: AppTextStyles.appBarText,
         ),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: AppSizes.spacing12),
-            child: CircleAvatar(
-              backgroundColor: Colors.black.withOpacity(0.05),
-              radius: AppSizes.spacing20,
-              child:  IconButton(
-                icon: Image.asset(
-                AppAssets.search,
-                 scale: AppSizes.scaleSize,
-                  color: AppColors.black,
-                ),
-                onPressed: () {
-                },
-              ),
-            ),
-          ),
-        ],
-
       ),
       body: SafeArea(
         child: Column(
@@ -146,9 +127,9 @@ class FavouriteScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: AppSizes.spacing16),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 0.75,
-            crossAxisSpacing: AppSizes.spacing16,
-            mainAxisSpacing: AppSizes.spacing16,
+            childAspectRatio: 0.70,
+            mainAxisSpacing: AppSizes.spacing8,
+            crossAxisSpacing: AppSizes.spacing8,
           ),
           itemCount: favouriteItems.length,
           itemBuilder: (context, index) {

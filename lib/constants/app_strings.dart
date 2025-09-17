@@ -355,7 +355,7 @@ class AppStrings {
   // Favourite Screen
   static const searchFavourite = "Search here...";
   static const noFavouritesYet = "No Favourites Yet";
-  static const addFavouriteHint = "Add your favourite businesses and services here";
+  static const addFavouriteHint = "Add your favourite";
   static const searchFavouriteHint = "Search here...";
   
   // Business-related strings (generic for parlors and boutiques)

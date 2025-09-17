@@ -357,139 +357,141 @@ class ServiceCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onPressed,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppSizes.spacing12),
-          color: AppColors.extraLightGrey,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Stack(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(AppSizes.spacing12),
-                  child: Image.asset(
-                    service.image,
-                    width: double.infinity,
-                    height: AppSizes.size120,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                if (service.discount != null)
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSizes.spacing14,
-                      vertical: AppSizes.spacing4,
-                    ),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [
-                          AppColors.lightPinkAccent,
-                          AppColors.peachOrange,
-                        ],
-                      ),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(AppSizes.spacing10),
-                        bottomRight: Radius.circular(AppSizes.spacing10),
-                      ),
-                    ),
-                    child: Text(
-                      service.discount!,
-                      style: AppTextStyles.whiteSmallText,
-                    ),
-                  ),
-                Positioned(
-                  top: AppSizes.spacing8,
-                  right: AppSizes.spacing8,
-                  child: Padding(
-                    padding: const EdgeInsets.all(AppSizes.spacing6),
-                    child: Icon(
-                      service.isFavorite == true
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      size: AppSizes.spacing16,
-                      color: AppColors.white,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: AppSizes.spacing8),
-
-            // ✅ First Row: Title + Rating
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSizes.spacing8,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SingleChildScrollView(
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppSizes.spacing12),
+            color: AppColors.extraLightGrey,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Stack(
                 children: [
-                  Expanded(
-                    child: Text(
-                      service.name,
-                      style: AppTextStyles.captionTitle,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 1,
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(AppSizes.spacing12),
+                    child: Image.asset(
+                      service.image,
+                      width: double.infinity,
+                      height: AppSizes.size120,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  Row(
-                    children: [
-                      Image.asset(
-                        AppAssets.star,
-                        width: AppSizes.spacing14,
-                        height: AppSizes.spacing14,
+                  if (service.discount != null)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSizes.spacing14,
+                        vertical: AppSizes.spacing4,
                       ),
-                      const SizedBox(width: AppSizes.spacing4),
-                      Text(
-                        service.rating.toString(),
-                        style: AppTextStyles.faqsDescriptionText,
+                      decoration: BoxDecoration(
+                        gradient: const LinearGradient(
+                          colors: [
+                            AppColors.lightPinkAccent,
+                            AppColors.peachOrange,
+                          ],
+                        ),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(AppSizes.spacing10),
+                          bottomRight: Radius.circular(AppSizes.spacing10),
+                        ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: AppSizes.spacing4),
-
-            // ✅ Second Row: Price + Views
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppSizes.spacing8,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _DetailsPriceRow(
-                    priceString: service.price,
-                    discountLabel: service.discount,
-                    oldPriceString: service.oldPrice,
-                  ),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.remove_red_eye_outlined,
+                      child: Text(
+                        service.discount!,
+                        style: AppTextStyles.whiteSmallText,
+                      ),
+                    ),
+                  Positioned(
+                    top: AppSizes.spacing8,
+                    right: AppSizes.spacing8,
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppSizes.spacing6),
+                      child: Icon(
+                        service.isFavorite == true
+                            ? Icons.favorite
+                            : Icons.favorite_border,
                         size: AppSizes.spacing16,
-                        color: AppColors.mediumGrey,
+                        color: AppColors.white,
                       ),
-                      const SizedBox(width: AppSizes.spacing4),
-                      Text(
-                        service.views.toString(),
-                        style: AppTextStyles.faqsDescriptionText,
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),
-            ),
 
-            const SizedBox(height: AppSizes.spacing8),
-          ],
+              const SizedBox(height: AppSizes.spacing8),
+
+              // ✅ First Row: Title + Rating
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSizes.spacing8,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        service.name,
+                        style: AppTextStyles.captionTitle,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Image.asset(
+                          AppAssets.star,
+                          width: AppSizes.spacing14,
+                          height: AppSizes.spacing14,
+                        ),
+                        const SizedBox(width: AppSizes.spacing4),
+                        Text(
+                          service.rating.toString(),
+                          style: AppTextStyles.faqsDescriptionText,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: AppSizes.spacing4),
+
+              // ✅ Second Row: Price + Views
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSizes.spacing8,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _DetailsPriceRow(
+                      priceString: service.price,
+                      discountLabel: service.discount,
+                      oldPriceString: service.oldPrice,
+                    ),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.remove_red_eye_outlined,
+                          size: AppSizes.spacing16,
+                          color: AppColors.mediumGrey,
+                        ),
+                        const SizedBox(width: AppSizes.spacing4),
+                        Text(
+                          service.views.toString(),
+                          style: AppTextStyles.faqsDescriptionText,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: AppSizes.spacing8),
+            ],
+          ),
         ),
       ),
     );

@@ -30,27 +30,6 @@ class BookingPageView extends StatelessWidget {
         ),
         title: Text(AppStrings.booking, style: AppTextStyles.appBarText),
         centerTitle: true,
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: AppSizes.spacing16),
-            child: GestureDetector(
-              onTap: controller.onSearchTap,
-              child: Container(
-                height: AppSizes.spacing35,
-                padding: const EdgeInsets.all(AppSizes.spacing8),
-                decoration: BoxDecoration(
-                  color: AppColors.extraLightGrey,
-                  borderRadius: BorderRadius.circular(AppSizes.spacing16),
-                ),
-                child: Image.asset(
-                  AppAssets.search,
-                  color: AppColors.black,
-                  height: AppSizes.spacing20,
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
       body: SafeArea(
         child: Column(

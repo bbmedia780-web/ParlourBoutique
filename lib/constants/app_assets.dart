@@ -32,7 +32,7 @@ class AppAssets {
   static const faceCut = 'assets/images/face_cut.png';
   static const bluntBob = 'assets/images/blunt_bob.png';
   static const location = 'assets/images/location.png';
-  static const arrow = 'assets/images/arrow.png';
+  static const shareArrow = 'assets/images/arrow.png';
   static const blackFilter = 'assets/images/black_filter.png';
   static const helpSupportAdd = 'assets/images/help_support.png';
   static const calender = 'assets/images/calender.png';

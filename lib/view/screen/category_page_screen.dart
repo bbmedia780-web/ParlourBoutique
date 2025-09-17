@@ -81,7 +81,7 @@ class CategoryScreen extends StatelessWidget {
   Widget _buildCategoryGrid(UnifiedServiceDataController controller) {
     return Obx(() {
       return GridView.builder(
-        padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing20),
+        padding: const EdgeInsets.only(left: AppSizes.spacing12,right:AppSizes.spacing12,bottom:AppSizes.spacing30),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           childAspectRatio: 0.70,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../utility/global.dart';
+import '../constants/app_strings.dart';
+import '../constants/app_colors.dart';
 import 'package:parlour_app/controller/reels_controller.dart';
 import '../../model/reels_model.dart';
 import 'video_editor_controller.dart';
@@ -50,7 +53,7 @@ class UploadCreationController extends GetxController {
   Future<void> upload() async {
     final file = _videoController.selectedVideo.value;
     if (file == null) {
-      Get.snackbar('Select Video', 'Please select or record a video first');
+      ShowSnackBar.show(AppStrings.warning, 'Please select or record a video first', backgroundColor: AppColors.red);
       return;
     }
 
@@ -66,7 +69,7 @@ class UploadCreationController extends GetxController {
       // Navigate back after upload
       Get.back();
     } catch (e) {
-      Get.snackbar('Upload Error', 'Failed to upload video: $e');
+      ShowSnackBar.show(AppStrings.error, 'Failed to upload video: $e', backgroundColor: AppColors.red);
     }
   }
 

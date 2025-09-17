@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../utility/global.dart';
+import '../../constants/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../constants/app_strings.dart';
 
@@ -8,7 +10,7 @@ class AccountInformationController extends GetxController {
   final emailController = TextEditingController();
   final dateOfBirthController = TextEditingController();
 
-  final Rx<DateTime?> selectedDate = DateTime(2024, 6, 22).obs;
+  final Rx<DateTime?> selectedDate =  DateTime.now().obs;
   final RxString selectedImagePath = ''.obs;
 
   final ImagePicker _picker = ImagePicker();
@@ -16,7 +18,7 @@ class AccountInformationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    selectedDate.value = DateTime(2024, 6, 22);
+    dateOfBirthController.text = formatDate(selectedDate.value!);
   }
 
   void changePhoto() {
@@ -64,7 +66,11 @@ class AccountInformationController extends GetxController {
     );
   }
 
-  Future<void> selectDate(BuildContext context) async {
+  String formatDate(DateTime date) {
+    return "${date.day.toString().padLeft(2,'0')}-${date.month.toString().padLeft(2,'0')}-${date.year}";
+  }
+
+  void selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: selectedDate.value ?? DateTime.now(),
@@ -74,9 +80,14 @@ class AccountInformationController extends GetxController {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFFD74C7C), // Pink color
+              primary: AppColors.primary,
               onPrimary: Colors.white,
-              onSurface: Colors.black,
+              onSurface: AppColors.black,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.primary,
+              ),
             ),
           ),
           child: child!,
@@ -86,9 +97,10 @@ class AccountInformationController extends GetxController {
 
     if (picked != null && picked != selectedDate.value) {
       selectedDate.value = picked;
-      dateOfBirthController.text = AppStrings.formatDate(picked);
+      dateOfBirthController.text = formatDate(picked);  // Update displayed date
     }
   }
+
 
   Future<void> pickImageFromGallery() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
@@ -107,31 +119,17 @@ class AccountInformationController extends GetxController {
   void saveAccountInformation() {
     // Validate form
     if (fullNameController.text.trim().isEmpty) {
-      Get.snackbar(
-        AppStrings.error,
-        AppStrings.pleaseEnterFullName,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      ShowSnackBar.show(AppStrings.error, AppStrings.pleaseEnterFullName, backgroundColor: AppColors.red);
       return;
     }
 
     if (emailController.text.trim().isEmpty) {
-      Get.snackbar(
-        AppStrings.error,
-        AppStrings.pleaseEnterEmail,
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      ShowSnackBar.show(AppStrings.error, AppStrings.pleaseEnterEmail, backgroundColor: AppColors.red);
       return;
     }
 
     // Here you would typically save to backend/database
-    Get.snackbar(
-      AppStrings.success,
-      AppStrings.informationSavedSuccessfully,
-      snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-    );
+    ShowSnackBar.show(AppStrings.success, AppStrings.informationSavedSuccessfully, backgroundColor: AppColors.green);
 
     // Navigate back
     Get.back();

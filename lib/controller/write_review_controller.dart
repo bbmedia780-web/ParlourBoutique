@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import '../utility/global.dart';
+import '../constants/app_colors.dart';
 import 'dart:io';
 import '../constants/app_strings.dart';
 
@@ -16,7 +18,7 @@ class WriteReviewController extends GetxController {
 
   void submitReview() {
     // Add submission logic (API or local save)
-    Get.snackbar(AppStrings.success, AppStrings.submitReviewSuccessfully);
+    ShowSnackBar.show(AppStrings.success, AppStrings.submitReviewSuccessfully, backgroundColor: AppColors.green);
     // Navigate back
     Get.back();
   }

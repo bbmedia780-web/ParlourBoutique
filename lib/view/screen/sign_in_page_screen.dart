@@ -20,7 +20,9 @@ class SignInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: LayoutBuilder(
+      body: Stack(
+        children: [
+          LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
             child: ConstrainedBox(
@@ -178,6 +180,14 @@ class SignInScreen extends StatelessWidget {
             ),
           );
         },
+          ),
+          Obx(() => controller.isLoading.value
+              ? Stack(children: [
+                  ModalBarrier(dismissible: false, color: AppColors.black.withOpacity(0.38)),
+                  const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+                ])
+              : const SizedBox.shrink()),
+        ],
       ),
     );
   }

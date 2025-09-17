@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import '../services/auth_services.dart';
 import '../utility/global.dart';
@@ -16,10 +17,11 @@ class SignInController extends GetxController{
 
 
   Future<void> sendOTP() async {
+    if (isLoading.value) return; // prevent multiple API calls
     final mobile = phoneController.text.trim();
 
     if (mobile.isEmpty || mobile.length < 10) {
-      ShowSnackBar.show(AppStrings.success,AppStrings.mobileNumberInvalid);
+      ShowSnackBar.show(AppStrings.error,AppStrings.mobileNumberInvalid, backgroundColor: AppColors.red);
       return;
     }
 
@@ -29,7 +31,7 @@ class SignInController extends GetxController{
       final response = await authServices.sendOtp(mobile);
 
       if (response.success && response.data?.otpSent == true) {
-        ShowSnackBar.show(AppStrings.success, response.message);
+        ShowSnackBar.show(AppStrings.success, response.message, backgroundColor: AppColors.green);
 
         // Persist just the mobile number for later use
         try {
@@ -42,17 +44,19 @@ class SignInController extends GetxController{
           Get.find<OtpVerificationController>().clearOtpFields();
         }
 
-        Get.bottomSheet(
-          OtpVerificationBottomSheet(),
-          isScrollControlled: true,
-          backgroundColor: Colors.transparent,
-        );
+        if (!(Get.isBottomSheetOpen ?? false)) {
+          Get.bottomSheet(
+            OtpVerificationBottomSheet(),
+            isScrollControlled: true,
+            backgroundColor: AppColors.transparent,
+          );
+        }
       }
       else {
-        ShowSnackBar.show(AppStrings.failed,response.message.isNotEmpty ? response.message : AppStrings.failedOtp);
+        ShowSnackBar.show(AppStrings.failed,response.message.isNotEmpty ? response.message : AppStrings.failedOtp, backgroundColor: AppColors.red);
       }
     } catch (e) {
-      ShowSnackBar.show(AppStrings.error,  e.toString());
+      ShowSnackBar.show(AppStrings.error,  e.toString(), backgroundColor: AppColors.red);
 
     } finally {
       isLoading.value = false;

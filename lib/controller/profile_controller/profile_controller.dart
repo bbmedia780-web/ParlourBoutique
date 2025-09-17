@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parlour_app/routes/app_routes.dart';
+import 'package:parlour_app/utility/global.dart';
+import '../../common/common_button.dart';
+import '../../constants/app_sizes.dart';
 import '../../constants/app_strings.dart';
+import '../../constants/app_text_style.dart';
 import '../auth_controller.dart';
 
 class ProfileController extends GetxController {
@@ -44,39 +48,65 @@ class ProfileController extends GetxController {
         break;
     }
   }
-  
-  /// Handle logout with confirmation dialog
+
+
   void _handleLogout() {
-    Get.dialog(
-      AlertDialog(
-        title: const Text('Logout'),
-        content: const Text('Are you sure you want to logout?'),
+    showDialog(
+      context: Get.context!,
+      barrierDismissible: true,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizes.spacing12),
+        ),
+        title: Text(
+          AppStrings.logout,
+          style: AppTextStyles.bottomSheetHeading,
+        ),
+        content: Text(
+          AppStrings.logoutText,
+          style: AppTextStyles.bodyText,
+        ),
+        actionsPadding: const EdgeInsets.symmetric(
+          horizontal: AppSizes.spacing12,
+          vertical: AppSizes.spacing8,
+        ),
         actions: [
-          TextButton(
-            onPressed: () => Get.back(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
+          AppButton(
+            text: AppStrings.cancel,
+            isPrimary: true,
             onPressed: () {
-              Get.back(); // Close dialog
+              Get.back();
+            },
+            height: AppSizes.spacing30,
+            width: AppSizes.size80,
+            borderRadius: AppSizes.spacing6,
+            textStyle: AppTextStyles.buttonText,
+          ),
+          AppButton(
+            text: AppStrings.logout,
+            isPrimary: true,
+            onPressed: () {
+              Get.back();
               _performLogout();
             },
-            child: const Text('Logout'),
+            height: AppSizes.spacing30,
+            width: AppSizes.size80,
+            borderRadius: AppSizes.spacing6,
+            textStyle: AppTextStyles.buttonText,
           ),
         ],
       ),
     );
   }
-  
-  /// Perform the actual logout
+
   void _performLogout() async {
     try {
       final authController = Get.find<AuthController>();
       await authController.logout();
     } catch (e) {
       print('Error during logout: $e');
-      Get.snackbar('Error', 'Failed to logout');
     }
   }
+
 }
 

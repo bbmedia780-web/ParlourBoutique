@@ -21,13 +21,8 @@ class AuthServices extends BaseApi {
       return AuthOtpResponse.fromJson(response.data);
 
     } catch (error) {
-      ShowSnackBar.show('Error', error.toString(), backgroundColor: Colors.red);
-
-      return AuthOtpResponse(
-        success: false,
-        message: 'Something went wrong.',
-        data: null,
-      );
+      final message = _mapDioError(error);
+      return AuthOtpResponse(success: false, message: message, data: null);
     }
   }
 
@@ -47,12 +42,8 @@ class AuthServices extends BaseApi {
 
     } catch (error) {
       print('Debug Exception in verifyOtp: $error');
-
-      return AuthVerifyResponse(
-        success: false,
-        message: 'Something went wrong. Please try again.',
-        data: null,
-      );
+      final message = _mapDioError(error);
+      return AuthVerifyResponse(success: false, message: message, data: null);
     }
   }
 
@@ -67,13 +58,8 @@ class AuthServices extends BaseApi {
       return AuthOtpResponse.fromJson(response.data);
 
     } catch (error) {
-      ShowSnackBar.show('Error', error.toString(), backgroundColor: Colors.red);
-
-      return AuthOtpResponse(
-        success: false,
-        message: 'Something went wrong.',
-        data: null,
-      );
+      final message = _mapDioError(error);
+      return AuthOtpResponse(success: false, message: message, data: null);
     }
   }
 
@@ -111,11 +97,8 @@ class AuthServices extends BaseApi {
       return AuthVerifyResponse.fromJson(response.data);
     } catch (error) {
       print('Debug Exception in updateProfile: $error');
-      return AuthVerifyResponse(
-        success: false,
-        message: 'Something went wrong. Please try again.',
-        data: null,
-      );
+      final message = _mapDioError(error);
+      return AuthVerifyResponse(success: false, message: message, data: null);
     }
   }
 
@@ -201,5 +184,26 @@ class AuthServices extends BaseApi {
     }
   }
 
+
+  String _mapDioError(Object error) {
+    if (error is DioException) {
+      if (error.type == DioExceptionType.connectionTimeout ||
+          error.type == DioExceptionType.receiveTimeout ||
+          error.type == DioExceptionType.sendTimeout ||
+          error.type == DioExceptionType.connectionError) {
+        return 'Something went wrong. Please check your connection.';
+      }
+      try {
+        final data = error.response?.data;
+        if (data is Map<String, dynamic>) {
+          if (data['message'] is String && (data['message'] as String).isNotEmpty) {
+            return data['message'] as String;
+          }
+        }
+      } catch (_) {}
+      return error.message ?? 'Request failed';
+    }
+    return error.toString();
+  }
 
 }

@@ -6,6 +6,9 @@ import '../utility/shared_prefs_util.dart';
 import '../routes/app_routes.dart';
 import '../model/auth/auth_verify_response.dart';
 import '../services/auth_services.dart';
+import '../utility/global.dart';
+import '../constants/app_strings.dart';
+import '../constants/app_colors.dart';
 
 /// Controller to manage authentication state and user session
 class AuthController extends GetxController {
@@ -277,7 +280,7 @@ class AuthController extends GetxController {
       // Navigate to Welcome screen so next launch starts fresh
       print('[AuthController] 🧭 Navigating to Welcome screen');
       Get.offAllNamed(AppRoutes.welcome);
-      Get.snackbar('Success', 'Logged out successfully');
+      ShowSnackBar.show(AppStrings.success, AppStrings.logoutSuccess, backgroundColor: AppColors.green);
     } finally {
       isLoading.value = false;
     }
@@ -302,7 +305,7 @@ class AuthController extends GetxController {
 
     Get.offAllNamed(AppRoutes.signIn);
     if (reason != null) {
-      Get.snackbar('Session Expired', reason);
+      ShowSnackBar.show(AppStrings.warning, reason, backgroundColor: AppColors.red);
     }
   }
 

@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import '../../utility/global.dart';
+import '../../constants/app_colors.dart';
 import 'package:parlour_app/routes/app_routes.dart';
 import '../../constants/app_strings.dart';
 import '../../model/settings_model.dart';
@@ -43,11 +45,10 @@ class SettingsController extends GetxController {
     _updateSetting('notification', value);
     
     // Show feedback
-    Get.snackbar(
+    ShowSnackBar.show(
       'Notifications',
       value ? 'Notifications enabled' : 'Notifications disabled',
-      snackPosition: SnackPosition.BOTTOM,
-      duration: const Duration(seconds: 2),
+      backgroundColor: AppColors.primary,
     );
     
     // Add your notification logic here

@@ -32,7 +32,9 @@ class InformationScreen extends StatelessWidget {
         title: Text(AppStrings.information.tr, style: AppTextStyles.appBarText),
         centerTitle: true,
       ),
-      body: LayoutBuilder(
+      body: Stack(
+        children: [
+          LayoutBuilder(
         builder: (context, constraints) {
           return Column(
             children: [
@@ -74,23 +76,24 @@ class InformationScreen extends StatelessWidget {
                         keyboardType: TextInputType.none,
                         readOnly: true,
                         onTap: () => controller.selectDate(context),
-                        suffixIcon: Container(
-                          height: AppSizes.size100,
-                          width: AppSizes.size50,
-                          decoration: BoxDecoration(
-                            color: AppColors.lightPink,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(AppSizes.buttonRadius),
-                              bottomRight: Radius.circular(
-                                AppSizes.buttonRadius,
+                        suffixIcon: InkWell(
+                          onTap: () => controller.selectDate(context),  // Ensures icon tap triggers date picker
+                          child: Container(
+                            height: AppSizes.size100,
+                            width: AppSizes.size50,
+                            decoration: BoxDecoration(
+                              color: AppColors.lightPink,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(AppSizes.buttonRadius),
+                                bottomRight: Radius.circular(AppSizes.buttonRadius),
                               ),
                             ),
-                          ),
-                          alignment: Alignment.center,
-                          child: Image.asset(
-                            AppAssets.calender,
-                            color: AppColors.primary,
-                            height: AppSizes.spacing26,
+                            alignment: Alignment.center,
+                            child: Image.asset(
+                              AppAssets.calender,
+                              color: AppColors.primary,
+                              height: AppSizes.spacing26,
+                            ),
                           ),
                         ),
                       ).paddingOnly(bottom: AppSizes.spacing24),
@@ -106,25 +109,27 @@ class InformationScreen extends StatelessWidget {
                         keyboardType: TextInputType.none,
                         readOnly: true,
                         onTap: controller.selectGender,
-                        suffixIcon: Container(
-                          height: AppSizes.size100,
-                          width: AppSizes.size50,
-                          decoration: BoxDecoration(
-                            color: AppColors.lightPink,
-                            borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(AppSizes.buttonRadius),
-                              bottomRight: Radius.circular(
-                                AppSizes.buttonRadius,
+                        suffixIcon: InkWell(
+                          onTap: controller.selectGender,
+                          child: Container(
+                            height: AppSizes.size100,
+                            width: AppSizes.size50,
+                            decoration: BoxDecoration(
+                              color: AppColors.lightPink,
+                              borderRadius: BorderRadius.only(
+                                topRight: Radius.circular(AppSizes.buttonRadius),
+                                bottomRight: Radius.circular(AppSizes.buttonRadius),
                               ),
                             ),
-                          ),
-                          alignment: Alignment.center,
-                          child: Icon(
-                            Icons.keyboard_arrow_down,
-                            color: AppColors.primary,
-                            size: AppSizes.spacing20,
+                            alignment: Alignment.center,
+                            child: Icon(
+                              Icons.keyboard_arrow_down,
+                              color: AppColors.primary,
+                              size: AppSizes.spacing20,
+                            ),
                           ),
                         ),
+
                       ).paddingOnly(bottom: AppSizes.spacing24),
                     ],
                   ),
@@ -154,6 +159,14 @@ class InformationScreen extends StatelessWidget {
             ],
           );
         },
+          ),
+          Obx(() => controller.isSubmitting.value
+              ? Stack(children: [
+                  ModalBarrier(dismissible: false, color: AppColors.black.withOpacity(0.26)),
+                  const Center(child: CircularProgressIndicator(color: AppColors.primary)),
+                ])
+              : const SizedBox.shrink()),
+        ],
       ),
     );
   }

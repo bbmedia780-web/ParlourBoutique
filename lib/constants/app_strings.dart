@@ -180,6 +180,10 @@ class AppStrings {
   static const view = "View";
   static const subject = "Subject";
   static const submit = "Submit";
+  static const logoutSuccess = "Logged out successfully";
+  static const logoutFailed = "Failed to logout";
+  static const cancel = "Cancel";
+  static const logoutText = "Are you sure you want to logout?";
 
   // FAQ Questions
   static const faqQuestionServices = "What services do you offer at your parlour?";

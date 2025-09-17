@@ -37,7 +37,6 @@ class AppAssets {
   static const helpSupportAdd = 'assets/images/help_support.png';
   static const calender = 'assets/images/calender.png';
   static const watch = 'assets/images/watch.png';
-  static const parlour = 'assets/images/parlour.png';
   static const boutique = 'assets/images/boutique.png';
   static const rent = 'assets/images/rent.png';
   static const filterBlack = 'assets/images/filter_black.png';
@@ -80,5 +79,10 @@ class AppAssets {
   static const plus = 'assets/home/plus.png';
   static const infinity = 'assets/home/infinity.png';
   static const bubble = 'assets/home/bubble.png';
-  static const logo = 'assets/home/logo.png';
+  //static const logo = 'assets/home/logo.png';
+  static const logo = 'assets/home/logo.jpg';
+  static const parlour = 'assets/home/parlour.png';
+  static const rentIcon = 'assets/home/rent.png';
+
+
 }

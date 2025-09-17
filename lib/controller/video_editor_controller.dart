@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../utility/global.dart';
+import '../constants/app_colors.dart';
+import '../constants/app_strings.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 
@@ -64,7 +67,7 @@ class VideoEditorController extends GetxController {
   }
 
   void _showError(String message) {
-    Get.snackbar('Error', message);
+    ShowSnackBar.show(AppStrings.error, message, backgroundColor: AppColors.red);
   }
 
   @override

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../../utility/global.dart';
+import '../../constants/app_colors.dart';
 import '../../model/support_ticket_form_model.dart';
 import '../../constants/app_strings.dart';
 
@@ -56,32 +58,17 @@ class SupportTicketFormController extends GetxController {
   void submitTicket() {
     // Validate form
     if (formData.value.subject.trim().isEmpty) {
-      Get.snackbar(
-        AppStrings.error.tr,
-        AppStrings.errorPleaseEnterSubject.tr,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 2),
-      );
+      ShowSnackBar.show(AppStrings.error.tr, AppStrings.errorPleaseEnterSubject.tr, backgroundColor: AppColors.red);
       return;
     }
 
     if (formData.value.description.trim().isEmpty) {
-      Get.snackbar(
-        AppStrings.error.tr,
-        AppStrings.errorPleaseEnterDescription.tr,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 2),
-      );
+      ShowSnackBar.show(AppStrings.error.tr, AppStrings.errorPleaseEnterDescription.tr, backgroundColor: AppColors.red);
       return;
     }
 
     // Submit the ticket
-    Get.snackbar(
-      AppStrings.success.tr,
-      AppStrings.successTicketSubmitted.tr,
-      snackPosition: SnackPosition.BOTTOM,
-      duration: const Duration(seconds: 2),
-    );
+    ShowSnackBar.show(AppStrings.success.tr, AppStrings.successTicketSubmitted.tr, backgroundColor: AppColors.green);
 
     // Navigate back to help support screen
     Get.back();

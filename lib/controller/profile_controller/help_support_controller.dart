@@ -1,4 +1,7 @@
 import 'package:get/get.dart';
+import '../../utility/global.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_strings.dart';
 import 'package:parlour_app/controller/profile_controller/support_ticket_model.dart';
 import 'package:parlour_app/constants/app_strings.dart';
 import 'package:parlour_app/routes/app_routes.dart';

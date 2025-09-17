@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parlour_app/controller/sign_in_controller.dart';
 import 'dart:async';
+import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import '../services/auth_services.dart';
 import '../utility/global.dart';
@@ -15,6 +16,7 @@ class OtpVerificationController extends GetxController {
   final RxBool showError = false.obs;
   final RxString errorMessage = ''.obs;
   final RxBool isVerifying = false.obs;
+  final RxBool isResending = false.obs;
   Timer? _timer;
 
   final List<TextEditingController> otpControllers = List.generate(6, (index) => TextEditingController());
@@ -54,37 +56,41 @@ class OtpVerificationController extends GetxController {
   }
 
   void resendOtp() async {
-    if (!isResendEnabled.value) return;
+    if (!isResendEnabled.value || isResending.value) return;
 
     try {
+      isResending.value = true;
       // Get the SignInController instance
       final signInController = Get.find<SignInController>();
       final mobileNumber = signInController.phoneController.text.trim();
 
       if (mobileNumber.isEmpty) {
-        ShowSnackBar.show(AppStrings.error,AppStrings.mobileNumberMissing,  backgroundColor: Colors.red);
+        ShowSnackBar.show(AppStrings.error,AppStrings.mobileNumberMissing,  backgroundColor: AppColors.red);
         return;
       }
 
       // Call API to resend OTP
-      final response = await authServices.resendOtp(mobileNumber);
+      final response = await authServices.sendOtp(mobileNumber);
 
       if (response.success) {
         ShowSnackBar.show(AppStrings.otpResent,AppStrings.newOtpSent);
         startResendTimer(); // restart the resend timer
       } else {
-        Get.snackbar(AppStrings.failed, response.message.isNotEmpty ? response.message : 'Failed to resend OTP');
+        ShowSnackBar.show(AppStrings.failed, response.message.isNotEmpty ? response.message : 'Failed to resend OTP', backgroundColor: AppColors.red);
       }
     } catch (e) {
-      Get.snackbar(AppStrings.error, e.toString());
+      ShowSnackBar.show(AppStrings.error, e.toString(), backgroundColor: AppColors.red);
+    } finally {
+      isResending.value = false;
     }
   }
 
   void continueVerification() async {
+    if (isVerifying.value) return;
     String otp = otpControllers.map((controller) => controller.text).join();
     final mobile = Get.find<SignInController>().phoneController.text.trim();
 
-    if (otp.length < 4) {
+    if (otp.length < 6) {
       showError.value = true;
       errorMessage.value = AppStrings.invalidCode;
       return;
@@ -98,7 +104,7 @@ class OtpVerificationController extends GetxController {
       final response = await authServices.verifyOtp(mobile, otp);
 
       if (response.success && response.data?.verified == true) {
-        ShowSnackBar.show(AppStrings.success,AppStrings.otpVerifiedSuccessfully);
+        ShowSnackBar.show(AppStrings.success,AppStrings.otpVerifiedSuccessfully, backgroundColor: AppColors.green);
 
 
         // Save all data via AuthController
@@ -116,19 +122,23 @@ class OtpVerificationController extends GetxController {
 
         // Conditional navigation based on profile completion
         if (response.data?.profileCompleted == true) {
+          // Existing user - navigate to Home Page using Get.offAll() to prevent going back to OTP
           Get.offAllNamed(AppRoutes.home);
         } else {
-          Get.toNamed(AppRoutes.information);
+          // New user - navigate to Information Page using Get.offAll() to clear the navigation stack
+          Get.offAllNamed(AppRoutes.information);
         }
       } else {
         showError.value = true;
         errorMessage.value = response.message.isNotEmpty
             ? response.message
             : AppStrings.invalidOtp;
+        ShowSnackBar.show(AppStrings.failed, errorMessage.value, backgroundColor: AppColors.red);
       }
     } catch (e) {
       showError.value = true;
       errorMessage.value = e.toString();
+      ShowSnackBar.show(AppStrings.error, errorMessage.value, backgroundColor: AppColors.red);
     } finally {
       isVerifying.value = false;
     }

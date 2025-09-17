@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import '../../utility/global.dart';
+import '../../constants/app_colors.dart';
 import '../../model/language_model.dart';
 import '../../utility/localization_service.dart';
 
@@ -87,22 +89,12 @@ class LanguageController extends GetxController {
       // Ensure controller state matches saved locale
       selectedLanguageId.value = selectedLanguage.id;
       
-      Get.snackbar(
-        'language_changed'.tr,
-        'language_updated'.tr,
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 2),
-      );
+      ShowSnackBar.show('language_changed'.tr, 'language_updated'.tr, backgroundColor: AppColors.primary);
       
       // Navigate back
       Get.back();
     } catch (e) {
-      Get.snackbar(
-        'error'.tr,
-        'Something went wrong',
-        snackPosition: SnackPosition.BOTTOM,
-        duration: const Duration(seconds: 2),
-      );
+      ShowSnackBar.show('error'.tr, 'Something went wrong', backgroundColor: AppColors.red);
     }
   }
 

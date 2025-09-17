@@ -202,7 +202,7 @@ class HomeScreen extends StatelessWidget {
                             const SizedBox(width: AppSizes.spacing8),
                             _segmentWithIcon(
                               AppStrings.rentTab,
-                              AppAssets.parlour,
+                              AppAssets.rentIcon,
                               2,
                               selected == 2,
                             ),
@@ -318,11 +318,11 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _segmentWithIcon(
-    String title,
-    String iconPath,
-    int index,
-    bool selected,
-  ) {
+      String title,
+      String iconPath,
+      int index,
+      bool selected,
+      ) {
     return GestureDetector(
       onTap: () {
         controller.onTopTabSelected(index);
@@ -330,15 +330,15 @@ class HomeScreen extends StatelessWidget {
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        width: AppSizes.size90,
+        width: AppSizes.size100,
         height: AppSizes.size80,
         decoration: BoxDecoration(
           gradient: selected
               ? const LinearGradient(
-                  colors: [AppColors.rosePink, AppColors.primary],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomLeft,
-                )
+            colors: [AppColors.rosePink, AppColors.primary],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomLeft,
+          )
               : null,
           color: selected ? null : Colors.white,
           border: selected
@@ -346,20 +346,28 @@ class HomeScreen extends StatelessWidget {
               : Border.all(color: AppColors.lightGrey, width: 1.2),
           borderRadius: BorderRadius.circular(AppSizes.spacing15),
         ),
-        child: Column(
-          children: [
-            Image.asset(iconPath, height: AppSizes.size50),
-            Text(
-              title,
-              style: selected
-                  ? AppTextStyles.whiteNameText
-                  : AppTextStyles.captionTitle,
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(AppSizes.spacing2),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(iconPath, height: AppSizes.spacing45),
+              Text(
+                title,
+                style: selected
+                    ? AppTextStyles.whiteNameText
+                    : AppTextStyles.captionTitle,
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
 
   Widget _buildUnifiedBanner() {
     return Obx(() {

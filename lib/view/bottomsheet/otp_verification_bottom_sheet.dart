@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,7 +10,7 @@ import '../../constants/app_text_style.dart';
 import '../../controller/otp_verification_controller.dart';
 
 class OtpVerificationBottomSheet extends StatelessWidget {
-   OtpVerificationBottomSheet({super.key});
+  OtpVerificationBottomSheet({super.key});
 
   final OtpVerificationController controller = Get.find<OtpVerificationController>();
 
@@ -94,7 +95,7 @@ class OtpVerificationBottomSheet extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(6, (index) {
               return Obx(
-                () => Container(
+                    () => Container(
                   width: AppSizes.spacing54,
                   height: AppSizes.spacing54,
                   decoration: BoxDecoration(
@@ -152,11 +153,11 @@ class OtpVerificationBottomSheet extends StatelessWidget {
           const SizedBox(height: AppSizes.spacing12),
 
           Obx(
-            () => controller.showError.value
+                () => controller.showError.value
                 ? Text(
-                    controller.errorMessage.value,
-                    style: AppTextStyles.redText,
-                  ).paddingOnly(bottom: AppSizes.spacing24)
+              controller.errorMessage.value,
+              style: AppTextStyles.redText,
+            ).paddingOnly(bottom: AppSizes.spacing24)
                 : const SizedBox(height: AppSizes.spacing24),
           ),
 
@@ -164,30 +165,30 @@ class OtpVerificationBottomSheet extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Obx(
-                () => GestureDetector(
+                    () => GestureDetector(
                   onTap: controller.isResendEnabled.value
                       ? controller.resendOtp
                       : null,
                   child: controller.isResendEnabled.value
                       ? Text(
-                          AppStrings.resend,
-                          style: AppTextStyles.primaryButtonText,
-                        )
+                    AppStrings.resend,
+                    style: AppTextStyles.primaryButtonText,
+                  )
                       : RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: "${AppStrings.resendOn} ",
-                                style: AppTextStyles.hintText,
-                              ),
-                              TextSpan(
-                                text:
-                                    "${controller.resendTimer.value.toString().padLeft(2, '0')}:${(controller.resendTimer.value % 60).toString().padLeft(2, '0')}",
-                                style: AppTextStyles.primaryButtonText,
-                              ),
-                            ],
-                          ),
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: "${AppStrings.resendOn} ",
+                          style: AppTextStyles.hintText,
                         ),
+                        TextSpan(
+                          text:
+                          "${controller.resendTimer.value.toString().padLeft(2, '0')}:${(controller.resendTimer.value % 60).toString().padLeft(2, '0')}",
+                          style: AppTextStyles.primaryButtonText,
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ],

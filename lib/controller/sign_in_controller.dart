@@ -10,8 +10,7 @@ import 'otp_verification_controller.dart';
 
 class SignInController extends GetxController{
   final AuthServices authServices = AuthServices();
-
-  final phoneController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   final RxBool isLoading = false.obs;
   // Auto-trigger disabled; OTP will be sent only on button tap
 
@@ -20,9 +19,7 @@ class SignInController extends GetxController{
     final mobile = phoneController.text.trim();
 
     if (mobile.isEmpty || mobile.length < 10) {
-      //Get.snackbar(AppStrings.error, 'Enter a valid mobile number');
-      ShowSnackBar.show(AppStrings.success,'Enter a valid mobile number');
-
+      ShowSnackBar.show(AppStrings.success,AppStrings.mobileNumberInvalid);
       return;
     }
 
@@ -52,10 +49,11 @@ class SignInController extends GetxController{
         );
       }
       else {
-        Get.snackbar('Failed', response.message.isNotEmpty ? response.message : 'Failed to send OTP');
+        ShowSnackBar.show(AppStrings.failed,response.message.isNotEmpty ? response.message : AppStrings.failedOtp);
       }
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      ShowSnackBar.show(AppStrings.error,  e.toString());
+
     } finally {
       isLoading.value = false;
     }

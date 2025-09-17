@@ -13,6 +13,7 @@ class ApiConfig {
   // API Endpoints
   static const String sendOtp = 'RequestOtp.php';
   static const String verifyOtp = 'VerifyOtp.php';
+  static const String resendOtp = 'ResendOtp.php';
   static const String completeProfile = 'CompleteProfile.php';
   static const String logout = 'Logout.php';
   static const String checkTokenStatus = 'CheckTokenStatus.php';

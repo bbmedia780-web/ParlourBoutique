@@ -62,7 +62,8 @@ class BookingPageView extends StatelessWidget {
                 children: [
                   _buildServicesGrid(controller.allServices),
                   _buildServicesGrid(controller.parlourServices),
-                  _buildServicesGrid(controller.boutiqueServices),
+                  // Disabled for Phase 1: Boutique services tab
+                  // _buildServicesGrid(controller.boutiqueServices),
                   _buildServicesGrid(controller.rentServices),
                 ],
               ),
@@ -87,7 +88,8 @@ class BookingPageView extends StatelessWidget {
         tabs: [
           Tab(text: AppStrings.all),
           Tab(text: AppStrings.parlourTab),
-          Tab(text: AppStrings.boutiqueTab),
+          // Disabled for Phase 1: Boutique tab
+          // Tab(text: AppStrings.boutiqueTab),
           Tab(text: AppStrings.rentTab),
         ],
       ),

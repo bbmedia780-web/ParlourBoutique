@@ -66,7 +66,8 @@ class FavouriteScreen extends StatelessWidget {
                 children: [
                   _buildFavouriteTab(controller.allFavourites),
                   _buildFavouriteTab(controller.parlourFavourites),
-                  _buildFavouriteTab(controller.boutiqueFavourites),
+                  // Disabled for Phase 1: Boutique favourites tab
+                  // _buildFavouriteTab(controller.boutiqueFavourites),
                   _buildFavouriteTab(controller.rentFavourites),
                 ],
               ),
@@ -91,7 +92,8 @@ class FavouriteScreen extends StatelessWidget {
         tabs: [
           Tab(text: AppStrings.all),
           Tab(text: AppStrings.parlourTab),
-          Tab(text: AppStrings.boutiqueTab),
+          // Disabled for Phase 1: Boutique tab
+          // Tab(text: AppStrings.boutiqueTab),
           Tab(text: AppStrings.rentTab),
         ],
       ),

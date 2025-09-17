@@ -10,32 +10,7 @@ import '../utility/global.dart';
 
 class AuthServices extends BaseApi {
 
-/*
-  Future<AuthOtpResponse> sendOtp(String mobile) async {
-    try {
-      print('[AuthServices] 📡 sendOtp → mobile=$mobile');
-      final response = await dio.post(
-        ApiConfig.sendOtp,
-        data: {'mobile': mobile},
-        options: Options(contentType: Headers.jsonContentType),
-      );
-
-      // Directly parse JSON into AuthOtpResponse
-      return AuthOtpResponse.fromJson(response.data);
-
-    } catch (error) {
-      print('Debug Exception in sendOtp: $error');
-
-      // Return a safe default response
-      return AuthOtpResponse(
-        success: false,
-        message: 'Something went wrong. Please try again.',
-        data: null,
-      );
-    }
-  }
-*/
-
+  /// send otp
   Future<AuthOtpResponse> sendOtp(String mobile) async {
     try {
       final response = await dio.post(
@@ -56,11 +31,9 @@ class AuthServices extends BaseApi {
     }
   }
 
-
   /// ✅ Verify OTP API
   Future<AuthVerifyResponse> verifyOtp(String mobile, String otp) async {
     try {
-      print('[AuthServices] 📡 verifyOtp → mobile=$mobile, otp=****');
       final response = await dio.post(
         ApiConfig.verifyOtp,
         data: {
@@ -82,6 +55,28 @@ class AuthServices extends BaseApi {
       );
     }
   }
+
+  /// Resend otp
+  Future<AuthOtpResponse> resendOtp(String mobile) async {
+    try {
+      final response = await dio.post(
+        ApiConfig.resendOtp,
+        data: {'mobile': mobile},
+        options: Options(contentType: Headers.jsonContentType),
+      );
+      return AuthOtpResponse.fromJson(response.data);
+
+    } catch (error) {
+      ShowSnackBar.show('Error', error.toString(), backgroundColor: Colors.red);
+
+      return AuthOtpResponse(
+        success: false,
+        message: 'Something went wrong.',
+        data: null,
+      );
+    }
+  }
+
 
   /// Update user profile details for new users
   Future<AuthVerifyResponse> updateProfile({

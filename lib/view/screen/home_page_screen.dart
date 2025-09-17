@@ -192,12 +192,13 @@ class HomeScreen extends StatelessWidget {
                               selected == 0,
                             ),
                             const SizedBox(width: AppSizes.spacing8),
-                            _segmentWithIcon(
-                              AppStrings.boutiqueTab,
-                              AppAssets.boutique,
-                              1,
-                              selected == 1,
-                            ),
+                            // Disabled for Phase 1: Boutique tab
+                            // _segmentWithIcon(
+                            //   AppStrings.boutiqueTab,
+                            //   AppAssets.boutique,
+                            //   1,
+                            //   selected == 1,
+                            // ),
                             const SizedBox(width: AppSizes.spacing8),
                             _segmentWithIcon(
                               AppStrings.rentTab,

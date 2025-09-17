@@ -65,7 +65,8 @@ class BookingController extends GetxController with GetSingleTickerProviderState
   @override
   void onInit() {
     super.onInit();
-    tabController = TabController(length: 4, vsync: this);
+    // Disabled Boutique for Phase 1 -> reduce tabs to 3 (All, Parlour, Rent)
+    tabController = TabController(length: 3, vsync: this);
   }
 
   void onBackTap() {

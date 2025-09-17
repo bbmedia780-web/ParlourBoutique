@@ -4,6 +4,7 @@ import 'package:parlour_app/controller/sign_in_controller.dart';
 import 'dart:async';
 import '../constants/app_strings.dart';
 import '../services/auth_services.dart';
+import '../utility/global.dart';
 import 'auth_controller.dart';
 import '../routes/app_routes.dart';
 
@@ -61,21 +62,21 @@ class OtpVerificationController extends GetxController {
       final mobileNumber = signInController.phoneController.text.trim();
 
       if (mobileNumber.isEmpty) {
-        Get.snackbar('Error', 'Mobile number is missing');
+        ShowSnackBar.show(AppStrings.error,AppStrings.mobileNumberMissing,  backgroundColor: Colors.red);
         return;
       }
 
       // Call API to resend OTP
-      final response = await authServices.sendOtp(mobileNumber);
+      final response = await authServices.resendOtp(mobileNumber);
 
       if (response.success) {
-        Get.snackbar('OTP Resent', 'A new OTP has been sent to your number');
+        ShowSnackBar.show(AppStrings.otpResent,AppStrings.newOtpSent);
         startResendTimer(); // restart the resend timer
       } else {
-        Get.snackbar('Failed', response.message.isNotEmpty ? response.message : 'Failed to resend OTP');
+        Get.snackbar(AppStrings.failed, response.message.isNotEmpty ? response.message : 'Failed to resend OTP');
       }
     } catch (e) {
-      Get.snackbar('Error', e.toString());
+      Get.snackbar(AppStrings.error, e.toString());
     }
   }
 
@@ -97,14 +98,15 @@ class OtpVerificationController extends GetxController {
       final response = await authServices.verifyOtp(mobile, otp);
 
       if (response.success && response.data?.verified == true) {
-        Get.snackbar('Success', 'OTP Verified Successfully');
+        ShowSnackBar.show(AppStrings.success,AppStrings.otpVerifiedSuccessfully);
+
 
         // Save all data via AuthController
         final authController = Get.find<AuthController>();
         final saved = await authController.saveLoginDataFromApi(response.data!);
 
         if (!saved) {
-          Get.snackbar('Warning', 'Login successful but failed to save data locally');
+          ShowSnackBar.show(AppStrings.warning,AppStrings.failedSaveLoginData);
         }
 
         await authController.refreshFromPrefs();
@@ -122,7 +124,7 @@ class OtpVerificationController extends GetxController {
         showError.value = true;
         errorMessage.value = response.message.isNotEmpty
             ? response.message
-            : 'Invalid OTP';
+            : AppStrings.invalidOtp;
       }
     } catch (e) {
       showError.value = true;

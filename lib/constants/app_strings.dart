@@ -261,6 +261,8 @@ class AppStrings {
   // Error Messages
   static const error = "Error";
   static const success = "Success";
+  static const failed = "Failed";
+  static const warning = "Warning";
   static const pleaseEnterPhoneNumber = "Please enter your phone number";
   static const pleaseEnterFullName = "Please enter your full name";
   static const pleaseEnterEmail = "Please enter your email";
@@ -270,7 +272,12 @@ class AppStrings {
   static const otpResent = "OTP Resent";
   static const newOtpSent = "New OTP has been sent to your phone";
   static const otpVerifiedSuccessfully = "OTP verified successfully";
-  
+  static const failedSaveLoginData = "Login successful but failed to save data locally";
+  static const failedSaveProfileData = "Profile updated but failed to save data locally";
+  static const failedUpdateProfile = "Failed to update profile'";
+  static const invalidOtp = "Invalid otp";
+  static const failedOtp = "Failed to send OTP";
+
   // Mobile Number Validation Messages
   static const mobileNumberRequired = "Please enter your mobile number";
   static const mobileNumberInvalid = "Please enter a valid mobile number";
@@ -923,6 +930,9 @@ class AppStrings {
   static String noItemsFor(String category) => "No $category items available";
   static const details = "Details";
   static const rentNow = "Rent Now";
+
+  /// error
+  static const mobileNumberMissing = "Mobile number is missing";
 
 
 

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../constants/app_colors.dart';
+import '../constants/app_sizes.dart';
 import '../constants/app_strings.dart';
 import '../constants/app_text_style.dart';
 import '../routes/app_routes.dart';
 import '../services/auth_services.dart';
+import '../utility/global.dart';
 import 'auth_controller.dart';
 
 class InformationController extends GetxController {
@@ -41,7 +44,7 @@ class InformationController extends GetxController {
         return Theme(
           data: Theme.of(context).copyWith(
             colorScheme: const ColorScheme.light(
-              primary: Color(0xFFD74C7C), // AppColors.primary
+              primary: AppColors.primary
             ),
           ),
           child: child!,
@@ -71,7 +74,7 @@ class InformationController extends GetxController {
             Container(
               width: 40,
               height: 4,
-              margin: const EdgeInsets.symmetric(vertical: 12),
+              margin: const EdgeInsets.symmetric(vertical:  AppSizes.spacing12),
               decoration: BoxDecoration(
                 color: Colors.grey[300],
                 borderRadius: BorderRadius.circular(2),
@@ -81,11 +84,11 @@ class InformationController extends GetxController {
               AppStrings.selectGender,
               style: AppTextStyles.titleText,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height:  AppSizes.spacing20),
             ...genderOptions.map((gender) => ListTile(
               title: Text(gender),
               trailing: selectedGender.value == gender
-                  ? const Icon(Icons.person, color: Color(0xFFD74C7C))
+                  ? Icon(Icons.check, color: AppColors.primary)
                   : null,
               onTap: () {
                 selectedGender.value = gender;
@@ -93,7 +96,7 @@ class InformationController extends GetxController {
                 Get.back();
               },
             )),
-            const SizedBox(height: 20),
+             SizedBox(height: AppSizes.spacing20),
           ],
         ),
       ),
@@ -105,22 +108,22 @@ class InformationController extends GetxController {
   void continueToNext() async {
     // Validate form
     if (fullNameController.text.trim().isEmpty) {
-      Get.snackbar(AppStrings.error, AppStrings.pleaseEnterFullName);
+      ShowSnackBar.show(AppStrings.error,AppStrings.pleaseEnterFullName);
       return;
     }
     
     if (emailController.text.trim().isEmpty) {
-      Get.snackbar(AppStrings.error, AppStrings.pleaseEnterEmail);
+      ShowSnackBar.show(AppStrings.error,AppStrings.pleaseEnterEmail);
       return;
     }
     
     if (dateOfBirthController.text.trim().isEmpty) {
-      Get.snackbar(AppStrings.error, AppStrings.pleaseSelectDateOfBirth);
+      ShowSnackBar.show(AppStrings.error,AppStrings.pleaseSelectDateOfBirth);
       return;
     }
     
     if (genderController.text.trim().isEmpty) {
-      Get.snackbar(AppStrings.error, AppStrings.pleaseSelectGender);
+      ShowSnackBar.show(AppStrings.error,AppStrings.pleaseSelectGender);
       return;
     }
     
@@ -140,7 +143,7 @@ class InformationController extends GetxController {
       );
 
       if (!response.success || response.data == null) {
-        Get.snackbar(AppStrings.error, response.message.isNotEmpty ? response.message : 'Failed to update profile');
+        ShowSnackBar.show(AppStrings.error, response.message.isNotEmpty ? response.message : AppStrings.failedUpdateProfile);
         return;
       }
 
@@ -148,14 +151,13 @@ class InformationController extends GetxController {
       final auth = Get.find<AuthController>();
       final saved = await auth.saveLoginDataFromApi(response.data!);
       if (!saved) {
-        Get.snackbar('Warning', 'Profile updated but failed to save data locally');
+        ShowSnackBar.show(AppStrings.warning,AppStrings.failedSaveProfileData);
       }
       await auth.refreshFromPrefs();
-
-      Get.snackbar(AppStrings.success, AppStrings.informationSavedSuccessfully);
+      ShowSnackBar.show(AppStrings.success,AppStrings.informationSavedSuccessfully);
       Get.offAllNamed(AppRoutes.home);
     } catch (e) {
-      Get.snackbar(AppStrings.error, e.toString());
+      ShowSnackBar.show(AppStrings.error, e.toString());
     } finally {
       isSubmitting.value = false;
     }

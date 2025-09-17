@@ -22,7 +22,8 @@ class FavouriteController extends GetxController with GetSingleTickerProviderSta
   @override
   void onInit() {
     super.onInit();
-    tabController = TabController(length: 4, vsync: this);
+    // Disabled Boutique for Phase 1 -> reduce tabs to 3 (All, Parlour, Rent)
+    tabController = TabController(length: 3, vsync: this);
     tabController.addListener(() {
       selectedTabIndex.value = tabController.index;
     });
@@ -121,7 +122,8 @@ class FavouriteController extends GetxController with GetSingleTickerProviderSta
         parlourFavourites.value = filteredItems;
         break;
       case 2:
-        boutiqueFavourites.value = filteredItems;
+        // Boutique disabled in Phase 1; index 2 now maps to Rent
+        rentFavourites.value = filteredItems;
         break;
     }
   }
@@ -168,7 +170,8 @@ class FavouriteController extends GetxController with GetSingleTickerProviderSta
       case 1:
         return parlourFavourites;
       case 2:
-        return boutiqueFavourites;
+        // Boutique disabled in Phase 1; index 2 now maps to Rent
+        return rentFavourites;
       default:
         return allFavourites;
     }

@@ -20,23 +20,23 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSizes.spacing20,
-            ),
-            child: Column(
-              children: [
-                const SizedBox(height: AppSizes.spacing30),
-                _buildProfileHeader(),
-                const SizedBox(height: AppSizes.spacing30),
-                _buildMenuItems(),
-                const SizedBox(height: AppSizes.spacing30),
-                _buildPoweredByText(),
-                const SizedBox(height: AppSizes.spacing40),
-              ],
-            ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.only(
+            left: AppSizes.spacing20,
+            right: AppSizes.spacing20,
+            bottom: MediaQuery.of(context).padding.bottom + AppSizes.size80,
+          ),
+          child: Column(
+            children: [
+              const SizedBox(height: AppSizes.size50),
+              _buildProfileHeader(),
+              const SizedBox(height: AppSizes.spacing30),
+              _buildMenuItems(),
+              const SizedBox(height: AppSizes.spacing30),
+              _buildPoweredByText(),
+              const SizedBox(height: AppSizes.spacing40),
+            ],
           ),
         ),
       ),

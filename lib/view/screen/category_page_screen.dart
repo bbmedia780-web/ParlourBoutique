@@ -32,12 +32,9 @@ class CategoryScreen extends StatelessWidget {
             size: AppSizes.spacing20,
           ),
           onPressed: () {
-            // Check if we're in the main navigation structure
             if (Get.currentRoute == AppRoutes.home) {
-              // If we're in main navigation, navigate to home tab
               mainNavController.onBottomNavItemTapped(0);
             } else {
-              // If we're in a separate route, use normal back navigation
               Get.back();
             }
           },
@@ -50,7 +47,7 @@ class CategoryScreen extends StatelessWidget {
             child: CircleAvatar(
               backgroundColor: Colors.black.withOpacity(0.05),
               radius: AppSizes.spacing20,
-              child:  IconButton(
+              child: IconButton(
                 icon: Image.asset(
                   AppAssets.filterBlack,
                   scale: AppSizes.scaleSize,
@@ -70,39 +67,35 @@ class CategoryScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Column(
-          children: [Expanded(child: _buildCategoryGrid(controller))],
-        ),
-      ),
+      body: Obx(() {
+        return GridView.builder(
+          padding: EdgeInsets.only(
+            left: AppSizes.spacing12,
+            right: AppSizes.spacing12,
+            bottom: MediaQuery.of(context).padding.bottom + AppSizes.spacing20,
+          ),
+          physics: const BouncingScrollPhysics(), // 👈 smooth scroll
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.70,
+            crossAxisSpacing: AppSizes.spacing8,
+            mainAxisSpacing: AppSizes.spacing8,
+          ),
+          itemCount: controller.dataList.length,
+          itemBuilder: (context, index) {
+            final data = controller.dataList[index];
+            return GestureDetector(
+              onTap: () {
+                Get.toNamed(AppRoutes.details, arguments: data);
+              },
+              child: CategoryCardWidget(
+                data: data,
+                onFavoriteTap: () => controller.toggleFavorite(index),
+              ),
+            );
+          },
+        );
+      }),
     );
-  }
-
-  Widget _buildCategoryGrid(UnifiedServiceDataController controller) {
-    return Obx(() {
-      return GridView.builder(
-        padding: const EdgeInsets.only(left: AppSizes.spacing12,right:AppSizes.spacing12,bottom:AppSizes.spacing30),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.70,
-          crossAxisSpacing: AppSizes.spacing8,
-          mainAxisSpacing: AppSizes.spacing8,
-        ),
-        itemCount: controller.dataList.length,
-        itemBuilder: (context, index) {
-          final data = controller.dataList[index];
-          return GestureDetector(
-            onTap: () {
-              // Navigate to details screen with same UI for both parlour and boutique
-              Get.toNamed(AppRoutes.details, arguments: data);
-            },
-            child: CategoryCardWidget(
-              data: data,
-              onFavoriteTap: () => controller.toggleFavorite(index),
-            ),
-          );
-        },
-      );
-    });
   }
 }

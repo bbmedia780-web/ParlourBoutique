@@ -6,8 +6,7 @@ import 'package:parlour_app/routes/app_routes.dart';
 class HomeController extends GetxController {
   final TextEditingController searchController = TextEditingController();
   final RxInt selectedTopTabIndex = 0.obs; // 0: Parlour, 1: Boutique, 2: Rent
-  
-  // Scroll controller and floating search bar state
+
   late ScrollController scrollController;
   final RxBool showFloatingSearchBar = false.obs;
 
@@ -17,19 +16,18 @@ class HomeController extends GetxController {
     super.onInit();
     fetchPopularServices();
     selectedTopTabIndex.value = 0;
-    
-    // Initialize scroll controller
     scrollController = ScrollController();
     scrollController.addListener(_onScroll);
   }
-  
+
   void _onScroll() {
-    // Show floating search bar when scrolled past the header
     final shouldShow = scrollController.offset > 200;
     if (shouldShow != showFloatingSearchBar.value) {
       showFloatingSearchBar.value = shouldShow;
     }
   }
+
+
 
 
   void onMicrophoneTap() {
@@ -39,7 +37,7 @@ class HomeController extends GetxController {
   void fetchPopularServices() {
     // Fetch popular services
   }
-  
+
   void onSeeAllPopularTap() {
     String selectedCategory;
     switch (selectedTopTabIndex.value) {
@@ -58,11 +56,11 @@ class HomeController extends GetxController {
     Get.toNamed( AppRoutes.popularSeeAll, arguments: selectedCategory);
   }
 
-  
+
   void onNotificationTap() {
     Get.toNamed(AppRoutes.notification);
   }
-  
+
   void onChatTap() {
     // Handle chat tap
   }
@@ -93,7 +91,7 @@ class HomeController extends GetxController {
       default:
         selectedCategory = 'parlour';
     }
-    
+
     return popularList
         .where((item) => item.category == selectedCategory)
         .toList();
@@ -112,7 +110,7 @@ class HomeController extends GetxController {
         return 'Parlour';
     }
   }
-  
+
   @override
   void onClose() {
     searchController.dispose();

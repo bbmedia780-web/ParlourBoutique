@@ -27,9 +27,8 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: SafeArea(
-        child: Stack(
-          children: [
+      body: Stack(
+        children: [
             CustomScrollView(
               controller: controller.scrollController,
               slivers: [
@@ -83,8 +82,7 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 
   Widget _buildHeaderSection() {
@@ -139,7 +137,7 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.only(
               left: AppSizes.spacing20,
               right: AppSizes.spacing20,
-              top: AppSizes.spacing16,
+              top: AppSizes.spacing40,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

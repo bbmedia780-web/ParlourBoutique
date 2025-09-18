@@ -31,24 +31,22 @@ class BookingPageView extends StatelessWidget {
         title: Text(AppStrings.booking, style: AppTextStyles.appBarText),
         centerTitle: true,
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            _buildTabBar(),
-            Expanded(
-              child: TabBarView(
-                controller: controller.tabController,
-                children: [
-                  _buildServicesGrid(controller.allServices),
-                  _buildServicesGrid(controller.parlourServices),
-                  // Disabled for Phase 1: Boutique services tab
-                  // _buildServicesGrid(controller.boutiqueServices),
-                  _buildServicesGrid(controller.rentServices),
-                ],
-              ),
+      body: Column(
+        children: [
+          _buildTabBar(),
+          Expanded(
+            child: TabBarView(
+              controller: controller.tabController,
+              children: [
+                _buildServicesGrid(controller.allServices),
+                _buildServicesGrid(controller.parlourServices),
+                // Disabled for Phase 1: Boutique services tab
+                // _buildServicesGrid(controller.boutiqueServices),
+                _buildServicesGrid(controller.rentServices),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

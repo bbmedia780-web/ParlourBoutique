@@ -30,8 +30,7 @@ class DetailsScreen extends StatelessWidget {
               centerTitle: true,
             )
           : null,
-      body: SafeArea(
-        child: Obx(() {
+      body: Obx(() {
           final businessDetails = controller.businessDetails.value;
 
           if (businessDetails == null) {
@@ -92,8 +91,8 @@ class DetailsScreen extends StatelessWidget {
             ],
           );
         }),
-      ),
-    );
+      );
+   // );
   }
 
   Widget _buildRentDetailsLayout(

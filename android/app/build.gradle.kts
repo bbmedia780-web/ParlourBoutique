@@ -23,8 +23,8 @@ android {
         applicationId = "com.brightbrew.varnika"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
-        versionCode = 1
-        versionName = 1.1.toString()
+        versionCode = 3
+        versionName = 1.3.toString()
     }
 
     buildTypes {

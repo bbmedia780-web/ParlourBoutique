@@ -41,42 +41,40 @@ class UnifiedBookingPageView extends StatelessWidget {
         title: Text(AppStrings.booking, style: AppTextStyles.appBarText),
         centerTitle: true,
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.spacing20,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: AppColors.veryExtraLightGrey,
-                        borderRadius: BorderRadius.circular(AppSizes.spacing12),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(AppSizes.spacing16),
-                        child: _buildStepper(),
-                      ),
-                    ),
-                    const SizedBox(height: AppSizes.spacing18),
-                    Obx(() => _buildStepContent()),
-                    const SizedBox(height: AppSizes.spacing40),
-                  ],
-                ),
-              ),
-            ),
-            Obx(
-              () => _buildBottomButton().paddingSymmetric(
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(
                 horizontal: AppSizes.spacing20,
-                vertical:  AppSizes.spacing20,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.veryExtraLightGrey,
+                      borderRadius: BorderRadius.circular(AppSizes.spacing12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(AppSizes.spacing16),
+                      child: _buildStepper(),
+                    ),
+                  ),
+                  const SizedBox(height: AppSizes.spacing18),
+                  Obx(() => _buildStepContent()),
+                  const SizedBox(height: AppSizes.spacing40),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+          Obx(
+            () => _buildBottomButton().paddingSymmetric(
+              horizontal: AppSizes.spacing20,
+              vertical:  AppSizes.spacing20,
+            ),
+          ),
+        ],
       ),
     );
   }

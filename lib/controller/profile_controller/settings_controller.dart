@@ -1,24 +1,27 @@
 import 'package:get/get.dart';
 import '../../utility/global.dart';
 import '../../constants/app_colors.dart';
-import 'package:parlour_app/routes/app_routes.dart';
 import '../../constants/app_strings.dart';
+import '../../routes/app_routes.dart';
 import '../../model/settings_model.dart';
 
-
 class SettingsController extends GetxController {
-  // Observable settings list
+  // ---------------- State ----------------
+  /// List of settings displayed in the UI
   final RxList<SettingsModel> settings = <SettingsModel>[].obs;
-  
-  // Current settings state
+
+  /// Notification toggle state
   final RxBool isNotificationEnabled = true.obs;
 
+  // ---------------- Lifecycle ----------------
   @override
   void onInit() {
     super.onInit();
     _loadSettings();
   }
 
+  // ---------------- Load Settings ----------------
+  /// Initializes settings list with default values
   void _loadSettings() {
     settings.value = [
       SettingsModel(
@@ -37,71 +40,63 @@ class SettingsController extends GetxController {
     ];
   }
 
-
-
-  // Toggle notifications
+  // ---------------- Actions ----------------
+  /// Toggle notification setting
   void toggleNotification(bool value) {
     isNotificationEnabled.value = value;
     _updateSetting('notification', value);
-    
+
     // Show feedback
     ShowSnackBar.show(
-      'Notifications',
-      value ? 'Notifications enabled' : 'Notifications disabled',
+      AppStrings.notification,
+      value ? AppStrings.notificationEnable : AppStrings.notificationDisabled,
       backgroundColor: AppColors.primary,
     );
-    
-    // Add your notification logic here
+
+    // TODO: Add notification service logic here
     // _updateNotificationSettings(value);
   }
 
-  // Handle navigation items
+  /// Handles navigation settings like Language
   void onSettingTapped(SettingsModel setting) {
     switch (setting.id) {
       case 'language':
-        onLanguageTapped();
+        _onLanguageTapped();
         break;
     }
   }
 
-  void onLanguageTapped() {
-    // Navigate to language selection screen
+  /// Navigate to language selection screen
+  void _onLanguageTapped() {
     Get.toNamed(AppRoutes.languageSelection);
   }
 
-  // Update setting in the list
+  // ---------------- Helpers ----------------
+  /// Update specific setting in the list
   void _updateSetting(String id, bool value) {
-    final index = settings.indexWhere((setting) => setting.id == id);
+    final index = settings.indexWhere((s) => s.id == id);
     if (index != -1) {
-      final updatedSetting = SettingsModel(
-        id: settings[index].id,
-        title: settings[index].title,
-        icon: settings[index].icon,
-        type: settings[index].type,
-        isEnabled: value,
-        value: settings[index].value,
-      );
-      settings[index] = updatedSetting;
+      settings[index] = settings[index].copyWith(isEnabled: value);
     }
   }
 
-  // Get setting by ID
+  /// Get a setting by ID
   SettingsModel? getSettingById(String id) {
     try {
-      return settings.firstWhere((setting) => setting.id == id);
-    } catch (e) {
+      return settings.firstWhere((s) => s.id == id);
+    } catch (_) {
       return null;
     }
   }
 
-  // Refresh settings
+  /// Reload settings (e.g., after changes)
   void refreshSettings() {
     _loadSettings();
   }
 
   @override
   void onClose() {
-    // Save settings to persistent storage if needed
+    // TODO: Save settings to persistent storage if required
     super.onClose();
   }
 }

@@ -1,3 +1,4 @@
+/*
 import 'package:get/get.dart';
 import 'package:parlour_app/controller/sign_in_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -321,4 +322,231 @@ class AuthController extends GetxController {
       'Content-Type': 'application/json',
     };
   }
+}
+*/
+
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../services/auth_services.dart';
+import '../utility/shared_prefs_util.dart';
+import '../routes/app_routes.dart';
+import '../model/auth/auth_verify_response.dart';
+import '../constants/app_strings.dart';
+import '../constants/app_colors.dart';
+import '../utility/global.dart';
+import 'sign_in_controller.dart';
+
+class AuthController extends GetxController {
+  // ------------------ 🔑 Keys ------------------
+  static const _kMobile = 'mobile_number';
+  static const _kAccess = 'access_token';
+  static const _kRefresh = 'refresh_token';
+  static const _kType = 'token_type';
+  static const _kExpiry = 'expires_in';
+  static const _kUserId = 'user_id';
+  static const _kName = 'user_name';
+  static const _kEmail = 'user_email';
+  static const _kGender = 'user_gender';
+  static const _kDob = 'user_dob';
+  static const _kProfileDone = 'profile_completed';
+  static const _kLoggedIn = 'is_logged_in';
+  static const _kLoginTime = 'login_time';
+
+  // ------------------ 📌 State ------------------
+  final isLoggedIn = false.obs;
+  final isLoading = false.obs;
+
+  final mobile = ''.obs;
+  final accessToken = ''.obs;
+  final refreshToken = ''.obs;
+  final tokenType = 'Bearer'.obs;
+  final expiresIn = 0.obs;
+
+  final userId = ''.obs;
+  final userName = ''.obs;
+  final userEmail = ''.obs;
+  final userGender = ''.obs;
+  final userDob = ''.obs;
+  final profileCompleted = false.obs;
+
+  // ------------------ 🚀 Lifecycle ------------------
+  @override
+  void onInit() {
+    super.onInit();
+    _loadFromPrefs();
+  }
+
+  // ------------------ 📥 Load ------------------
+  Future<void> _loadFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    isLoggedIn.value = prefs.getBool(_kLoggedIn) ?? false;
+    if (!isLoggedIn.value) return;
+
+    mobile.value = prefs.getString(_kMobile) ?? '';
+    accessToken.value = prefs.getString(_kAccess) ?? '';
+    refreshToken.value = prefs.getString(_kRefresh) ?? '';
+    tokenType.value = prefs.getString(_kType) ?? 'Bearer';
+    expiresIn.value = prefs.getInt(_kExpiry) ?? 0;
+    userId.value = prefs.getString(_kUserId) ?? '';
+    userName.value = prefs.getString(_kName) ?? '';
+    userEmail.value = prefs.getString(_kEmail) ?? '';
+    userGender.value = prefs.getString(_kGender) ?? '';
+    userDob.value = prefs.getString(_kDob) ?? '';
+    profileCompleted.value = prefs.getBool(_kProfileDone) ?? false;
+  }
+
+  // ------------------ 💾 Save ------------------
+  Future<void> _saveToPrefs({
+    required String mobile,
+    required String access,
+    required String refresh,
+    String tokenType = 'Bearer',
+    int expiry = 0,
+    String uid = '',
+    String name = '',
+    String email = '',
+    String gender = '',
+    String dob = '',
+    bool profileDone = false,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    await Future.wait([
+      prefs.setBool(_kLoggedIn, true),
+      prefs.setInt(_kLoginTime, DateTime.now().millisecondsSinceEpoch),
+      prefs.setString(_kMobile, mobile),
+      prefs.setString(_kAccess, access),
+      prefs.setString(_kRefresh, refresh),
+      prefs.setString(_kType, tokenType),
+      prefs.setInt(_kExpiry, expiry),
+      prefs.setString(_kUserId, uid),
+      prefs.setString(_kName, name),
+      prefs.setString(_kEmail, email),
+      prefs.setString(_kGender, gender),
+      prefs.setString(_kDob, dob),
+      prefs.setBool(_kProfileDone, profileDone),
+    ]);
+
+    // update live values
+    isLoggedIn.value = true;
+    this.mobile.value = mobile;
+    accessToken.value = access;
+    refreshToken.value = refresh;
+    this.tokenType.value = tokenType;
+    expiresIn.value = expiry;
+    userId.value = uid;
+    userName.value = name;
+    userEmail.value = email;
+    userGender.value = gender;
+    userDob.value = dob;
+    profileCompleted.value = profileDone;
+  }
+
+  // ------------------ 🔐 Auth Flow ------------------
+  Future<bool> login(UserData data) async {
+    try {
+      await _saveToPrefs(
+        mobile: data.mobile,
+        access: data.accessToken,
+        refresh: data.refreshToken,
+        tokenType: data.tokenType,
+        expiry: data.expiresIn,
+        uid: data.userId.toString(),
+        name: data.userDetails?.fullName ?? '',
+        email: data.userDetails?.email ?? '',
+        gender: data.userDetails?.gender ?? '',
+        dob: data.userDetails?.dateOfBirth ?? '',
+        profileDone: data.profileCompleted ?? false,
+      );
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  // ------------------ 📝 Save Profile (first-time or update) ------------------
+  Future<void> saveUserProfile({
+    required String name,
+    required String email,
+    required String gender,
+    required String dob,
+  }) async {
+    userName.value = name;
+    userEmail.value = email;
+    userGender.value = gender;
+    userDob.value = dob;
+    profileCompleted.value = true;
+
+    final prefs = await SharedPreferences.getInstance();
+    await Future.wait([
+      prefs.setString(_kName, name),
+      prefs.setString(_kEmail, email),
+      prefs.setString(_kGender, gender),
+      prefs.setString(_kDob, dob),
+      prefs.setBool(_kProfileDone, true),
+    ]);
+  }
+
+  Future<bool> refreshTokens() async {
+    if (refreshToken.value.isEmpty) return false;
+    final res = await AuthServices().refreshTokens();
+    if (res != null && res.success && res.data != null) {
+      final d = res.data!;
+      await _saveToPrefs(
+        mobile: mobile.value,
+        access: d.accessToken,
+        refresh: d.refreshToken,
+        tokenType: d.tokenType,
+        expiry: d.expiresIn,
+        uid: userId.value,
+        name: userName.value,
+        email: userEmail.value,
+        gender: userGender.value,
+        dob: userDob.value,
+        profileDone: profileCompleted.value,
+      );
+      return true;
+    }
+    return false;
+  }
+
+  // ------------------ 🚪 Logout ------------------
+  Future<void> logout() async {
+    try {
+      isLoading.value = true;
+      await AuthServices().logout(); // API call, ignore failures
+      await SharedPrefsUtil.clearSession();
+
+      // reset state
+      isLoggedIn.value = false;
+      mobile.value = '';
+      accessToken.value = '';
+      refreshToken.value = '';
+      tokenType.value = 'Bearer';
+      expiresIn.value = 0;
+      userId.value = '';
+      userName.value = '';
+      userEmail.value = '';
+      userGender.value = '';
+      userDob.value = '';
+      profileCompleted.value = false;
+
+      if (Get.isRegistered<SignInController>()) {
+        Get.find<SignInController>().phoneController.clear();
+      }
+
+      Get.offAllNamed(AppRoutes.welcome);
+      ShowSnackBar.show(AppStrings.success, AppStrings.logoutSuccess,
+          backgroundColor: AppColors.green);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  // ------------------ 🛠 Helpers ------------------
+  bool hasValidToken() => accessToken.value.isNotEmpty;
+
+  Map<String, String> getAuthHeaders() => {
+    'Authorization': '$tokenType ${accessToken.value}',
+    'Content-Type': 'application/json',
+  };
 }

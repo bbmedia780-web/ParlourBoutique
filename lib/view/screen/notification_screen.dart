@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../common/common_text_form_field.dart';
 import '../../constants/app_assets.dart';
 import '../../constants/app_strings.dart';
-import '../../controller/notification_controller.dart';
+import '../../controller/home_controller/notification_controller.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_text_style.dart';
 import '../../constants/app_sizes.dart';

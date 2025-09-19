@@ -10,11 +10,11 @@ import '../auth_controller.dart';
 
 class ProfileController extends GetxController {
 
-
+  // ---------------- Menu Navigation ----------------
+  /// Handles navigation when a profile menu item is tapped
   void onMenuItemTapped(String item) {
     switch (item) {
       case AppStrings.menuItemAccount:
-      // Navigate to account information
         Get.toNamed(AppRoutes.accountInformation);
         break;
 
@@ -27,30 +27,30 @@ class ProfileController extends GetxController {
         break;
 
       case AppStrings.menuItemPaymentHistory:
-      // Navigate to payment history
         Get.toNamed(AppRoutes.paymentHistory);
         break;
+
       case AppStrings.menuItemSettings:
-      // Navigate to settings
         Get.toNamed(AppRoutes.settings);
         break;
+
       case AppStrings.menuItemHelpSupport:
-      // Navigate to help & support
         Get.toNamed(AppRoutes.helpSupport);
         break;
+
       case AppStrings.menuItemFaqs:
-      // Navigate to FAQs
         Get.toNamed(AppRoutes.faqs);
         break;
+
       case AppStrings.menuItemLogout:
-      // Handle logout
-        _handleLogout();
+        _showLogoutDialog();
         break;
     }
   }
 
-
-  void _handleLogout() {
+  // ---------------- Logout ----------------
+  /// Show confirmation dialog before logging out
+  void _showLogoutDialog() {
     showDialog(
       context: Get.context!,
       barrierDismissible: true,
@@ -71,17 +71,17 @@ class ProfileController extends GetxController {
           vertical: AppSizes.spacing8,
         ),
         actions: [
+          // Cancel Button
           AppButton(
             text: AppStrings.cancel,
             isPrimary: true,
-            onPressed: () {
-              Get.back();
-            },
+            onPressed: () => Get.back(),
             height: AppSizes.spacing30,
             width: AppSizes.size80,
             borderRadius: AppSizes.spacing6,
             textStyle: AppTextStyles.buttonText,
           ),
+          // Logout Button
           AppButton(
             text: AppStrings.logout,
             isPrimary: true,
@@ -99,7 +99,8 @@ class ProfileController extends GetxController {
     );
   }
 
-  void _performLogout() async {
+  /// Perform logout using `AuthController`
+  Future<void> _performLogout() async {
     try {
       final authController = Get.find<AuthController>();
       await authController.logout();
@@ -107,6 +108,4 @@ class ProfileController extends GetxController {
       print('Error during logout: $e');
     }
   }
-
 }
-

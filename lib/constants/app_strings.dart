@@ -172,6 +172,8 @@ class AppStrings {
   // Notification Screen
   static const notification = "Notification";
   static const searchHere = "Search here...";
+  static const notificationEnable = "Notification Enable";
+  static const notificationDisabled = "Notifications Disabled";
 
   // FAQ Screen
   static const faqs = "FAQS";
@@ -273,6 +275,7 @@ class AppStrings {
   static const pleaseSelectDateOfBirth = "Please select your date of birth";
   static const pleaseSelectGender = "Please select your gender";
   static const informationSavedSuccessfully = "Information saved successfully";
+  static const informationUpToDate = "Information is already saved and up to date";
   static const otpResent = "OTP Resent";
   static const newOtpSent = "New OTP has been sent to your phone";
   static const otpVerifiedSuccessfully = "OTP verified successfully";
@@ -281,6 +284,7 @@ class AppStrings {
   static const failedUpdateProfile = "Failed to update profile'";
   static const invalidOtp = "Invalid otp";
   static const failedOtp = "Failed to send OTP";
+  static const failedResendOtp = "Failed to resend OTP";
 
   // Mobile Number Validation Messages
   static const mobileNumberRequired = "Please enter your mobile number";
@@ -937,6 +941,16 @@ class AppStrings {
 
   /// error
   static const mobileNumberMissing = "Mobile number is missing";
+
+  /// location
+  static const locationService = "Location services are disabled";
+  static const somethingWentWrong = "Something went wrong";
+  static const polishAndPoise = 'Polish & Poise';
+
+  // Notification details
+  static const notificationDateTime = '26 Jun, 2025 | 10:00 am';
+  static const offerDescription = 'Pamper yourself today — enjoy 20% off on facials and spa';
+  static const callToAction = 'Walk in or book now';
 
 
 

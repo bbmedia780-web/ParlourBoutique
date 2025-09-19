@@ -3,15 +3,25 @@ import 'package:get/get.dart';
 import 'package:parlour_app/constants/app_strings.dart';
 
 class HelpChatController extends GetxController {
+  // ---------------- State ----------------
   final RxList<Map<String, dynamic>> messages = <Map<String, dynamic>>[].obs;
   final TextEditingController messageController = TextEditingController();
 
+  // ---------------- Lifecycle ----------------
   @override
   void onInit() {
     super.onInit();
     _loadInitialMessages();
   }
 
+  @override
+  void onClose() {
+    messageController.dispose();
+    super.onClose();
+  }
+
+  // ---------------- Initial Messages ----------------
+  /// Load default welcome messages
   void _loadInitialMessages() {
     messages.value = [
       {
@@ -37,37 +47,38 @@ class HelpChatController extends GetxController {
     ];
   }
 
+  // ---------------- Send Message ----------------
+  /// Sends user message and triggers simulated agent response
   void sendMessage() {
-    if (messageController.text.trim().isNotEmpty) {
+    final text = messageController.text.trim();
+    if (text.isEmpty) return;
+
+    // Add user message
+    messages.add({
+      'type': AppStrings.messageTypeUser,
+      'message': text,
+      'time': _getCurrentTime(),
+    });
+
+    messageController.clear();
+
+    // Simulate agent response after 1 second
+    Future.delayed(const Duration(seconds: 1), () {
       messages.add({
-        'type': AppStrings.messageTypeUser,
-        'message': messageController.text.trim(),
+        'type': AppStrings.messageTypeAgent,
+        'message': AppStrings.helpChatAgentAutoResponse,
         'time': _getCurrentTime(),
       });
-      messageController.clear();
-      
-      // Simulate agent response after 1 second
-      Future.delayed(const Duration(seconds: 1), () {
-        messages.add({
-          'type': AppStrings.messageTypeAgent,
-          'message': AppStrings.helpChatAgentAutoResponse,
-          'time': _getCurrentTime(),
-        });
-      });
-    }
+    });
   }
 
+  // ---------------- Helpers ----------------
+  /// Get current time in `hh:mm AM/PM` format
   String _getCurrentTime() {
     final now = DateTime.now();
-    final hour = now.hour > 12 ? (now.hour - 12).toString().padLeft(2, '0') : now.hour.toString().padLeft(2, '0');
+    final hour = now.hour > 12 ? now.hour - 12 : now.hour == 0 ? 12 : now.hour;
     final minute = now.minute.toString().padLeft(2, '0');
     final period = now.hour >= 12 ? AppStrings.timePM : AppStrings.timeAM;
     return '$hour:$minute $period';
-  }
-
-  @override
-  void onClose() {
-    messageController.dispose();
-    super.onClose();
   }
 }

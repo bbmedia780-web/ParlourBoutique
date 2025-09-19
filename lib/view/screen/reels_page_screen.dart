@@ -4,7 +4,7 @@ import 'package:video_player/video_player.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_text_style.dart';
 import '../../constants/app_sizes.dart';
-import '../../controller/reels_controller.dart';
+import '../../controller/home_controller/reels_controller.dart';
 import '../../model/reels_model.dart';
 
 class ReelsScreen extends StatelessWidget {

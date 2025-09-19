@@ -9,12 +9,15 @@ import '../../../constants/app_strings.dart';
 import '../../../constants/app_text_style.dart';
 import 'dart:io';
 
+import '../../../controller/auth_controller.dart';
 import '../../../controller/profile_controller/account_information_controller.dart';
 
 class AccountInformationPageView extends StatelessWidget {
   AccountInformationPageView({super.key});
 
   final AccountInformationController controller = Get.find<AccountInformationController>();
+  final AuthController authController = Get.find<AuthController>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +72,7 @@ class AccountInformationPageView extends StatelessWidget {
                       height: AppSizes.spacing45,
                       textStyle: AppTextStyles.buttonText,
                       text: AppStrings.save.tr,
-                      onPressed: controller.saveAccountInformation,
+                      onPressed: controller.saveInformation,
                     ),
                   );
                 },
@@ -151,6 +154,7 @@ class AccountInformationPageView extends StatelessWidget {
             controller: controller.fullNameController,
             keyboardType: TextInputType.name,
             textStyle: AppTextStyles.hintText,
+            enabled: false,
           ).paddingOnly(bottom: AppSizes.spacing20),
           Text(
             AppStrings.yourEmail,
@@ -160,6 +164,7 @@ class AccountInformationPageView extends StatelessWidget {
             controller: controller.emailController,
             textStyle: AppTextStyles.hintText,
             keyboardType: TextInputType.emailAddress,
+            enabled: false,
           ).paddingOnly(bottom: AppSizes.spacing20),
           Text(
             AppStrings.dateOfBirth,
@@ -170,7 +175,7 @@ class AccountInformationPageView extends StatelessWidget {
             textStyle: AppTextStyles.hintText,
             keyboardType: TextInputType.none,
             readOnly: true,
-            onTap: () => controller.selectDate(context),
+            enabled: false,
             suffixIcon: Container(
               height: AppSizes.size100,
               width: AppSizes.size50,

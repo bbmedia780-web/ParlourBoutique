@@ -6,11 +6,11 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_strings.dart';
 import '../../constants/app_text_style.dart';
-import '../../controller/home_controller.dart';
-import '../../controller/unified_service_data_controller.dart';
+import '../../controller/home_controller/home_controller.dart';
+import '../../controller/home_controller/unified_service_data_controller.dart';
 import '../../controller/auth_controller.dart';
 import '../../view/bottomsheet/filter_bottom_sheet.dart';
-import '../../controller/filter_controller.dart';
+import '../../controller/home_controller/filter_controller.dart';
 import '../widget/home_page_service_card_widget.dart';
 import '../widget/popular_card_widget.dart';
 import '../widget/unified_service_card_widget.dart';
@@ -162,7 +162,7 @@ class HomeScreen extends StatelessWidget {
                             style: AppTextStyles.captionTitle,
                           )),
                           Obx(() => Text(
-                            authController.mobileNumber.value.isNotEmpty ? authController.mobileNumber.value : AppStrings.userAddress,
+                            authController.mobile.value.isNotEmpty ? authController.mobile.value : AppStrings.userAddress,
                             style: AppTextStyles.faqsDescriptionText,
                           )),
                         ],

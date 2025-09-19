@@ -28,8 +28,8 @@ dependencies:
   reels: ^1.0.0
   video_player: ^2.8.2
   app_settings: ^6.1.1
-  geolocator: ^11.0.0
-  geocoding: ^3.0.0
+  geolocator: ^14.0.2
+  geocoding: ^4.0.0
   path_provider: ^2.1.5
 
 dev_dependencies:

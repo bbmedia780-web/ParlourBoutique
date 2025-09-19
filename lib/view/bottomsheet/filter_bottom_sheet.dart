@@ -5,8 +5,8 @@ import '../../constants/app_sizes.dart';
 import '../../constants/app_strings.dart';
 import '../../constants/app_text_style.dart';
 import '../../common/common_button.dart';
-import '../../controller/filter_controller.dart';
-import '../../controller/unified_service_data_controller.dart';
+import '../../controller/home_controller/filter_controller.dart';
+import '../../controller/home_controller/unified_service_data_controller.dart';
 
 class FilterBottomSheet extends StatelessWidget {
   const FilterBottomSheet({super.key});

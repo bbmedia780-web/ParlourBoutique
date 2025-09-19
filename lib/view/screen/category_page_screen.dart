@@ -6,10 +6,10 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_strings.dart';
 import '../../constants/app_text_style.dart';
 import '../../constants/app_sizes.dart';
-import '../../controller/main_navigation_controller.dart';
-import '../../controller/unified_service_data_controller.dart';
+import '../../controller/home_controller/main_navigation_controller.dart';
+import '../../controller/home_controller/unified_service_data_controller.dart';
 import '../../view/bottomsheet/filter_bottom_sheet.dart';
-import '../../controller/filter_controller.dart';
+import '../../controller/home_controller/filter_controller.dart';
 import '../widget/category_card_widget.dart';
 
 class CategoryScreen extends StatelessWidget {

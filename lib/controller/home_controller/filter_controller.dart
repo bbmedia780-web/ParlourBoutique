@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../model/filter_model.dart';
-import '../constants/app_strings.dart';
+import '../../model/filter_model.dart';
+import '../../constants/app_strings.dart';
 
 class FilterController extends GetxController {
-  final Rx<FilterModel> current = FilterModel.initial.obs;
-  // Boutique-only UI state: 'male' or 'female'
-  final RxString boutiqueGender = 'male'.obs;
 
-  // Category sources kept here for both types
+  // -------------------- Current Filter State --------------------
+  final Rx<FilterModel> current = FilterModel.initial.obs;
+
+  // -------------------- Boutique-specific State --------------------
+  final RxString boutiqueGender = 'male'.obs; // 'male' or 'female'
+
+  // -------------------- Category Sources --------------------
   final List<String> parlourCategories = const [
     AppStrings.chipHairCut,
     AppStrings.chipFacialCleanup,
@@ -28,7 +31,6 @@ class FilterController extends GetxController {
     AppStrings.chipTrendy,
   ];
 
-  // Boutique gender-wise groupings (simple partition using available strings)
   final List<String> boutiqueMaleCategories = const [
     AppStrings.chipFormalWear,
     AppStrings.chipIndoWestern,
@@ -41,10 +43,14 @@ class FilterController extends GetxController {
     AppStrings.chipEmbroidery,
   ];
 
+  // -------------------- Category Helpers --------------------
+
+  /// Get categories for a selected tab (0 = parlour, 1 = boutique).
   List<String> categoriesForTab(int selectedTabIndex) {
     return selectedTabIndex == 0 ? parlourCategories : boutiqueCategories;
   }
 
+  /// Get categories considering boutique gender filter.
   List<String> categoriesForTabWithGender(int selectedTabIndex) {
     if (selectedTabIndex == 1) {
       return boutiqueGender.value == 'male'
@@ -54,44 +60,47 @@ class FilterController extends GetxController {
     return categoriesForTab(selectedTabIndex);
   }
 
+  // -------------------- State Updates --------------------
+
   void setBoutiqueGender(String gender) {
     boutiqueGender.value = gender;
   }
 
   void toggleOfferOnly() {
-    current.value = current.value.copyWith(offersOnly: !current.value.offersOnly);
+    current.value = current.value.copyWith(
+      offersOnly: !current.value.offersOnly,
+    );
   }
 
   void setPriceRange(RangeValues values) {
     current.value = current.value.copyWith(priceRange: values);
   }
 
-  void setServiceLocation(String value) {
-    current.value = current.value.copyWith(serviceLocation: value);
-  }
-
-  void toggleCategory(String category) {
-    final updated = Set<String>.from(current.value.selectedCategories);
-    if (updated.contains(category)) {
-      updated.remove(category);
-    } else {
-      updated.add(category);
-    }
-    current.value = current.value.copyWith(selectedCategories: updated);
-  }
-
-  // For dropdown (single select) use only one selected category
-  void setSelectedCategory(String category) {
-    current.value = current.value.copyWith(selectedCategories: {category});
-  }
-
-  String? get selectedCategoryOrNull {
-    if (current.value.selectedCategories.isEmpty) return null;
-    return current.value.selectedCategories.first;
+  void setServiceLocation(String location) {
+    current.value = current.value.copyWith(serviceLocation: location);
   }
 
   void setDistance(double km) {
     current.value = current.value.copyWith(maxDistanceKm: km);
+  }
+
+  void toggleCategory(String category) {
+    final updated = Set<String>.from(current.value.selectedCategories);
+    updated.contains(category) ? updated.remove(category) : updated.add(category);
+
+    current.value = current.value.copyWith(selectedCategories: updated);
+  }
+
+  /// Set single selected category (dropdown-like behavior).
+  void setSelectedCategory(String category) {
+    current.value = current.value.copyWith(selectedCategories: {category});
+  }
+
+  /// Get first selected category or `null` if none.
+  String? get selectedCategoryOrNull {
+    return current.value.selectedCategories.isEmpty
+        ? null
+        : current.value.selectedCategories.first;
   }
 
   void reset() {
@@ -102,5 +111,3 @@ class FilterController extends GetxController {
     Get.back();
   }
 }
-
-

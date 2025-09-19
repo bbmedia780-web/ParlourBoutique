@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:parlour_app/routes/app_routes.dart';
 import 'package:flutter/material.dart';
-import 'package:parlour_app/controller/unified_service_data_controller.dart';
+import 'package:parlour_app/controller/home_controller/unified_service_data_controller.dart';
 import '../model/popular_model.dart';
 import '../model/unified_data_model.dart';
 import 'popular_controller.dart';

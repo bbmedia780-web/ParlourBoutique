@@ -10,6 +10,7 @@ class CommonContainerTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final String? hintText;
   final bool readOnly;
+  final bool enabled;
   final VoidCallback? onTap;
   final ValueChanged<String>? onChanged;
   final Widget? suffixIcon;
@@ -22,6 +23,7 @@ class CommonContainerTextField extends StatelessWidget {
     required this.keyboardType,
     this.hintText,
     this.readOnly = false,
+    this.enabled = true,
     this.onTap,
     this.onChanged,
     this.suffixIcon,

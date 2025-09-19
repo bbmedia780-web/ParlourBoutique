@@ -1,20 +1,22 @@
 import 'package:get/get.dart';
-import '../../utility/global.dart';
-import '../../constants/app_colors.dart';
 import '../../constants/app_strings.dart';
-import 'package:parlour_app/controller/profile_controller/support_ticket_model.dart';
-import 'package:parlour_app/constants/app_strings.dart';
-import 'package:parlour_app/routes/app_routes.dart';
+import '../../routes/app_routes.dart';
+import '../../model/support_ticket_model.dart';
 
 class HelpSupportController extends GetxController {
+  // ---------------- State ----------------
+  /// List of support tickets
   final RxList<SupportTicketModel> supportTickets = <SupportTicketModel>[].obs;
 
+  // ---------------- Lifecycle ----------------
   @override
   void onInit() {
     super.onInit();
     _loadSupportTickets();
   }
 
+  // ---------------- Load Tickets ----------------
+  /// Initialize tickets with sample data
   void _loadSupportTickets() {
     supportTickets.value = [
       SupportTicketModel(
@@ -39,25 +41,27 @@ class HelpSupportController extends GetxController {
         issue: AppStrings.other.tr,
         date: AppStrings.ticketDate14July2025,
         status: AppStrings.ticketStatusResolved,
-        isSelected: true, // This is the selected ticket with blue line
+        isSelected: true, // Pre-selected ticket
       ),
     ];
   }
 
+  // ---------------- Actions ----------------
+  /// Handles user tapping on a ticket to view details
   void onViewTicketTapped(SupportTicketModel ticket) {
-    // Update selection state
+    // Mark only the tapped ticket as selected
     for (int i = 0; i < supportTickets.length; i++) {
       supportTickets[i] = supportTickets[i].copyWith(
         isSelected: supportTickets[i].id == ticket.id,
       );
     }
-    
-    // Navigate to help chat screen
+
+    // Navigate to Help Chat screen
     Get.toNamed(AppRoutes.helpChat);
   }
 
+  /// Handles adding a new support ticket
   void onAddNewTicket() {
-    // Navigate to create new ticket screen
     Get.toNamed(AppRoutes.supportTicketForm);
   }
 }

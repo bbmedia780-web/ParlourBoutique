@@ -1,36 +1,76 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:parlour_app/controller/sign_in_controller.dart';
-import 'dart:async';
 import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
+import '../routes/app_routes.dart';
 import '../services/auth_services.dart';
 import '../utility/global.dart';
 import 'auth_controller.dart';
-import '../routes/app_routes.dart';
+import 'information_controller.dart';
+import 'sign_in_controller.dart';
 
 class OtpVerificationController extends GetxController {
-  final AuthServices authServices = AuthServices();
-  final RxBool isResendEnabled = false.obs;
-  final RxInt resendTimer = 30.obs;
-  final RxBool showError = false.obs;
-  final RxString errorMessage = ''.obs;
-  final RxBool isVerifying = false.obs;
-  final RxBool isResending = false.obs;
+  // ------------------ Services ------------------
+  final _authServices = AuthServices();
+
+  // ------------------ State ------------------
+  final isResendEnabled = false.obs;
+  final resendTimer = 30.obs;
+  final isVerifying = false.obs;
+  final isResending = false.obs;
+
+  final showError = false.obs;
+  final errorMessage = ''.obs;
+
   Timer? _timer;
 
-  final List<TextEditingController> otpControllers = List.generate(6, (index) => TextEditingController());
-  final List<FocusNode> focusNodes = List.generate(6, (index) => FocusNode());
+  // OTP fields
+  final otpControllers =
+  List.generate(6, (_) => TextEditingController(), growable: false);
+  final focusNodes = List.generate(6, (_) => FocusNode(), growable: false);
 
+  // ------------------ Lifecycle ------------------
   @override
   void onInit() {
     super.onInit();
-    startResendTimer();
+    _startResendTimer();
   }
 
-  void startResendTimer() {
+  @override
+  void onClose() {
+    _timer?.cancel();
+    for (final c in otpControllers) {
+      c.dispose();
+    }
+    for (final n in focusNodes) {
+      n.dispose();
+    }
+    super.onClose();
+  }
+
+  // ------------------ OTP Helpers ------------------
+  void clearOtpFields() {
+    for (final c in otpControllers) {
+      c.clear();
+    }
+    for (final n in focusNodes) {
+      n.unfocus();
+    }
+    showError.value = false;
+    errorMessage.value = '';
+    isVerifying.value = false;
+  }
+
+  String get enteredOtp =>
+      otpControllers.map((controller) => controller.text).join();
+
+  // ------------------ Resend OTP ------------------
+  void _startResendTimer() {
     isResendEnabled.value = false;
     resendTimer.value = 30;
+
+    _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (resendTimer.value > 0) {
         resendTimer.value--;
@@ -41,122 +81,109 @@ class OtpVerificationController extends GetxController {
     });
   }
 
-  /// Clear OTP inputs and related state before showing the bottom sheet
-  void clearOtpFields() {
-    print('[OtpVerificationController] 🧹 Clearing OTP input fields');
-    for (final c in otpControllers) {
-      c.text = '';
-    }
-    showError.value = false;
-    errorMessage.value = '';
-    isVerifying.value = false;
-    for (final n in focusNodes) {
-      n.unfocus();
-    }
-  }
-
-  void resendOtp() async {
+  Future<void> resendOtp() async {
     if (!isResendEnabled.value || isResending.value) return;
 
     try {
       isResending.value = true;
-      // Get the SignInController instance
-      final signInController = Get.find<SignInController>();
-      final mobileNumber = signInController.phoneController.text.trim();
 
-      if (mobileNumber.isEmpty) {
-        ShowSnackBar.show(AppStrings.error,AppStrings.mobileNumberMissing,  backgroundColor: AppColors.red);
+      final signInController = Get.find<SignInController>();
+      final mobile = signInController.phoneController.text.trim();
+
+      if (mobile.isEmpty) {
+        ShowSnackBar.show(
+          AppStrings.error,
+          AppStrings.mobileNumberMissing,
+          backgroundColor: AppColors.red,
+        );
         return;
       }
 
-      // Call API to resend OTP
-      final response = await authServices.sendOtp(mobileNumber);
+      final response = await _authServices.sendOtp(mobile);
 
       if (response.success) {
-        ShowSnackBar.show(AppStrings.otpResent,AppStrings.newOtpSent);
-        startResendTimer(); // restart the resend timer
+        ShowSnackBar.show(AppStrings.otpResent, AppStrings.newOtpSent);
+        _startResendTimer();
       } else {
-        ShowSnackBar.show(AppStrings.failed, response.message.isNotEmpty ? response.message : 'Failed to resend OTP', backgroundColor: AppColors.red);
+        _showError(response.message.isNotEmpty
+            ? response.message
+            : AppStrings.failedResendOtp);
       }
     } catch (e) {
-      ShowSnackBar.show(AppStrings.error, e.toString(), backgroundColor: AppColors.red);
+      _showError(e.toString());
     } finally {
       isResending.value = false;
     }
   }
 
-  void continueVerification() async {
+  // ------------------ Verify OTP ------------------
+  Future<void> continueVerification() async {
     if (isVerifying.value) return;
-    String otp = otpControllers.map((controller) => controller.text).join();
+
+    final otp = enteredOtp;
     final mobile = Get.find<SignInController>().phoneController.text.trim();
 
     if (otp.length < 6) {
-      showError.value = true;
-      errorMessage.value = AppStrings.invalidCode;
+      _showError(AppStrings.invalidCode);
       return;
     }
 
     try {
-      // Disable button while verifying
       isVerifying.value = true;
 
-      // Call API
-      final response = await authServices.verifyOtp(mobile, otp);
+      final response = await _authServices.verifyOtp(mobile, otp);
 
       if (response.success && response.data?.verified == true) {
-        ShowSnackBar.show(AppStrings.success,AppStrings.otpVerifiedSuccessfully, backgroundColor: AppColors.green);
+        ShowSnackBar.show(
+          AppStrings.success,
+          AppStrings.otpVerifiedSuccessfully,
+          backgroundColor: AppColors.green,
+        );
 
-
-        // Save all data via AuthController
         final authController = Get.find<AuthController>();
-        final saved = await authController.saveLoginDataFromApi(response.data!);
+        final saved = await authController.login(response.data!);
 
         if (!saved) {
-          ShowSnackBar.show(AppStrings.warning,AppStrings.failedSaveLoginData);
+          ShowSnackBar.show(
+            AppStrings.warning,
+            AppStrings.failedSaveLoginData,
+          );
         }
 
-        await authController.refreshFromPrefs();
+        await authController.refreshTokens();
 
-        // Close bottom sheet
-        Get.back();
+        Get.back(); // close OTP sheet
 
-        // Conditional navigation based on profile completion
+        /// Navigate based on profile completion
         if (response.data?.profileCompleted == true) {
-          // Existing user - navigate to Home Page using Get.offAll() to prevent going back to OTP
+          // Existing user → Home
           Get.offAllNamed(AppRoutes.home);
         } else {
-          // New user - navigate to Information Page using Get.offAll() to clear the navigation stack
-          Get.offAllNamed(AppRoutes.information);
+          // New user → clear old info
+          final infoController = Get.find<InformationController>();
+          infoController.reset(); // <-- add this here
+          Get.offAllNamed(AppRoutes.information); // Navigate to Information Page
         }
+
       } else {
-        showError.value = true;
-        errorMessage.value = response.message.isNotEmpty
+        _showError(response.message.isNotEmpty
             ? response.message
-            : AppStrings.invalidOtp;
-        ShowSnackBar.show(AppStrings.failed, errorMessage.value, backgroundColor: AppColors.red);
+            : AppStrings.invalidOtp);
       }
     } catch (e) {
-      showError.value = true;
-      errorMessage.value = e.toString();
-      ShowSnackBar.show(AppStrings.error, errorMessage.value, backgroundColor: AppColors.red);
+      _showError(e.toString());
     } finally {
       isVerifying.value = false;
     }
   }
 
-  void closeBottomSheet() {
-    Get.back();
-  }
+  // ------------------ Helpers ------------------
+  void closeBottomSheet() => Get.back();
 
-  @override
-  void onClose() {
-    _timer?.cancel();
-    for (var controller in otpControllers) {
-      controller.dispose();
-    }
-    for (var focusNode in focusNodes) {
-      focusNode.dispose();
-    }
-    super.onClose();
+  void _showError(String message) {
+    showError.value = true;
+    errorMessage.value = message;
+    ShowSnackBar.show(AppStrings.failed, message,
+        backgroundColor: AppColors.red);
   }
 }

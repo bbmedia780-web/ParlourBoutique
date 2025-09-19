@@ -7,7 +7,7 @@ import '../../../constants/app_sizes.dart';
 import '../../../constants/app_strings.dart';
 import '../../../constants/app_text_style.dart';
 import '../../../controller/profile_controller/help_support_controller.dart';
-import '../../../controller/profile_controller/support_ticket_model.dart';
+import '../../../model/support_ticket_model.dart';
 
 
 class HelpSupportPageView extends StatelessWidget {

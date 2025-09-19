@@ -1,15 +1,22 @@
 import 'package:get/get.dart';
-import '../../utility/global.dart';
 import '../../constants/app_colors.dart';
+import '../../constants/app_strings.dart';
 import '../../model/language_model.dart';
+import '../../utility/global.dart';
 import '../../utility/localization_service.dart';
 
-
 class LanguageController extends GetxController {
+  // ---------------- State ----------------
+  /// List of available languages
   final RxList<LanguageModel> languages = <LanguageModel>[].obs;
+
+  /// Currently selected language ID
   final RxString selectedLanguageId = 'en'.obs;
+
+  /// Localization service for changing app language
   late LocalizationService localizationService;
 
+  // ---------------- Lifecycle ----------------
   @override
   void onInit() {
     super.onInit();
@@ -17,59 +24,31 @@ class LanguageController extends GetxController {
     _loadLanguages();
   }
 
+  // ---------------- Load Languages ----------------
+  /// Initialize available languages and mark current app language as selected
   void _loadLanguages() {
     final currentLanguageCode = localizationService.currentLanguageCode;
-
-    // Ensure radio group reflects current app language
     selectedLanguageId.value = currentLanguageCode;
-    
+
     languages.value = [
-      LanguageModel(
-        id: 'en',
-        name: 'English',
-        nativeName: 'English',
-        isSelected: currentLanguageCode == 'en',
-      ),
-      LanguageModel(
-        id: 'gu',
-        name: 'Gujarati',
-        nativeName: 'ગુજરાતી',
-        isSelected: currentLanguageCode == 'gu',
-      ),
-      LanguageModel(
-        id: 'hi',
-        name: 'Hindi',
-        nativeName: 'हिन्दी',
-        isSelected: currentLanguageCode == 'hi',
-      ),
-      LanguageModel(
-        id: 'mr',
-        name: 'Marathi',
-        nativeName: 'મરાઠી',
-        isSelected: currentLanguageCode == 'mr',
-      ),
-      LanguageModel(
-        id: 'pa',
-        name: 'Punjabi',
-        nativeName: 'ਪੰਜਾਬੀ',
-        isSelected: currentLanguageCode == 'pa',
-      ),
-      LanguageModel(
-        id: 'ur',
-        name: 'Urdu',
-        nativeName: 'اردو',
-        isSelected: currentLanguageCode == 'ur',
-      ),
+      LanguageModel(id: 'en', name: 'English', nativeName: 'English', isSelected: currentLanguageCode == 'en'),
+      LanguageModel(id: 'gu', name: 'Gujarati', nativeName: 'ગુજરાતી', isSelected: currentLanguageCode == 'gu'),
+      LanguageModel(id: 'hi', name: 'Hindi', nativeName: 'हिन्दी', isSelected: currentLanguageCode == 'hi'),
+      LanguageModel(id: 'mr', name: 'Marathi', nativeName: 'मरााठी', isSelected: currentLanguageCode == 'mr'),
+      LanguageModel(id: 'pa', name: 'Punjabi', nativeName: 'ਪੰਜਾਬੀ', isSelected: currentLanguageCode == 'pa'),
+      LanguageModel(id: 'ur', name: 'Urdu', nativeName: 'اردو', isSelected: currentLanguageCode == 'ur'),
     ];
   }
 
+  // ---------------- Actions ----------------
+  /// Select a language by its ID
   void selectLanguage(String languageId) {
-    // Update all languages to unselected
+    // Unselect all languages first
     for (int i = 0; i < languages.length; i++) {
       languages[i] = languages[i].copyWith(isSelected: false);
     }
 
-    // Find and select the chosen language
+    // Mark chosen language as selected
     final index = languages.indexWhere((lang) => lang.id == languageId);
     if (index != -1) {
       languages[index] = languages[index].copyWith(isSelected: true);
@@ -77,27 +56,36 @@ class LanguageController extends GetxController {
     }
   }
 
+  /// Save the selected language and update the app locale
   void saveLanguage() async {
     try {
-      // Get the selected language locale
       final selectedLanguage = languages.firstWhere((lang) => lang.isSelected);
       final locale = localizationService.getLocaleByLanguageCode(selectedLanguage.id);
-      
-      // Change the app language
+
+      // Change app language
       await localizationService.changeLanguage(locale);
 
-      // Ensure controller state matches saved locale
+      // Update controller state
       selectedLanguageId.value = selectedLanguage.id;
-      
-      ShowSnackBar.show('language_changed'.tr, 'language_updated'.tr, backgroundColor: AppColors.primary);
-      
-      // Navigate back
-      Get.back();
+
+
+      ShowSnackBar.show(
+        'language_changed'.tr,
+        'language_updated'.tr,
+        backgroundColor: AppColors.primary,
+      );
+
+      Get.back(); // Navigate back
     } catch (e) {
-      ShowSnackBar.show('error'.tr, 'Something went wrong', backgroundColor: AppColors.red);
+      ShowSnackBar.show(
+        AppStrings.error.tr,
+        AppStrings.somethingWentWrong,
+        backgroundColor: AppColors.red,
+      );
     }
   }
 
+  /// Get the currently selected language model
   LanguageModel? getSelectedLanguage() {
     try {
       return languages.firstWhere((lang) => lang.isSelected);

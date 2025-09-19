@@ -6,9 +6,11 @@ import '../../model/support_ticket_form_model.dart';
 import '../../constants/app_strings.dart';
 
 class SupportTicketFormController extends GetxController {
-  final TextEditingController subjectController = TextEditingController();
-  final TextEditingController descriptionController = TextEditingController();
-  
+  // -------------------- Text Controllers --------------------
+  final subjectController = TextEditingController();
+  final descriptionController = TextEditingController();
+
+  // -------------------- Reactive Data --------------------
   final Rx<SupportTicketFormModel> formData = SupportTicketFormModel(
     category: AppStrings.appointmentIssue.tr,
     subject: AppStrings.defaultSubject.tr,
@@ -18,6 +20,7 @@ class SupportTicketFormController extends GetxController {
   final RxBool isCategoryDropdownOpen = false.obs;
   final RxString selectedCategory = AppStrings.appointmentIssue.obs;
 
+  // -------------------- Available Categories --------------------
   final List<String> categories = [
     AppStrings.categoryParlourServices,
     AppStrings.categoryBoutiqueOrders,
@@ -26,6 +29,7 @@ class SupportTicketFormController extends GetxController {
     AppStrings.other,
   ];
 
+  // -------------------- Lifecycle --------------------
   @override
   void onInit() {
     super.onInit();
@@ -37,6 +41,14 @@ class SupportTicketFormController extends GetxController {
     descriptionController.text = formData.value.description;
   }
 
+  @override
+  void onClose() {
+    subjectController.dispose();
+    descriptionController.dispose();
+    super.onClose();
+  }
+
+  // -------------------- Category Handling --------------------
   void toggleCategoryDropdown() {
     isCategoryDropdownOpen.value = !isCategoryDropdownOpen.value;
   }
@@ -47,6 +59,7 @@ class SupportTicketFormController extends GetxController {
     isCategoryDropdownOpen.value = false;
   }
 
+  // -------------------- Form Updates --------------------
   void updateSubject(String subject) {
     formData.value = formData.value.copyWith(subject: subject);
   }
@@ -55,30 +68,36 @@ class SupportTicketFormController extends GetxController {
     formData.value = formData.value.copyWith(description: description);
   }
 
+  // -------------------- Form Submission --------------------
   void submitTicket() {
-    // Validate form
+    // Validate subject
     if (formData.value.subject.trim().isEmpty) {
-      ShowSnackBar.show(AppStrings.error.tr, AppStrings.errorPleaseEnterSubject.tr, backgroundColor: AppColors.red);
+      ShowSnackBar.show(
+        AppStrings.error.tr,
+        AppStrings.errorPleaseEnterSubject.tr,
+        backgroundColor: AppColors.red,
+      );
       return;
     }
 
+    // Validate description
     if (formData.value.description.trim().isEmpty) {
-      ShowSnackBar.show(AppStrings.error.tr, AppStrings.errorPleaseEnterDescription.tr, backgroundColor: AppColors.red);
+      ShowSnackBar.show(
+        AppStrings.error.tr,
+        AppStrings.errorPleaseEnterDescription.tr,
+        backgroundColor: AppColors.red,
+      );
       return;
     }
 
-    // Submit the ticket
-    ShowSnackBar.show(AppStrings.success.tr, AppStrings.successTicketSubmitted.tr, backgroundColor: AppColors.green);
+    // Show success message
+    ShowSnackBar.show(
+      AppStrings.success.tr,
+      AppStrings.successTicketSubmitted.tr,
+      backgroundColor: AppColors.green,
+    );
 
-    // Navigate back to help support screen
+    // Navigate back to help & support screen
     Get.back();
   }
-
-  @override
-  void onClose() {
-    subjectController.dispose();
-    descriptionController.dispose();
-    super.onClose();
-  }
 }
-

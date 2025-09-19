@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parlour_app/view/screen/profile_screen/profile_page_screen.dart';
 import 'package:parlour_app/view/screen/reels_page_screen.dart';
-import '../../controller/main_navigation_controller.dart';
+import '../../controller/home_controller/main_navigation_controller.dart';
 import '../../common/custom_bottom_navigation_bar.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
 import 'category_page_screen.dart';
 import 'home_page_screen.dart';
 
-
 class MainNavigationScreen extends StatelessWidget {
   MainNavigationScreen({super.key});
 
-  final MainNavigationController controller = Get.find<MainNavigationController>();
+  final MainNavigationController controller =
+  Get.put(MainNavigationController(), permanent: true);
 
   final List<Widget> _screens = [
     HomeScreen(),
     CategoryScreen(),
-    Container(), // Placeholder for center button (index 2)
+    Container(),
     ReelsScreen(),
     ProfileScreen(),
   ];
@@ -30,36 +30,35 @@ class MainNavigationScreen extends StatelessWidget {
       extendBody: true,
       body: Obx(() {
         int selectedIndex = controller.selectedBottomBarIndex.value;
-        
-        // Map bottom nav indices to screen indices
+
         int screenIndex;
         switch (selectedIndex) {
-          case 0: // Home
+          case 0:
             screenIndex = 0;
             break;
-          case 1: // Category
+          case 1:
             screenIndex = 1;
             break;
-          case 2: // Center button (Add)
-            screenIndex = 0; // Stay on current screen (home)
+          case 2:
+            screenIndex = 0;
             break;
-          case 3: // Reels
+          case 3:
             screenIndex = 2;
             break;
-          case 4: // Profile
+          case 4:
             screenIndex = 3;
             break;
           default:
             screenIndex = 0;
         }
-        
+
         return IndexedStack(
           index: screenIndex,
           children: [
-            _screens[0], // Home
-            _screens[1], // Category
-            _screens[3], // Reels
-            _screens[4], // Profile
+            _screens[0],
+            _screens[1],
+            _screens[3],
+            _screens[4],
           ],
         );
       }),
@@ -89,7 +88,7 @@ class MainNavigationScreen extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Obx(
-        () => CustomBottomNavigationBar(
+            () => CustomBottomNavigationBar(
           selectedIndex: controller.selectedBottomBarIndex.value,
           onItemTapped: controller.onBottomNavItemTapped,
         ),

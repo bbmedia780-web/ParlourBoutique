@@ -1,16 +1,24 @@
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../constants/app_strings.dart';
-import '../../model/payment_history_model.dart';
 import '../../constants/app_assets.dart';
-
+import '../../model/payment_history_model.dart';
 
 class PaymentHistoryController extends GetxController {
-  RxList<PaymentHistoryModel> allPayments = <PaymentHistoryModel>[].obs;
-  RxList<PaymentHistoryModel> filteredPayments = <PaymentHistoryModel>[].obs;
-  RxString searchQuery = ''.obs;
+  // ---------------- State ----------------
+  /// All payment history records
+  final RxList<PaymentHistoryModel> allPayments = <PaymentHistoryModel>[].obs;
+
+  /// Filtered payments based on search
+  final RxList<PaymentHistoryModel> filteredPayments = <PaymentHistoryModel>[].obs;
+
+  /// Current search query
+  final RxString searchQuery = ''.obs;
+
+  /// Controller for search input field
   late TextEditingController searchController;
 
+  // ---------------- Lifecycle ----------------
   @override
   void onInit() {
     super.onInit();
@@ -18,10 +26,17 @@ class PaymentHistoryController extends GetxController {
     _loadPaymentHistory();
   }
 
+  @override
+  void onClose() {
+    searchController.dispose();
+    super.onClose();
+  }
+
+  // ---------------- Load Data ----------------
+  /// Load mock payment history (replace with API call if needed)
   void _loadPaymentHistory() {
-    // Mock data based on the screenshot
     allPayments.value = [
-      // Today's transactions
+      // Today
       PaymentHistoryModel(
         id: '1',
         businessName: AppStrings.velvaBeautyBar,
@@ -49,8 +64,7 @@ class PaymentHistoryController extends GetxController {
         isCredit: false,
         groupDate: AppStrings.today,
       ),
-      
-      // Friday, 13 Jun, 2025 transactions
+      // Friday, 13 Jun, 2025
       PaymentHistoryModel(
         id: '4',
         businessName: AppStrings.vivahVibes,
@@ -78,8 +92,7 @@ class PaymentHistoryController extends GetxController {
         isCredit: true,
         groupDate: AppStrings.friday13Jun2025,
       ),
-      
-      // Monday, 9 Jun, 2025 transactions
+      // Monday, 9 Jun, 2025
       PaymentHistoryModel(
         id: '7',
         businessName: AppStrings.roopSaaj,
@@ -108,39 +121,34 @@ class PaymentHistoryController extends GetxController {
         groupDate: AppStrings.monday9Jun2025,
       ),
     ];
-    
+
+    // Initialize filtered list
     filteredPayments.value = allPayments;
   }
 
+  // ---------------- Search ----------------
+  /// Filter payments based on search query
   void onSearchChanged(String query) {
     searchQuery.value = query;
+
     if (query.isEmpty) {
       filteredPayments.value = allPayments;
     } else {
       filteredPayments.value = allPayments
-          .where((payment) => payment.businessName
-              .toLowerCase()
-              .contains(query.toLowerCase()))
+          .where((payment) => payment.businessName.toLowerCase().contains(query.toLowerCase()))
           .toList();
     }
   }
 
+  // ---------------- Grouping ----------------
+  /// Get all unique group dates from filtered payments
   List<String> getGroupDates() {
-    return filteredPayments
-        .map((payment) => payment.groupDate)
-        .toSet()
-        .toList();
+    return filteredPayments.map((payment) => payment.groupDate).toSet().toList();
   }
 
+  /// Get all payments for a specific group date
   List<PaymentHistoryModel> getPaymentsByGroup(String groupDate) {
-    return filteredPayments
-        .where((payment) => payment.groupDate == groupDate)
-        .toList();
-  }
-
-  @override
-  void onClose() {
-    searchController.dispose();
-    super.onClose();
+    return filteredPayments.where((payment) => payment.groupDate == groupDate).toList();
   }
 }
+

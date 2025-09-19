@@ -1,35 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../utility/global.dart';
-import '../../constants/app_colors.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../constants/app_colors.dart';
 import '../../constants/app_strings.dart';
+import '../../utility/global.dart';
+import '../auth_controller.dart';
+
 
 class AccountInformationController extends GetxController {
+  // -------------------- TextEditingControllers --------------------
   final fullNameController = TextEditingController();
   final emailController = TextEditingController();
   final dateOfBirthController = TextEditingController();
 
-  final Rx<DateTime?> selectedDate =  DateTime.now().obs;
-  final RxString selectedImagePath = ''.obs;
+  // -------------------- Rx Variables --------------------
+  final RxString selectedGender = ''.obs;
+  final Rx<DateTime?> selectedDate = DateTime.now().obs;
+  final RxBool isSubmitting = false.obs;
+  final RxString selectedImagePath = ''.obs; // Profile image path
 
+  // Image picker instance
   final ImagePicker _picker = ImagePicker();
 
+  // -------------------- Lifecycle --------------------
   @override
   void onInit() {
     super.onInit();
-    dateOfBirthController.text = formatDate(selectedDate.value!);
+    _bindUserData();
   }
 
+  @override
+  void onClose() {
+    fullNameController.dispose();
+    emailController.dispose();
+    dateOfBirthController.dispose();
+    super.onClose();
+  }
+
+  // -------------------- User Data Binding --------------------
+  void _bindUserData() {
+    final auth = Get.find<AuthController>();
+
+    // Bind text fields to AuthController Rx variables
+    ever(auth.userName, (_) => fullNameController.text = auth.userName.value);
+    ever(auth.userEmail, (_) => emailController.text = auth.userEmail.value);
+    ever(auth.userDob, (_) {
+      dateOfBirthController.text =
+      auth.userDob.isNotEmpty ? auth.userDob.value : formatDate(DateTime.now());
+    });
+    ever(auth.userGender, (_) => selectedGender.value = auth.userGender.value);
+
+    // Initial load (in case values are already available)
+    fullNameController.text = auth.userName.value;
+    emailController.text = auth.userEmail.value;
+    dateOfBirthController.text =
+    auth.userDob.isNotEmpty ? auth.userDob.value : formatDate(DateTime.now());
+    selectedGender.value = auth.userGender.value;
+  }
+
+  // -------------------- Image Picker Methods --------------------
   void changePhoto() {
     Get.bottomSheet(
       Container(
         decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -66,80 +101,31 @@ class AccountInformationController extends GetxController {
     );
   }
 
-  String formatDate(DateTime date) {
-    return "${date.day.toString().padLeft(2,'0')}-${date.month.toString().padLeft(2,'0')}-${date.year}";
-  }
-
-  void selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate.value ?? DateTime.now(),
-      firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            colorScheme: const ColorScheme.light(
-              primary: AppColors.primary,
-              onPrimary: Colors.white,
-              onSurface: AppColors.black,
-            ),
-            textButtonTheme: TextButtonThemeData(
-              style: TextButton.styleFrom(
-                foregroundColor: AppColors.primary,
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    if (picked != null && picked != selectedDate.value) {
-      selectedDate.value = picked;
-      dateOfBirthController.text = formatDate(picked);  // Update displayed date
-    }
-  }
-
-
   Future<void> pickImageFromGallery() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      selectedImagePath.value = image.path;
-    }
+    if (image != null) selectedImagePath.value = image.path;
   }
 
   Future<void> pickImageFromCamera() async {
     final XFile? image = await _picker.pickImage(source: ImageSource.camera);
-    if (image != null) {
-      selectedImagePath.value = image.path;
-    }
+    if (image != null) selectedImagePath.value = image.path;
   }
 
-  void saveAccountInformation() {
-    // Validate form
-    if (fullNameController.text.trim().isEmpty) {
-      ShowSnackBar.show(AppStrings.error, AppStrings.pleaseEnterFullName, backgroundColor: AppColors.red);
-      return;
-    }
 
-    if (emailController.text.trim().isEmpty) {
-      ShowSnackBar.show(AppStrings.error, AppStrings.pleaseEnterEmail, backgroundColor: AppColors.red);
-      return;
-    }
-
-    // Here you would typically save to backend/database
-    ShowSnackBar.show(AppStrings.success, AppStrings.informationSavedSuccessfully, backgroundColor: AppColors.green);
-
-    // Navigate back
-    Get.back();
+  // -------------------- Save Info --------------------
+  void saveInformation() {
+    ShowSnackBar.show(
+      AppStrings.success,
+      AppStrings.informationUpToDate,
+      backgroundColor: AppColors.green,
+    );
   }
 
-  @override
-  void onClose() {
-    fullNameController.dispose();
-    emailController.dispose();
-    dateOfBirthController.dispose();
-    super.onClose();
+  // -------------------- Helper --------------------
+  String formatDate(DateTime date) {
+    return "${date.day.toString().padLeft(2, '0')}-"
+        "${date.month.toString().padLeft(2, '0')}-"
+        "${date.year}";
   }
 }
+

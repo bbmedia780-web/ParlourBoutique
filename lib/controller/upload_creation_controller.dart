@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../utility/global.dart';
 import '../constants/app_strings.dart';
 import '../constants/app_colors.dart';
-import 'package:parlour_app/controller/reels_controller.dart';
+import 'package:parlour_app/controller/home_controller/reels_controller.dart';
 import '../../model/reels_model.dart';
 import 'video_editor_controller.dart';
 import 'overlay_controller.dart';

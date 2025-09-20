@@ -25,6 +25,7 @@ import '../controller/upload_creation_controller.dart';
 import '../view/screen/information_page_screen.dart';
 import '../view/screen/splash_screen.dart';
 import '../controller/auth_controller/splash_controller.dart';
+import '../binding/main_navigation_binding.dart';
 
 
 
@@ -67,7 +68,12 @@ class AppRoutes {
     ),
     GetPage(name: welcome, page: () => WelcomeScreen(), transition: Transition.cupertino),
     GetPage(name: signIn, page: () => SignInScreen(), transition: Transition.cupertino),
-    GetPage(name: home, page: () => MainNavigationScreen(), transition: Transition.cupertino),
+    GetPage(
+      name: home, 
+      page: () => MainNavigationScreen(), 
+      binding: MainNavigationBinding(),
+      transition: Transition.cupertino,
+    ),
     GetPage(name: popularSeeAll, page: () => PopularSeeAllScreen(), transition: Transition.cupertino),
     GetPage(name: details, page: () => DetailsScreen(), binding: BindingsBuilder(() {Get.put(DetailsController());}),
       transition: Transition.cupertino,

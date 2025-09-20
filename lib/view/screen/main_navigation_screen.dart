@@ -12,8 +12,7 @@ import 'home_page_screen.dart';
 class MainNavigationScreen extends StatelessWidget {
   MainNavigationScreen({super.key});
 
-  final MainNavigationController controller =
-  Get.put(MainNavigationController(), permanent: true);
+  final MainNavigationController controller = Get.find<MainNavigationController>();
 
   final List<Widget> _screens = [
     HomeScreen(),

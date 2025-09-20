@@ -42,7 +42,6 @@ class AppBinding extends Bindings {
 
     // Other global controllers
     Get.put(FavouriteController(), permanent: true);
-    Get.put(MainNavigationController(), permanent: true);
     Get.put(HomeController(), permanent: true);
     Get.put(WelcomeController(), permanent: true);
     Get.put(SignInController(), permanent: true);

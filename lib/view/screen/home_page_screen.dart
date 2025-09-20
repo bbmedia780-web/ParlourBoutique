@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
               floating: false,
               expandedHeight: AppSizes.size380,
               flexibleSpace: FlexibleSpaceBar(
-                background: _buildHeaderSection(),
+                background: _buildHeaderSection(context),
               ),
             ),
             SliverPadding(
@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
             // Floating Search Bar
             Obx(() => controller.showFloatingSearchBar.value
               ? Positioned(
-                top: 0,
+                top: MediaQuery.of(context).padding.top,
                 left: 0,
                 right: 0,
                 child: Container(
@@ -85,7 +85,7 @@ class HomeScreen extends StatelessWidget {
       );
   }
 
-  Widget _buildHeaderSection() {
+  Widget _buildHeaderSection(BuildContext context) {
     return SizedBox(
       height: AppSizes.size380,
       child: Stack(
@@ -134,10 +134,10 @@ class HomeScreen extends StatelessWidget {
             child: Image.asset(AppAssets.bubble, height: AppSizes.spacing14),
           ),
           Padding(
-            padding: const EdgeInsets.only(
+            padding: EdgeInsets.only(
               left: AppSizes.spacing20,
               right: AppSizes.spacing20,
-              top: AppSizes.spacing40,
+              top: MediaQuery.of(context).padding.top + AppSizes.spacing6,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -113,12 +113,11 @@ class AccountInformationController extends GetxController {
 
 
   // -------------------- Save Info --------------------
+
   void saveInformation() {
-    ShowSnackBar.show(
-      AppStrings.success,
-      AppStrings.informationUpToDate,
-      backgroundColor: AppColors.green,
-    );
+   Future.delayed(const Duration(seconds: 2), () {
+     Get.back();
+   });
   }
 
   // -------------------- Helper --------------------

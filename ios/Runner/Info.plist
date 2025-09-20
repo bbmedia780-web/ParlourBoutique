@@ -45,5 +45,19 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>com.apple.security.files.user-selected.read-only</key>
+    <true/>
+    <key>NSCameraUsageDescription</key>
+    <string>This app requires camera access to take photos.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app requires microphone access to record audio.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This app requires photo library access to select and upload photos.</string>
+    <!-- Location permission (required by Geolocator) -->
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs your location to show nearby parlours and boutiques.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>This app needs your location in the background for better service recommendations.</string>
+
 </dict>
 </plist>

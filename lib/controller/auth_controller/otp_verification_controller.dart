@@ -1,14 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_strings.dart';
-import '../routes/app_routes.dart';
-import '../services/auth_services.dart';
-import '../utility/global.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_strings.dart';
+import '../../routes/app_routes.dart';
+import '../../services/auth_services.dart';
+import '../../utility/global.dart';
 import 'auth_controller.dart';
 import 'information_controller.dart';
 import 'sign_in_controller.dart';
+import '../../controller/unified_booking_controller.dart';
 
 class OtpVerificationController extends GetxController {
   // ------------------ Services ------------------
@@ -154,6 +155,12 @@ class OtpVerificationController extends GetxController {
 
         Get.back(); // close OTP sheet
 
+        // Check if there's a pending booking after login
+        if (_hasPendingBooking()) {
+          _handleReturnToBooking();
+          return;
+        }
+
         /// Navigate based on profile completion
         if (response.data?.profileCompleted == true) {
           // Existing user → Home
@@ -185,5 +192,41 @@ class OtpVerificationController extends GetxController {
     errorMessage.value = message;
     ShowSnackBar.show(AppStrings.failed, message,
         backgroundColor: AppColors.red);
+  }
+
+  /// Check if there's a pending booking waiting for login
+  bool _hasPendingBooking() {
+    try {
+      Get.find<Map<String, dynamic>>(tag: 'pending_booking');
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /// Handle return to booking flow after successful login
+  void _handleReturnToBooking() {
+    try {
+      final bookingData = Get.find<Map<String, dynamic>>(tag: 'pending_booking');
+      
+      if (bookingData['returnFromLogin'] == true) {
+        // Navigate back to unified booking with the stored data
+        Get.offAllNamed(AppRoutes.unifiedBooking, arguments: bookingData);
+        
+        // Show success message
+        ShowSnackBar.show(
+          'Welcome Back!',
+          'You can now confirm your payment',
+          backgroundColor: AppColors.green,
+        );
+        
+        // Clean up the stored data
+        Get.delete<Map<String, dynamic>>(tag: 'pending_booking');
+      }
+    } catch (e) {
+      // If there's an error, just go to home
+      Get.offAllNamed(AppRoutes.home);
+      print('Error handling return to booking: $e');
+    }
   }
 }

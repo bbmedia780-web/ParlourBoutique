@@ -61,7 +61,7 @@ class BaseApi {
 
 import 'package:dio/dio.dart';
 import '../../config/api_config.dart';
-import '../controller/auth_controller.dart';
+import '../controller/auth_controller/auth_controller.dart';
 import 'package:get/get.dart' hide Response;
 
 class BaseApi {

@@ -9,7 +9,7 @@ import '../../../constants/app_strings.dart';
 import '../../../constants/app_text_style.dart';
 import 'dart:io';
 
-import '../../../controller/auth_controller.dart';
+import '../../../controller/auth_controller/auth_controller.dart';
 import '../../../controller/profile_controller/account_information_controller.dart';
 
 class AccountInformationPageView extends StatelessWidget {

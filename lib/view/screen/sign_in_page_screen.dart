@@ -7,7 +7,7 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_strings.dart';
 import '../../constants/app_text_style.dart';
-import '../../controller/sign_in_controller.dart';
+import '../../controller/auth_controller/sign_in_controller.dart';
 import '../../utility/global.dart';
 import '../widget/social_button_widget.dart';
 import 'package:flutter/services.dart';

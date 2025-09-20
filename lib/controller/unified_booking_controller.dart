@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:parlour_app/utility/global.dart';
+import '../constants/app_colors.dart';
 import '../model/booking_service_model.dart';
 import '../model/payment_method_model.dart';
 import '../model/details_model.dart';
 import '../constants/app_strings.dart';
 import '../constants/app_assets.dart';
+import '../controller/auth_controller/auth_controller.dart';
+import '../routes/app_routes.dart';
 
 class UnifiedBookingController extends GetxController {
   late BookingServiceModel service;
@@ -35,7 +39,11 @@ class UnifiedBookingController extends GetxController {
   void onInit() {
     super.onInit();
     final args = Get.arguments;
-    if (args is BookingServiceModel) {
+    
+    // Check if this is a return from login with stored booking data
+    if (args is Map && args['returnFromLogin'] == true) {
+      _restoreBookingStateFromArgs(Map<String, dynamic>.from(args));
+    } else if (args is BookingServiceModel) {
       service = args;
     } else if (args is ServiceCategoryModel) {
       // Convert ServiceCategoryModel to BookingServiceModel
@@ -66,6 +74,26 @@ class UnifiedBookingController extends GetxController {
     
     // Initialize payment methods
     _initializePaymentMethods();
+  }
+  
+  /// Restore booking state from arguments when returning from login
+  void _restoreBookingStateFromArgs(Map<String, dynamic> args) {
+    service = args['service'] as BookingServiceModel;
+    selectedDate.value = args['selectedDate'] as String;
+    selectedTime.value = args['selectedTime'] as String;
+    selectedLocation.value = args['selectedLocation'] as String;
+    selectedPaymentId.value = args['selectedPaymentId'] as String;
+    
+    // Update text controllers
+    dateController.text = selectedDate.value;
+    timeController.text = selectedTime.value;
+    
+    // Update location selection
+    isHomeServiceSelected.value = selectedLocation.value == AppStrings.homeService;
+    isParlourServiceSelected.value = selectedLocation.value == AppStrings.parlourService;
+    
+    // Set current step to payment step (step 1) since user was trying to confirm payment
+    currentStep.value = 1;
   }
   
   void _initializePaymentMethods() {
@@ -181,8 +209,71 @@ class UnifiedBookingController extends GetxController {
     }
   }
   
-  void onConfirmPayment() {
+  void onConfirmPayment() async {
+    // Check if user is logged in
+    final authController = Get.find<AuthController>();
+    
+    if (!authController.isLoggedIn.value) {
+      // User is not logged in, redirect to login screen
+      // Store current booking state for returning after login
+      _storeBookingStateForReturn();
+      
+      // Navigate to login screen
+      Get.toNamed(AppRoutes.signIn);
+      ShowSnackBar.show(AppStrings.loginRequired, AppStrings.pleaseLogin,backgroundColor: AppColors.red);
+      return;
+    }
+    
+    // User is logged in, proceed with payment confirmation
     currentStep.value = 2; // Move to final step
+  }
+  
+  /// Store current booking state so user can return after login
+  void _storeBookingStateForReturn() {
+    // Store the current booking data in GetX arguments for returning after login
+    final bookingData = {
+      'service': service,
+      'selectedDate': selectedDate.value,
+      'selectedTime': selectedTime.value,
+      'selectedLocation': selectedLocation.value,
+      'selectedPaymentId': selectedPaymentId.value,
+      'returnFromLogin': true, // Flag to indicate this is a return from login
+    };
+    
+    // Store in GetX storage for access after login
+    Get.put(bookingData, tag: 'pending_booking');
+  }
+  
+  /// Restore booking state after successful login
+  void restoreBookingStateAfterLogin() {
+    try {
+      final bookingData = Get.find<Map<String, dynamic>>(tag: 'pending_booking');
+      if (bookingData['returnFromLogin'] == true) {
+        // Restore the booking state
+        service = bookingData['service'] as BookingServiceModel;
+        selectedDate.value = bookingData['selectedDate'] as String;
+        selectedTime.value = bookingData['selectedTime'] as String;
+        selectedLocation.value = bookingData['selectedLocation'] as String;
+        selectedPaymentId.value = bookingData['selectedPaymentId'] as String;
+        
+        // Update text controllers
+        dateController.text = selectedDate.value;
+        timeController.text = selectedTime.value;
+        
+        // Update location selection
+        isHomeServiceSelected.value = selectedLocation.value == AppStrings.homeService;
+        isParlourServiceSelected.value = selectedLocation.value == AppStrings.parlourService;
+        
+        // Navigate back to unified booking page
+        Get.toNamed(AppRoutes.unifiedBooking, arguments: bookingData);
+        
+        // Clean up the stored data
+        Get.delete<Map<String, dynamic>>(tag: 'pending_booking');
+      }
+    } catch (e) {
+      // No pending booking data found, this is normal for new users
+      print('No pending booking data found: $e');
+    }
   }
   
   // Step 3 methods

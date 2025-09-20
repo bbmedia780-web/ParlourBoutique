@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../constants/app_assets.dart';
-import '../../../controller/welcome_controller.dart';
+import '../../controller/auth_controller/welcome_controller.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_strings.dart';
 import '../widget/welcome_buttons_widget.dart';

@@ -285,6 +285,9 @@ class AppStrings {
   static const invalidOtp = "Invalid otp";
   static const failedOtp = "Failed to send OTP";
   static const failedResendOtp = "Failed to resend OTP";
+  static const loginRequired = "Login Required";
+  static const pleaseLogin = "Please login before confirming your payment.";
+
 
   // Mobile Number Validation Messages
   static const mobileNumberRequired = "Please enter your mobile number";

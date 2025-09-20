@@ -327,13 +327,13 @@ class AuthController extends GetxController {
 
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../services/auth_services.dart';
-import '../utility/shared_prefs_util.dart';
-import '../routes/app_routes.dart';
-import '../model/auth/auth_verify_response.dart';
-import '../constants/app_strings.dart';
-import '../constants/app_colors.dart';
-import '../utility/global.dart';
+import '../../services/auth_services.dart';
+import '../../utility/shared_prefs_util.dart';
+import '../../routes/app_routes.dart';
+import '../../model/auth/auth_verify_response.dart';
+import '../../constants/app_strings.dart';
+import '../../constants/app_colors.dart';
+import '../../utility/global.dart';
 import 'sign_in_controller.dart';
 
 class AuthController extends GetxController {

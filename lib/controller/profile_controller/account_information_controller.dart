@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_strings.dart';
 import '../../utility/global.dart';
-import '../auth_controller.dart';
+import '../auth_controller/auth_controller.dart';
 
 
 class AccountInformationController extends GetxController {

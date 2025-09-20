@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_strings.dart';
-import '../services/auth_services.dart';
-import '../utility/global.dart';
-import '../view/bottomsheet/otp_verification_bottom_sheet.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_strings.dart';
+import '../../services/auth_services.dart';
+import '../../utility/global.dart';
+import '../../view/bottomsheet/otp_verification_bottom_sheet.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'otp_verification_controller.dart';
 

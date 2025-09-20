@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../routes/app_routes.dart';
+
 class WelcomeController extends GetxController {
   var currentPage = 0.obs;
 
@@ -21,6 +23,10 @@ class WelcomeController extends GetxController {
 
   void skipToEnd(PageController controller, int pageCount) {
     controller.jumpToPage(pageCount - 1);
+  }
+
+  void onGetStarted(){
+    Get.offAllNamed(AppRoutes.home);
   }
 }
 

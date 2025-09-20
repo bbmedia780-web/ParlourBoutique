@@ -7,7 +7,7 @@ import '../../constants/app_sizes.dart';
 import '../../constants/app_strings.dart';
 import '../../common/common_button.dart';
 import '../../constants/app_text_style.dart';
-import '../../controller/information_controller.dart';
+import '../../controller/auth_controller/information_controller.dart';
 
 class InformationScreen extends StatelessWidget {
   InformationScreen({super.key});

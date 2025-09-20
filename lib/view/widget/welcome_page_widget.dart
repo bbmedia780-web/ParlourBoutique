@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_text_style.dart';
-import '../../controller/welcome_controller.dart';
+import '../../controller/auth_controller/welcome_controller.dart';
 
 class WelcomePageWidget extends StatelessWidget {
   final String imagePath;

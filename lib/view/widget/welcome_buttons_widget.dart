@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../constants/app_sizes.dart';
 import '../../../constants/app_strings.dart';
-import '../../../controller/welcome_controller.dart';
+import '../../controller/auth_controller/welcome_controller.dart';
 import '../../common/common_button.dart';
 import '../../constants/app_text_style.dart';
 import '../../routes/app_routes.dart';
@@ -35,7 +35,8 @@ class WelcomeButtonsWidget extends StatelessWidget {
                   text: AppStrings.getStarted,
                   textStyle: AppTextStyles.buttonText,
                   width: double.infinity,
-                  onPressed: () => Get.offAllNamed(AppRoutes.signIn),
+                  //onPressed: () => Get.offAllNamed(AppRoutes.signIn),
+                  onPressed: welcomeController.onGetStarted, // ✅ controller logic
                 ).paddingOnly(right: AppSizes.size70,left: AppSizes.size70
                 ),
               ),

@@ -5,7 +5,7 @@ import '../api/base_api.dart';
 import '../config/api_config.dart';
 import '../model/auth/auth_verify_response.dart';
 import 'package:get/get.dart';
-import '../controller/auth_controller.dart';
+import '../controller/auth_controller/auth_controller.dart';
 import '../utility/global.dart';
 
 class AuthServices extends BaseApi {

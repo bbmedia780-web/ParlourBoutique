@@ -7,7 +7,7 @@ import '../../constants/app_sizes.dart';
 import '../../constants/app_strings.dart';
 import '../../common/common_button.dart';
 import '../../constants/app_text_style.dart';
-import '../../controller/otp_verification_controller.dart';
+import '../../controller/auth_controller/otp_verification_controller.dart';
 
 class OtpVerificationBottomSheet extends StatelessWidget {
   OtpVerificationBottomSheet({super.key});

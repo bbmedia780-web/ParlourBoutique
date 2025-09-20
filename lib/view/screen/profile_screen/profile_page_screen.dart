@@ -6,7 +6,7 @@ import '../../../constants/app_sizes.dart';
 import '../../../constants/app_text_style.dart';
 import '../../../constants/app_strings.dart';
 import '../../../controller/profile_controller/profile_controller.dart';
-import '../../../controller/auth_controller.dart';
+import '../../../controller/auth_controller/auth_controller.dart';
 import '../../../utility/global.dart';
 
 class ProfileScreen extends StatelessWidget {

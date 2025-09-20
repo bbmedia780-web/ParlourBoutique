@@ -130,6 +130,7 @@ class ServiceDetailsBottomSheet extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(width: AppSizes.spacing8),
+
                   GestureDetector(
                     onTap: onFavorite,
                     child: Container(

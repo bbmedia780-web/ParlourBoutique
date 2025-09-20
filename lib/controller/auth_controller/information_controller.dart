@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../constants/app_text_style.dart';
-import '../services/auth_services.dart';
-import '../constants/app_strings.dart';
-import '../constants/app_colors.dart';
-import '../constants/app_sizes.dart';
-import '../routes/app_routes.dart';
-import '../utility/global.dart';
+import '../../constants/app_text_style.dart';
+import '../../services/auth_services.dart';
+import '../../constants/app_strings.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_sizes.dart';
+import '../../routes/app_routes.dart';
+import '../../utility/global.dart';
 import 'auth_controller.dart';
 
 class InformationController extends GetxController {

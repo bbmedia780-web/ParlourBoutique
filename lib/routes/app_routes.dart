@@ -24,7 +24,7 @@ import '../view/screen/upload_creation_screen.dart';
 import '../controller/upload_creation_controller.dart';
 import '../view/screen/information_page_screen.dart';
 import '../view/screen/splash_screen.dart';
-import '../controller/splash_controller.dart';
+import '../controller/auth_controller/splash_controller.dart';
 
 
 

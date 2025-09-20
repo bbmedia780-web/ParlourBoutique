@@ -6,7 +6,7 @@ import '../../common/common_button.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_strings.dart';
 import '../../constants/app_text_style.dart';
-import '../auth_controller.dart';
+import '../auth_controller/auth_controller.dart';
 
 class ProfileController extends GetxController {
 

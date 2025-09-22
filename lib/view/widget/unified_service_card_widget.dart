@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:parlour_app/view/widget/parlour_service_card_widget.dart';
+import 'package:parlour_app/view/widget/rent_service_card_widget.dart';
 import '../../constants/app_assets.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
@@ -8,6 +10,7 @@ import '../../constants/app_text_style.dart';
 import '../../model/unified_data_model.dart';
 import '../../routes/app_routes.dart';
 
+/*
 class UnifiedServiceCard extends StatelessWidget {
   final UnifiedDataModel data;
   final int index;
@@ -246,4 +249,32 @@ class UnifiedServiceCard extends StatelessWidget {
     );
   }
 }
+*/
+
+
+class UnifiedServiceCard extends StatelessWidget {
+  final UnifiedDataModel data;
+  final int index;
+  final VoidCallback onFavoriteTap;
+
+  const UnifiedServiceCard({
+    super.key,
+    required this.data,
+    required this.index,
+    required this.onFavoriteTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    switch (data.type) {
+      case AppStrings.rentType:
+        return RentServiceCardWidget(data: data, onFavoriteTap: onFavoriteTap);
+      case AppStrings.parlourType:
+        return ParlourServiceCardWidget(data: data, onFavoriteTap: onFavoriteTap);
+      default:
+        return ParlourServiceCardWidget(data: data, onFavoriteTap: onFavoriteTap); // fallback
+    }
+  }
+}
+
 

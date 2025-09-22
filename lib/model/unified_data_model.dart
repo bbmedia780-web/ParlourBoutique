@@ -15,6 +15,7 @@ class UnifiedDataModel {
   final double? oldPrice;   // old/crossed price
   final String? offerText;  // e.g., "Flat 20% Off"
   final String? description; // details description text
+  final double? view;
 
   UnifiedDataModel({
     this.id,
@@ -32,6 +33,7 @@ class UnifiedDataModel {
     this.oldPrice,
     this.offerText,
     this.description,
+    this.view,
   });
 
   UnifiedDataModel copyWith({String? id, bool? isFavorite, bool? isOpen}) {
@@ -51,6 +53,7 @@ class UnifiedDataModel {
       oldPrice: oldPrice,
       offerText: offerText,
       description: description,
+      view: view,
     );
   }
 }

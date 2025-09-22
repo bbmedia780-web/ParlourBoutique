@@ -59,6 +59,7 @@ class AppAssets {
   static const rent2 = 'assets/images/rent2.png';
   static const rent3 = 'assets/images/rent3.png';
   static const rent4 = 'assets/images/rent4.png';
+  static const eye = 'assets/images/eye.png';
 
   // Profile images
 

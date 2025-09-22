@@ -75,9 +75,10 @@ class CategoryScreen extends StatelessWidget {
             bottom: MediaQuery.of(context).padding.bottom + AppSizes.spacing20,
           ),
           physics: const BouncingScrollPhysics(), // 👈 smooth scroll
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 0.70,
+            //childAspectRatio: 0.70,
+            mainAxisExtent: MediaQuery.of(context).size.height * 0.30,
             crossAxisSpacing: AppSizes.spacing8,
             mainAxisSpacing: AppSizes.spacing8,
           ),

@@ -35,11 +35,10 @@ class CategoryCardWidget extends StatelessWidget {
                 child: Image.asset(
                   data.image,
                   width: double.infinity,
-                  height: AppSizes.size150,
+                  height: MediaQuery.of(context).size.height * 0.18, // 18% of screen height
                   fit: BoxFit.cover,
                 ),
               ),
-
               // Gradient Overlay at bottom
               Positioned.fill(
                 child: Align(

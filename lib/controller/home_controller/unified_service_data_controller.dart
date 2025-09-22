@@ -231,6 +231,7 @@ class UnifiedServiceDataController extends GetxController {
         price: 799,
         oldPrice: 899,
         offerText: 'Flat 30% Off',
+        view: 4.5,
         description: 'Highlighting the benefits of renting designer wear at lower cost.',
       ),
       UnifiedDataModel(
@@ -263,6 +264,7 @@ class UnifiedServiceDataController extends GetxController {
         price: 999,
         oldPrice: 1299,
         offerText: 'Flat 28% Off',
+        view: 4.8,
         description: 'Highlighting the benefits of renting designer wear at lower cost.',
       ),
       UnifiedDataModel(
@@ -279,6 +281,7 @@ class UnifiedServiceDataController extends GetxController {
         price: 1299,
         oldPrice: 1699,
         offerText: 'Flat 35% Off',
+        view: 3.5,
         description: 'Highlighting the benefits of renting designer wear at lower cost.',
       ),
     ];

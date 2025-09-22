@@ -36,7 +36,8 @@ class CommonPopularCard extends StatelessWidget {
                 child: Image.asset(
                   data.image,
                   width: double.infinity,
-                  height: AppSizes.size160,
+                  height: MediaQuery.of(context).size.height * 0.20,
+                  //height: AppSizes.size160,
                   fit: BoxFit.cover,
                 ),
               ),

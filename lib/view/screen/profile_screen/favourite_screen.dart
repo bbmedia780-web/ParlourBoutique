@@ -45,11 +45,11 @@ class FavouriteScreen extends StatelessWidget {
               child: TabBarView(
                 controller: controller.tabController,
                 children: [
-                  _buildFavouriteTab(controller.allFavourites),
-                  _buildFavouriteTab(controller.parlourFavourites),
+                  _buildFavouriteTab(context,controller.allFavourites),
+                  _buildFavouriteTab(context,controller.parlourFavourites),
                   // Disabled for Phase 1: Boutique favourites tab
                   // _buildFavouriteTab(controller.boutiqueFavourites),
-                  _buildFavouriteTab(controller.rentFavourites),
+                  _buildFavouriteTab(context,controller.rentFavourites),
                 ],
               ),
             ),
@@ -111,7 +111,7 @@ class FavouriteScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFavouriteTab(RxList<dynamic> favouriteItems) {
+  Widget _buildFavouriteTab(BuildContext context,RxList<dynamic> favouriteItems) {
     return Obx(() {
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
@@ -125,16 +125,16 @@ class FavouriteScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing20),
         child: GridView.builder(
           padding: const EdgeInsets.symmetric(vertical: AppSizes.spacing16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            childAspectRatio: 0.70,
+           // childAspectRatio: 0.70,
+            mainAxisExtent: MediaQuery.of(context).size.height * 0.30,
             mainAxisSpacing: AppSizes.spacing8,
             crossAxisSpacing: AppSizes.spacing8,
           ),
           itemCount: favouriteItems.length,
           itemBuilder: (context, index) {
             final item = favouriteItems[index];
-
             if (item is PopularModel) {
               return GestureDetector(
                 onTap: () => controller.onItemTap(item),

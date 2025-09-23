@@ -58,8 +58,8 @@ class RentServiceCardWidget extends StatelessWidget {
         children: [
           Image.asset(
             data.image,
-            width: AppSizes.size110,
-            height: AppSizes.size110,
+            width: AppSizes.size120,
+            height: AppSizes.size120,
             fit: BoxFit.cover,
           ),
           if (data.discount.isNotEmpty) _buildDiscountBadge(),
@@ -100,7 +100,7 @@ class RentServiceCardWidget extends StatelessWidget {
       child: Align(
         alignment: Alignment.bottomCenter,
         child: Container(
-          height: AppSizes.spacing40,
+          height: AppSizes.spacing48,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.bottomCenter,
@@ -132,6 +132,7 @@ class RentServiceCardWidget extends StatelessWidget {
           _buildStatsRow(),
           const SizedBox(height: AppSizes.spacing6),
           _buildLocationRow(),
+
         ],
       ),
     );

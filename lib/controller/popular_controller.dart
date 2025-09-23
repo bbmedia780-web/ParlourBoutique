@@ -643,3 +643,6 @@ class PopularController extends GetxController {
     }
   }
 }
+
+
+

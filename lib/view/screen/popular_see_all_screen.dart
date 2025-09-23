@@ -81,8 +81,8 @@ class PopularSeeAllScreen extends StatelessWidget {
               }
 
               return GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: AppSizes.size250,
                   childAspectRatio: 0.70,
                   crossAxisSpacing: AppSizes.spacing8,
                   mainAxisSpacing: AppSizes.spacing8,

@@ -121,14 +121,14 @@ class FavouriteScreen extends StatelessWidget {
         return _buildEmptyState();
       }
 
+/*
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing20),
         child: GridView.builder(
           padding: const EdgeInsets.symmetric(vertical: AppSizes.spacing16),
           gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-           // childAspectRatio: 0.70,
-            mainAxisExtent: MediaQuery.of(context).size.height * 0.30,
+            childAspectRatio: 0.70,
             mainAxisSpacing: AppSizes.spacing8,
             crossAxisSpacing: AppSizes.spacing8,
           ),
@@ -157,6 +157,44 @@ class FavouriteScreen extends StatelessWidget {
           },
         ),
       );
+*/
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing20),
+        child: GridView.builder(
+          padding: const EdgeInsets.symmetric(vertical: AppSizes.spacing16),
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: AppSizes.size250,
+            childAspectRatio: 0.70,
+            crossAxisSpacing: AppSizes.spacing8,
+            mainAxisSpacing: AppSizes.spacing8,
+          ),
+          itemCount: favouriteItems.length,
+          itemBuilder: (context, index) {
+            final item = favouriteItems[index];
+            if (item is PopularModel) {
+              return GestureDetector(
+                onTap: () => controller.onItemTap(item),
+                child: CommonPopularCard(
+                  data: item,
+                  onFavoriteTap: () => controller.removeFromFavourites(item),
+                ),
+              );
+            } else if (item is UnifiedDataModel) {
+              return GestureDetector(
+                onTap: () => controller.onItemTap(item),
+                child: CategoryCardWidget(
+                  data: item,
+                  onFavoriteTap: () => controller.removeFromFavourites(item),
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
+      );
+
     });
   }
 }

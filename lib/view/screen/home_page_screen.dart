@@ -446,7 +446,6 @@ class HomeScreen extends StatelessWidget {
           height: AppSizes.size250,
           child: Obx(() {
             final filteredItems = controller.getFilteredPopularItems(popularController.popularList);
-
             if (filteredItems.isEmpty) {
               final categoryName = controller.getCategoryName();
               return Center(
@@ -461,7 +460,7 @@ class HomeScreen extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: filteredItems.length,
               separatorBuilder: (_, __) =>
-                  const SizedBox(width: AppSizes.spacing4),
+              const SizedBox(width: AppSizes.spacing4),
               itemBuilder: (context, index) {
                 final item = filteredItems[index];
                 return PopularCard(
@@ -475,6 +474,7 @@ class HomeScreen extends StatelessWidget {
       ],
     );
   }
+
 
   Widget _buildServicesSection() {
     return Column(

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../constants/app_assets.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
-import '../../constants/app_strings.dart';
 import '../../constants/app_text_style.dart';
 import '../../model/popular_model.dart';
 
@@ -36,8 +35,7 @@ class CommonPopularCard extends StatelessWidget {
                 child: Image.asset(
                   data.image,
                   width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.20,
-                  //height: AppSizes.size160,
+                  height: AppSizes.size160,
                   fit: BoxFit.cover,
                 ),
               ),

@@ -68,7 +68,7 @@ class CategoryScreen extends StatelessWidget {
         ],
       ),
       body: Obx(() {
-        return GridView.builder(
+       /* return GridView.builder(
           padding: EdgeInsets.only(
             left: AppSizes.spacing12,
             right: AppSizes.spacing12,
@@ -94,7 +94,35 @@ class CategoryScreen extends StatelessWidget {
               ),
             );
           },
+        );*/
+        return GridView.builder(
+          padding: EdgeInsets.only(
+            left: AppSizes.spacing12,
+            right: AppSizes.spacing12,
+            bottom: MediaQuery.of(context).padding.bottom + AppSizes.spacing20,
+          ),
+          physics: const BouncingScrollPhysics(), // smooth scroll
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: AppSizes.size250,
+            childAspectRatio: 0.70,
+            crossAxisSpacing: AppSizes.spacing8,
+            mainAxisSpacing: AppSizes.spacing8,
+          ),
+          itemCount: controller.dataList.length,
+          itemBuilder: (context, index) {
+            final data = controller.dataList[index];
+            return GestureDetector(
+              onTap: () {
+                Get.toNamed(AppRoutes.details, arguments: data);
+              },
+              child: CategoryCardWidget(
+                data: data,
+                onFavoriteTap: () => controller.toggleFavorite(index),
+              ),
+            );
+          },
         );
+
       }),
     );
   }

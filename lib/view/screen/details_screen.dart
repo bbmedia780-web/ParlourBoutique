@@ -257,6 +257,7 @@ class DetailsScreen extends StatelessWidget {
     );
   }
 
+/*
   Widget _buildServicesGrid(DetailsController controller) {
     final services = controller.getCurrentItems();
     return GridView.builder(
@@ -278,4 +279,27 @@ class DetailsScreen extends StatelessWidget {
       },
     );
   }
+*/
+  Widget _buildServicesGrid(DetailsController controller) {
+    final services = controller.getCurrentItems();
+    return GridView.builder(
+      padding: EdgeInsets.zero,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: AppSizes.size250,
+        childAspectRatio: 0.95,
+        crossAxisSpacing: AppSizes.spacing8,
+        mainAxisSpacing: AppSizes.spacing8,
+      ),
+      itemCount: services.length,
+      itemBuilder: (context, index) {
+        return ServiceCardWidget(
+          service: services[index],
+          onPressed: () => controller.onServiceItemPressed(services[index]),
+        );
+      },
+    );
+  }
+
 }

@@ -73,6 +73,7 @@ class BookingPageView extends StatelessWidget {
     );
   }
 
+/*
   Widget _buildServicesGrid(List services) {
     return Padding(
       padding: const EdgeInsets.only(left: AppSizes.spacing12, right: AppSizes.spacing12, top: AppSizes.spacing16),
@@ -95,4 +96,34 @@ class BookingPageView extends StatelessWidget {
       ),
     );
   }
+*/
+  Widget _buildServicesGrid(List services) {
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: AppSizes.spacing12,
+        right: AppSizes.spacing12,
+        top: AppSizes.spacing16,
+      ),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: AppSizes.size250,
+          childAspectRatio: 0.88,
+          mainAxisSpacing: AppSizes.spacing8,
+          crossAxisSpacing: AppSizes.spacing8,
+        ),
+        itemCount: services.length,
+        itemBuilder: (context, index) {
+          final service = services[index];
+          return BookingServiceCard(
+            service: service,
+            onTap: () => controller.onServiceTap(service),
+            onBookNow: () => controller.onBookNowTap(service),
+          );
+        },
+      ),
+    );
+  }
+
 }

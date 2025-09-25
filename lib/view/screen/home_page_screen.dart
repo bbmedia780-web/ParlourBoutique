@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parlour_app/controller/popular_controller.dart';
@@ -651,6 +652,99 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+*/
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../constants/app_colors.dart';
+import '../../constants/app_sizes.dart';
+import '../../controller/auth_controller/auth_controller.dart';
+import '../../controller/home_controller/home_controller.dart';
+import '../../controller/home_controller/unified_service_data_controller.dart';
+import '../../controller/popular_controller.dart';
+import '../widget/home_widget/floating_search_bar_widget.dart';
+import '../widget/home_widget/home_header.dart';
+import '../widget/home_widget/popular_now_section.dart';
+import '../widget/home_widget/service_section.dart';
+import '../widget/home_widget/unified_list_sliver.dart';
+
+
+class HomeScreen extends StatelessWidget {
+  HomeScreen({super.key});
+
+  final HomeController controller = Get.find<HomeController>();
+  final PopularController popularController = Get.find<PopularController>();
+  final UnifiedServiceDataController unifiedServiceController = Get.find<UnifiedServiceDataController>();
+  final AuthController authController = Get.find<AuthController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      body: Stack(
+        children: [
+          CustomScrollView(
+            controller: controller.scrollController,
+            slivers: [
+              SliverAppBar(
+                backgroundColor: AppColors.white,
+                automaticallyImplyLeading: false,
+                pinned: true,
+                expandedHeight: AppSizes.size380,
+                flexibleSpace: FlexibleSpaceBar(
+                  background: HomeHeader(
+                    controller: controller,
+                    authController: authController,
+                    unifiedServiceController: unifiedServiceController,
+                  ),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSizes.spacing20,
+                ),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate([
+                    const SizedBox(height: AppSizes.spacing12),
+                    PopularNowSection(
+                      controller: controller,
+                      popularController: popularController,
+                    ),
+                    const SizedBox(height: AppSizes.spacing12),
+                    ServicesSection(
+                      controller: controller,
+                      unifiedServiceController: unifiedServiceController,
+                    ),
+                    const SizedBox(height: AppSizes.spacing30),
+                  ]),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: AppSizes.spacing20,
+                ),
+                sliver: UnifiedListSliver(controller: unifiedServiceController),
+              ),
+              SliverToBoxAdapter(
+                child: const SizedBox(height: AppSizes.size100),
+              ),
+            ],
+          ),
+          Obx(
+            () => controller.showFloatingSearchBar.value
+                ? Positioned(
+                    top: MediaQuery.of(context).padding.top,
+                    left: 0,
+                    right: 0,
+                    child: FloatingSearchBarWidget(controller: controller),
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ],
+      ),
     );
   }
 }

@@ -956,6 +956,9 @@ class AppStrings {
   static const callToAction = 'Walk in or book now';
 
 
+  static const noCategory = 'No categories available';
+
+
 
 
 }

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../constants/app_strings.dart';
+
 class AddRentProductController extends GetxController {
   final RxList<File> selectedImages = <File>[].obs;
 
@@ -21,12 +23,12 @@ class AddRentProductController extends GetxController {
   final TextEditingController detailsController = TextEditingController();
 
   // Rent categories data (UI reads from here)
-  final List<String> rentCategories = const [
-    'Sider Choli',
-    'Lehenga',
-    'Saree',
-    'Gown',
-    'Suit',
+  final List<String> rentCategories =  [
+    AppStrings.siderCholi,
+    AppStrings.lehenga,
+    AppStrings.saree,
+    AppStrings.gown,
+    AppStrings.suit,
   ];
 
   void selectCategory(String? value) {

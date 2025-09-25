@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import '../../constants/app_assets.dart';
 import '../../constants/app_strings.dart';
 import '../../model/notification_model.dart';
 
@@ -32,7 +33,7 @@ class NotificationController extends GetxController {
       NotificationModel(
         id: '1',
         businessName: AppStrings.meeraBeauty,
-        businessImage: 'assets/images/beauty1.png',
+        businessImage: AppAssets.beauty1,
         dateTime: AppStrings.notificationDateTime,
         offerDescription: AppStrings.offerDescription,
         callToAction: AppStrings.callToAction,
@@ -40,7 +41,7 @@ class NotificationController extends GetxController {
       NotificationModel(
         id: '2',
         businessName: AppStrings.roopnikhaar,
-        businessImage: 'assets/images/beauty2.png',
+        businessImage: AppAssets.beauty2,
         dateTime: AppStrings.notificationDateTime,
         offerDescription: AppStrings.offerDescription,
         callToAction: AppStrings.callToAction,
@@ -48,7 +49,7 @@ class NotificationController extends GetxController {
       NotificationModel(
         id: '3',
         businessName: AppStrings.polishAndPoise,
-        businessImage: 'assets/images/parlour.png',
+        businessImage: AppAssets.parlour,
         dateTime: AppStrings.notificationDateTime,
         offerDescription: AppStrings.offerDescription,
         callToAction: AppStrings.callToAction,
@@ -56,7 +57,7 @@ class NotificationController extends GetxController {
       NotificationModel(
         id: '4',
         businessName: AppStrings.theBeautyLab,
-        businessImage: 'assets/images/beauty1.png',
+        businessImage:AppAssets.beauty1,
         dateTime: AppStrings.notificationDateTime,
         offerDescription: AppStrings.offerDescription,
         callToAction: AppStrings.callToAction,
@@ -64,7 +65,7 @@ class NotificationController extends GetxController {
       NotificationModel(
         id: '5',
         businessName: AppStrings.theStyleStudio,
-        businessImage: 'assets/images/beauty2.png',
+        businessImage: AppAssets.beauty2,
         dateTime: AppStrings.notificationDateTime,
         offerDescription: AppStrings.offerDescription,
         callToAction: AppStrings.callToAction,
@@ -72,7 +73,7 @@ class NotificationController extends GetxController {
       NotificationModel(
         id: '6',
         businessName: AppStrings.kanyaKaya,
-        businessImage: 'assets/images/parlour.png',
+        businessImage: AppAssets.parlour,
         dateTime: AppStrings.notificationDateTime,
         offerDescription: AppStrings.offerDescription,
         callToAction: AppStrings.callToAction,

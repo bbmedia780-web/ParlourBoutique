@@ -4,13 +4,12 @@ import '../constants/app_assets.dart';
 import '../constants/app_strings.dart';
 import '../model/popular_model.dart';
 import 'favourite_controller.dart';
-// GlobalFavoriteController removed
 
 class PopularController extends GetxController {
   final RxList<PopularModel> popularList = <PopularModel>[].obs;
   final RxBool isLoading = false.obs;
   final Dio _dio = Dio();
-  
+
   // Maintain favorites locally for popular items
   final RxSet<String> favoriteIds = <String>{}.obs;
 
@@ -221,6 +220,8 @@ class PopularController extends GetxController {
         isOpen: true,
         category: 'rent',
         isFavorite: favoriteIds.contains('popular_rent_1'),
+        price: 70000,
+        view: 3.4,
       ),
       PopularModel(
         id: 'popular_rent_2',
@@ -234,6 +235,8 @@ class PopularController extends GetxController {
         isOpen: true,
         category: 'rent',
         isFavorite: favoriteIds.contains('popular_rent_2'),
+        price: 6000,
+        view: 4.4,
       ),
       PopularModel(
         id: 'popular_rent_3',
@@ -247,6 +250,8 @@ class PopularController extends GetxController {
         isOpen: true,
         category: 'rent',
         isFavorite: favoriteIds.contains('popular_rent_3'),
+        price: 70088,
+        view: 5.4,
       ),
       PopularModel(
         id: 'popular_rent_4',
@@ -260,6 +265,8 @@ class PopularController extends GetxController {
         isOpen: false,
         category: 'rent',
         isFavorite: favoriteIds.contains('popular_rent_4'),
+        price: 50000,
+        view: 4.1,
       ),
       PopularModel(
         id: 'popular_rent_5',
@@ -273,6 +280,8 @@ class PopularController extends GetxController {
         isOpen: true,
         category: 'rent',
         isFavorite: favoriteIds.contains('popular_rent_5'),
+        price: 89000,
+        view: 3.8,
       ),
       PopularModel(
         id: 'popular_rent_6',
@@ -286,12 +295,22 @@ class PopularController extends GetxController {
         isOpen: true,
         category: 'rent',
         isFavorite: favoriteIds.contains('popular_rent_6'),
+        price: 58900,
+        view: 4.3,
       ),
     ];
-    print('Popular data loaded immediately. Total items: ${popularList.length}');
-    print('Parlour items: ${popularList.where((item) => item.category == 'parlour').length}');
-    print('Boutique items: ${popularList.where((item) => item.category == 'boutique').length}');
-    print('Rent items: ${popularList.where((item) => item.category == 'rent').length}');
+    print(
+      'Popular data loaded immediately. Total items: ${popularList.length}',
+    );
+    print(
+      'Parlour items: ${popularList.where((item) => item.category == 'parlour').length}',
+    );
+    print(
+      'Boutique items: ${popularList.where((item) => item.category == 'boutique').length}',
+    );
+    print(
+      'Rent items: ${popularList.where((item) => item.category == 'rent').length}',
+    );
   }
 
   /// 🔹 Load Popular Data (with delay)
@@ -492,10 +511,11 @@ class PopularController extends GetxController {
           image: AppAssets.rent1,
           discount: AppStrings.discount30OffFull,
           bestFamousService: AppStrings.lehengaRental,
-          service: AppStrings.homeService,
           isOpen: true,
           category: 'rent',
           isFavorite: favoriteIds.contains('popular_rent_1'),
+          price: 70000,
+          view: 3.4,
         ),
         PopularModel(
           id: 'popular_rent_2',
@@ -505,10 +525,11 @@ class PopularController extends GetxController {
           image: AppAssets.rent2,
           discount: AppStrings.discount22OffFull,
           bestFamousService: AppStrings.sareeRental,
-          service: AppStrings.homeService,
           isOpen: true,
           category: 'rent',
           isFavorite: favoriteIds.contains('popular_rent_2'),
+          price: 6000,
+          view: 4.4,
         ),
         PopularModel(
           id: 'popular_rent_3',
@@ -518,10 +539,11 @@ class PopularController extends GetxController {
           image: AppAssets.rent3,
           discount: AppStrings.discount28OffFull,
           bestFamousService: AppStrings.gownRental,
-          service: AppStrings.homeService,
           isOpen: true,
           category: 'rent',
           isFavorite: favoriteIds.contains('popular_rent_3'),
+          price: 70088,
+          view: 5.4,
         ),
         PopularModel(
           id: 'popular_rent_4',
@@ -531,10 +553,11 @@ class PopularController extends GetxController {
           image: AppAssets.rent4,
           discount: AppStrings.discount35OffFull,
           bestFamousService: AppStrings.suitRental,
-          service: AppStrings.homeService,
           isOpen: false,
           category: 'rent',
           isFavorite: favoriteIds.contains('popular_rent_4'),
+          price: 50000,
+          view: 4.1,
         ),
         PopularModel(
           id: 'popular_rent_5',
@@ -544,10 +567,11 @@ class PopularController extends GetxController {
           image: AppAssets.rent1,
           discount: AppStrings.discount20OffFull,
           bestFamousService: AppStrings.partyWearRental,
-          service: AppStrings.homeService,
           isOpen: true,
           category: 'rent',
           isFavorite: favoriteIds.contains('popular_rent_5'),
+          price: 89000,
+          view: 3.8,
         ),
         PopularModel(
           id: 'popular_rent_6',
@@ -557,16 +581,23 @@ class PopularController extends GetxController {
           image: AppAssets.rent2,
           discount: AppStrings.discount25OffFull,
           bestFamousService: AppStrings.bridalWearRental,
-          service: AppStrings.homeService,
           isOpen: true,
           category: 'rent',
           isFavorite: favoriteIds.contains('popular_rent_6'),
+          price: 58900,
+          view: 4.3,
         ),
       ];
       print('Popular data loaded. Total items: ${popularList.length}');
-      print('Parlour items: ${popularList.where((item) => item.category == 'parlour').length}');
-      print('Boutique items: ${popularList.where((item) => item.category == 'boutique').length}');
-      print('Rent items: ${popularList.where((item) => item.category == 'rent').length}');
+      print(
+        'Parlour items: ${popularList.where((item) => item.category == 'parlour').length}',
+      );
+      print(
+        'Boutique items: ${popularList.where((item) => item.category == 'boutique').length}',
+      );
+      print(
+        'Rent items: ${popularList.where((item) => item.category == 'rent').length}',
+      );
     });
   }
 
@@ -604,7 +635,7 @@ class PopularController extends GetxController {
     popularList[index] = popularList[index].copyWith(
       isFavorite: favoriteIds.contains(itemId),
     );
-    
+
     // Notify favourite controller to refresh
     try {
       final favouriteController = Get.find<FavouriteController>();
@@ -624,9 +655,7 @@ class PopularController extends GetxController {
 
   // Get filtered items by category
   List<PopularModel> getFilteredItemsByCategory(String category) {
-    return popularList
-        .where((item) => item.category == category)
-        .toList();
+    return popularList.where((item) => item.category == category).toList();
   }
 
   // Get category display name
@@ -643,6 +672,3 @@ class PopularController extends GetxController {
     }
   }
 }
-
-
-

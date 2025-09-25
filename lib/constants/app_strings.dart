@@ -608,6 +608,15 @@ class AppStrings {
   static const discount28OffFull = "28% OFF";
   static const discount35OffFull = "35% OFF";
   
+  // Controller Demo Data - Rent Offer Texts
+  static const flat30Off = "Flat 30% Off";
+  static const flat22Off = "Flat 22% Off";
+  static const flat28Off = "Flat 28% Off";
+  static const flat35Off = "Flat 35% Off";
+
+  // Controller Demo Data - Rent Descriptions
+  static const rentDescriptionGeneric = "Highlighting the benefits of renting designer wear at lower cost.";
+  
   // Filter Keywords
   static const filterKeywordHair = "hair";
   static const filterKeywordCut = "cut";
@@ -958,7 +967,74 @@ class AppStrings {
 
   static const noCategory = 'No categories available';
 
+  // Rent Categories
+  static const siderCholi = "Sider Choli";
+  static const lehenga = "Lehenga";
+  static const saree = "Saree";
+  static const gown = "Gown";
+  static const suit = "Suit";
+
+  // General labels
+  static const mainBranch = "Main Branch";
+  static const cityCenter = "City Center";
+
+  static const designerLehengaDesc =
+  "A premium designer lehenga perfect for weddings, engagements, and festive occasions. Elegant and stylish for your special day.";
+
+  static const bridalLehengaDesc =
+  "Traditional bridal lehenga for a perfect wedding look. Rich embroidery and exquisite designs make your day unforgettable.";
+
+  static const partyLehengaDesc =
+  "Trendy party lehenga to make you stand out at any celebration. Comfortable yet glamorous.";
+
+  static const festivalLehengaDesc =
+  "Vibrant lehenga perfect for festive occasions and family gatherings. Celebrate in style.";
+
+  static const silkSareeDesc =
+  "Elegant silk saree with intricate weaving. Ideal for formal events, weddings, and traditional ceremonies.";
+
+  static const banarasiSareeDesc =
+  "Authentic Banarasi saree with luxurious embroidery. Perfect for weddings and festive occasions.";
+
+  static const georgetteSareeDesc =
+  "Lightweight and flowy georgette saree. Comfortable for long hours, yet stylish for parties and gatherings.";
+
+  static const chiffonSareeDesc =
+  "Soft chiffon saree with delicate patterns. Perfect for casual or semi-formal occasions.";
+
+  static const eveningGownDesc =
+  "Sophisticated evening gown for formal events and parties. Stylish and comfortable.";
+
+  static const cocktailDressDesc =
+  "Chic cocktail dress to make a statement at any party or celebration. Trendy and elegant.";
+
+  static const promDressDesc =
+  "Stunning prom dress designed to make you the center of attention. Elegant and memorable.";
+
+  static const weddingGownDesc =
+  "Classic wedding gown with timeless elegance. Ideal for brides wanting a perfect look on their big day.";
+
+  static const formalSuitDesc =
+  "Sharp formal suit suitable for business meetings, corporate events, or professional occasions.";
+
+  static const tuxedoDesc =
+  "Elegant tuxedo perfect for black-tie events, weddings, or formal parties.";
+
+  static const weddingSuitDesc =
+  "Stylish wedding suit for grooms. Look sharp and elegant on your special day.";
+
+  static const businessSuitDesc =
+  "Professional business suit ideal for office meetings, presentations, or corporate events.";
+
+  static const cityCenterBranch = "City Center";
+  static const branchSuffix = "Branches";
+
+  // Locations & distances
+  static const cityCenterSurat = "City Center, Surat";
+
+  }
 
 
 
-}
+
+

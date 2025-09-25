@@ -230,9 +230,9 @@ class UnifiedServiceDataController extends GetxController {
         isFavorite: favoriteIds.contains('rent_1'),
         price: 799,
         oldPrice: 899,
-        offerText: 'Flat 30% Off',
+        offerText: AppStrings.flat30Off,
         view: 4.5,
-        description: 'Highlighting the benefits of renting designer wear at lower cost.',
+        description: AppStrings.rentDescriptionGeneric,
       ),
       UnifiedDataModel(
         id: 'rent_2',
@@ -247,8 +247,8 @@ class UnifiedServiceDataController extends GetxController {
         isFavorite: favoriteIds.contains('rent_2'),
         price: 1099,
         oldPrice: 1399,
-        offerText: 'Flat 22% Off',
-        description: 'Highlighting the benefits of renting designer wear at lower cost.',
+        offerText: AppStrings.flat22Off,
+        description: AppStrings.rentDescriptionGeneric,
       ),
       UnifiedDataModel(
         id: 'rent_3',
@@ -263,9 +263,9 @@ class UnifiedServiceDataController extends GetxController {
         isFavorite: favoriteIds.contains('rent_3'),
         price: 999,
         oldPrice: 1299,
-        offerText: 'Flat 28% Off',
+        offerText: AppStrings.flat28Off,
         view: 4.8,
-        description: 'Highlighting the benefits of renting designer wear at lower cost.',
+        description: AppStrings.rentDescriptionGeneric,
       ),
       UnifiedDataModel(
         id: 'rent_4',
@@ -280,9 +280,9 @@ class UnifiedServiceDataController extends GetxController {
         isFavorite: favoriteIds.contains('rent_4'),
         price: 1299,
         oldPrice: 1699,
-        offerText: 'Flat 35% Off',
+        offerText: AppStrings.flat35Off,
         view: 3.5,
-        description: 'Highlighting the benefits of renting designer wear at lower cost.',
+        description: AppStrings.rentDescriptionGeneric,
       ),
     ];
   }

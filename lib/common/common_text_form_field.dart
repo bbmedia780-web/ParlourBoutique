@@ -76,14 +76,14 @@ class CommonTextField extends StatelessWidget {
         errorBorder: showErrorBorder ? OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.buttonRadius),
           borderSide: BorderSide(
-            color: Colors.red,
+            color: AppColors.red,
             width: 1.5,
           ),
         ) : null,
         focusedErrorBorder: showErrorBorder ? OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppSizes.buttonRadius),
           borderSide: BorderSide(
-            color: Colors.red,
+            color: AppColors.red,
             width: 1.5,
           ),
         ) : null,

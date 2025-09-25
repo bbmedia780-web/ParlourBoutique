@@ -337,6 +337,23 @@ class DetailsScreen extends StatelessWidget {
             ? _RentDetailsLayout(controller: controller, details: businessDetails)
             : _BusinessDetailsLayout(controller: controller, details: businessDetails);
       }),
+      bottomNavigationBar: Obx(() {
+        final isRent = controller.businessDetails.value?.category == AppStrings.rentType;
+        if (!isRent) return const SizedBox.shrink(); // No button if not rent
+
+        return SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(AppSizes.spacing16),
+            child: AppButton(
+              width: double.infinity,
+              height: AppSizes.spacing45,
+              textStyle: AppTextStyles.buttonText,
+              text: AppStrings.rentNow.tr,
+              onPressed: controller.onRentNowPressed,
+            ),
+          ),
+        );
+      }),
     );
   }
 
@@ -394,10 +411,10 @@ class _RentDetailsLayout extends StatelessWidget {
         children: [
           _buildImage(),
           const SizedBox(height: AppSizes.spacing12),
-          Text(details.title, style: AppTextStyles.bodyTitle),
-          if (details.service?.isNotEmpty ?? false) ...[
+          Text(details.title, style: AppTextStyles.titleSmall),
+          if (details.bestFamousService?.isNotEmpty ?? false) ...[
             const SizedBox(height: AppSizes.spacing2),
-            Text(details.service!, style: AppTextStyles.faqsDescriptionText),
+            Text(details.bestFamousService!, style: AppTextStyles.hintText),
           ],
           const SizedBox(height: AppSizes.spacing6),
           _buildLocation(),
@@ -409,8 +426,6 @@ class _RentDetailsLayout extends StatelessWidget {
           _buildRating(),
           const SizedBox(height: AppSizes.spacing16),
           _buildDescription(),
-          const SizedBox(height: AppSizes.spacing16),
-          _buildRentButton(),
         ],
       ),
     );
@@ -428,22 +443,21 @@ class _RentDetailsLayout extends StatelessWidget {
 
   Widget _buildLocation() => Row(
     children: [
-      Image.asset(AppAssets.location,
-          height: AppSizes.spacing14, width: AppSizes.spacing14, color: Colors.black54),
+      Image.asset(AppAssets.location, height: AppSizes.spacing14, width: AppSizes.spacing14),
       const SizedBox(width: AppSizes.spacing6),
-      Expanded(child: Text(details.location, style: AppTextStyles.faqsDescriptionText)),
+      Expanded(child: Text(details.location, style: AppTextStyles.addressText)),
     ],
   );
 
   Widget _buildPrice() => Row(
     children: [
       Text('₹${controller.rentCurrentPrice.value.toStringAsFixed(0)}',
-          style: AppTextStyles.priceText),
+          style: AppTextStyles.primaryButtonText),
       if (controller.rentOldPrice.value != null) ...[
         const SizedBox(width: AppSizes.spacing6),
         Text(
           '₹${controller.rentOldPrice.value!.toStringAsFixed(0)}',
-          style: AppTextStyles.faqsDescriptionText.copyWith(
+          style: AppTextStyles.primaryButtonText.copyWith(
             decoration: TextDecoration.lineThrough,
             color: Colors.grey,
           ),
@@ -455,7 +469,7 @@ class _RentDetailsLayout extends StatelessWidget {
   Widget _buildDiscount() {
     final discount = controller.rentDiscountText.value;
     if (discount == null || discount.isEmpty) return const SizedBox();
-    return Text('${AppStrings.offerLabel} $discount', style: AppTextStyles.reviewTextTitle);
+    return Text('${AppStrings.offerLabel} $discount', style: AppTextStyles.cardTitle);
   }
 
   Widget _buildRating() => Row(
@@ -463,7 +477,7 @@ class _RentDetailsLayout extends StatelessWidget {
       Image.asset(AppAssets.star, height: AppSizes.spacing14),
       const SizedBox(width: AppSizes.spacing6),
       Text('${details.rating} ${AppStrings.reviewsCount(90)}',
-          style: AppTextStyles.faqsDescriptionText),
+          style: AppTextStyles.cardTitle),
     ],
   );
 
@@ -472,20 +486,10 @@ class _RentDetailsLayout extends StatelessWidget {
     children: [
       Text(AppStrings.description, style: AppTextStyles.bodyTitle),
       const SizedBox(height: AppSizes.spacing8),
-      Text(details.description, style: AppTextStyles.faqsDescriptionText),
+      Text(details.description, style: AppTextStyles.hintText),
     ],
   );
 
-  Widget _buildRentButton() => Obx(() {
-    final isRent = controller.businessDetails.value?.category == AppStrings.rentType;
-    return AppButton(
-      width: double.infinity,
-      height: AppSizes.spacing45,
-      textStyle: AppTextStyles.buttonText,
-      text: AppStrings.rentNow.tr,
-      onPressed: isRent ? controller.onRentNowPressed : controller.onSharePressed,
-    );
-  });
 }
 
 /* ------------------ Business Layout ------------------ */

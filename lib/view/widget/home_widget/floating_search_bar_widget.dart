@@ -6,7 +6,6 @@ import '../../../constants/app_strings.dart';
 import '../../../constants/app_text_style.dart';
 import '../../../controller/home_controller/home_controller.dart';
 import '../../../view/bottomsheet/filter_bottom_sheet.dart';
-import '../../../controller/home_controller/filter_controller.dart';
 import 'package:get/get.dart';
 
 class FloatingSearchBarWidget extends StatelessWidget {
@@ -24,23 +23,20 @@ class FloatingSearchBarWidget extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(color: AppColors.mediumGrey),
               borderRadius: BorderRadius.circular(AppSizes.spacing8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 4,
-                  offset: const Offset(0, 2),
-                ),
-              ],
             ),
             padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing16),
             child: Row(
               children: [
-                Image.asset(AppAssets.search,
-                    width: AppSizes.spacing20, color: AppColors.mediumGrey),
+                Image.asset(
+                  AppAssets.search,
+                  width: AppSizes.spacing20,
+                  color: AppColors.mediumGrey,
+                ),
                 const SizedBox(width: AppSizes.spacing12),
                 Expanded(
                   child: TextField(
                     controller: controller.searchController,
+                    cursorColor: AppColors.primary,
                     decoration: InputDecoration(
                       hintText: AppStrings.searchBridalMakeup,
                       border: InputBorder.none,
@@ -50,8 +46,11 @@ class FloatingSearchBarWidget extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: controller.onMicrophoneTap,
-                  child: Image.asset(AppAssets.mic,
-                      width: AppSizes.spacing20, color: AppColors.mediumGrey),
+                  child: Image.asset(
+                    AppAssets.mic,
+                    width: AppSizes.spacing20,
+                    color: AppColors.mediumGrey,
+                  ),
                 ),
               ],
             ),
@@ -64,27 +63,26 @@ class FloatingSearchBarWidget extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(color: AppColors.mediumGrey),
             borderRadius: BorderRadius.circular(AppSizes.spacing8),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
           ),
           child: IconButton(
             onPressed: () {
-              if (!Get.isRegistered<FilterController>()) {
-                Get.put(FilterController());
-              }
-              Get.bottomSheet(const FilterBottomSheet(),
-                  isScrollControlled: true);
+              Get.bottomSheet(
+                const FilterBottomSheet(),
+                isScrollControlled: true,
+              );
             },
-            icon: Image.asset(AppAssets.filterBlack,
-                width: AppSizes.spacing20, height: AppSizes.spacing20),
+            icon: Image.asset(
+              AppAssets.filterBlack,
+              width: AppSizes.spacing20,
+              height: AppSizes.spacing20,
+            ),
           ),
         ),
       ],
+    ).paddingOnly(
+      right: AppSizes.spacing18,
+      left: AppSizes.spacing18,
+      top: AppSizes.spacing4,
     );
   }
 }

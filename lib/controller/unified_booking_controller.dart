@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -293,3 +294,293 @@ class UnifiedBookingController extends GetxController {
   }
 }
 
+*/
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import '../constants/app_colors.dart';
+import '../constants/app_strings.dart';
+import '../constants/app_assets.dart';
+import '../controller/auth_controller/auth_controller.dart';
+import '../model/booking_service_model.dart';
+import '../model/payment_method_model.dart';
+import '../model/details_model.dart';
+import '../routes/app_routes.dart';
+import '../utility/global.dart';
+
+/// Handles 3 steps: Appointment Details -> Payment -> Confirmation
+class UnifiedBookingController extends GetxController {
+  /// Booking service selected by user
+  late BookingServiceModel service;
+
+  /// Controllers for date and time input fields
+  TextEditingController dateController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
+
+  /// Step management
+  final RxInt currentStep = 0.obs; // Current step index
+  final RxInt totalSteps = 3.obs;  // Total steps
+
+  // ---------------- STEP 1: Appointment Details ----------------
+  final RxString selectedDate = "12 Aug, 2025".obs;
+  final RxString selectedTime = "12:00 PM".obs;
+  final RxString selectedLocation = AppStrings.homeService.obs;
+
+  final RxBool isHomeServiceSelected = true.obs;
+  final RxBool isParlourServiceSelected = false.obs;
+
+  // ---------------- STEP 2: Payment ----------------
+  final RxList<PaymentMethodModel> paymentMethods = <PaymentMethodModel>[].obs;
+  final RxString selectedPaymentId = "".obs;
+
+  // ---------------- STEP 3: Confirmation ----------------
+  final RxString bookingId = "123456781".obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _handleArguments(Get.arguments); // Initialize booking service from arguments
+    _initializePaymentMethods();      // Setup available payment methods
+  }
+
+  @override
+  void onClose() {
+    dateController.dispose();
+    timeController.dispose();
+    super.onClose();
+  }
+
+  // ------------------------ ARGUMENT HANDLING ------------------------
+
+  /// Handles incoming arguments and restores booking state if returning from login
+  void _handleArguments(dynamic args) {
+    if (args is Map && args['returnFromLogin'] == true) {
+      _restoreBookingStateFromArgs(Map<String, dynamic>.from(args));
+    } else if (args is BookingServiceModel) {
+      service = args;
+    } else if (args is ServiceCategoryModel) {
+      // Convert ServiceCategoryModel to BookingServiceModel
+      final price = double.tryParse(args.price) ?? 0.0;
+      service = BookingServiceModel(
+        image: args.image,
+        title: args.name,
+        subtitle: args.description ??
+            AppStrings.getProfessionalServiceDescription(args.name.toLowerCase()),
+        address: null,
+        price: price,
+        type: AppStrings.parlourType, // Default type
+      );
+    } else if (args is Map && args['service'] is BookingServiceModel) {
+      service = args['service'] as BookingServiceModel;
+    } else {
+      // Fallback default service
+      service = BookingServiceModel(
+        image: AppAssets.beauty1,
+        title: AppStrings.hairCutting,
+        subtitle: AppStrings.hairCuttingHomeService,
+        address: null,
+        price: 12.00,
+        type: AppStrings.parlourType,
+      );
+    }
+  }
+
+  /// Restore booking state from stored arguments
+  void _restoreBookingStateFromArgs(Map<String, dynamic> args) {
+    service = args['service'] as BookingServiceModel;
+    selectedDate.value = args['selectedDate'] as String;
+    selectedTime.value = args['selectedTime'] as String;
+    selectedLocation.value = args['selectedLocation'] as String;
+    selectedPaymentId.value = args['selectedPaymentId'] as String;
+
+    // Update text controllers
+    dateController.text = selectedDate.value;
+    timeController.text = selectedTime.value;
+
+    // Update location flags
+    isHomeServiceSelected.value = selectedLocation.value == AppStrings.homeService;
+    isParlourServiceSelected.value = selectedLocation.value == AppStrings.parlourService;
+
+    // Move to payment step
+    currentStep.value = 1;
+  }
+
+  // ------------------------ PAYMENT METHODS ------------------------
+
+  /// Initialize available payment methods
+  void _initializePaymentMethods() {
+    paymentMethods.value = [
+      PaymentMethodModel(
+        id: AppStrings.visaId,
+        type: AppStrings.card,
+        name: AppStrings.visa,
+        maskedNumber: AppStrings.maskedCardNumber,
+        logo: AppStrings.visaLogo,
+        isSelected: true,
+      ),
+      PaymentMethodModel(
+        id: AppStrings.mastercardId,
+        type: AppStrings.card,
+        name: AppStrings.mastercard,
+        maskedNumber: AppStrings.maskedCardNumber,
+        logo: AppStrings.mastercardLogo,
+        isSelected: false,
+      ),
+      PaymentMethodModel(
+        id: AppStrings.cashId,
+        type: AppStrings.cash,
+        name: AppStrings.paymentInCash,
+        maskedNumber: "",
+        logo: null,
+        isSelected: false,
+      ),
+    ];
+
+    // Set initial selected payment
+    if (paymentMethods.isNotEmpty) {
+      selectedPaymentId.value = paymentMethods.first.id;
+    }
+  }
+
+  /// Returns currently selected payment method
+  PaymentMethodModel? get selectedPaymentMethod {
+    try {
+      return paymentMethods.firstWhere((m) => m.id == selectedPaymentId.value);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Select payment method by ID
+  void selectPayment(String paymentId) {
+    selectedPaymentId.value = paymentId;
+    for (int i = 0; i < paymentMethods.length; i++) {
+      paymentMethods[i] = paymentMethods[i].copyWith(
+        isSelected: paymentMethods[i].id == paymentId,
+      );
+    }
+  }
+
+  // ------------------------ APPOINTMENT DETAILS ------------------------
+
+  /// Choose appointment location
+  void chooseLocation(String location) {
+    selectedLocation.value = location;
+    isHomeServiceSelected.value = location == AppStrings.homeService;
+    isParlourServiceSelected.value = location == AppStrings.parlourService;
+  }
+
+  /// Show date picker and update selected date
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null) {
+      final formattedDate = DateFormat(AppStrings.dateFormat).format(picked);
+      selectedDate.value = formattedDate;
+      dateController.text = formattedDate;
+    }
+  }
+
+  /// Show time picker and update selected time
+  Future<void> selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (picked != null) {
+      final now = DateTime.now();
+      final selectedDateTime =
+      DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
+      final formattedTime =
+      DateFormat(AppStrings.timeFormat).format(selectedDateTime);
+      selectedTime.value = formattedTime;
+      timeController.text = formattedTime;
+    }
+  }
+
+  // ------------------------ STEP NAVIGATION ------------------------
+
+  /// Move to next step
+  void onNextStep() {
+    if (currentStep.value < totalSteps.value - 1) {
+      currentStep.value++;
+    }
+  }
+
+  /// Move to previous step or exit if first step
+  void onBackTap() {
+    if (currentStep.value > 0) {
+      currentStep.value--;
+    } else {
+      Get.back();
+    }
+  }
+
+  // ------------------------ PAYMENT CONFIRMATION ------------------------
+
+  /// Confirm payment after login check
+  void onConfirmPayment() async {
+    final authController = Get.find<AuthController>();
+
+    if (!authController.isLoggedIn.value) {
+      // Save current booking state to return after login
+      _storeBookingStateForReturn();
+
+      // Redirect to login
+      Get.toNamed(AppRoutes.signIn);
+      ShowSnackBar.show(
+        AppStrings.loginRequired,
+        AppStrings.pleaseLogin,
+        backgroundColor: AppColors.red,
+      );
+      return;
+    }
+
+    // Move to confirmation step
+    currentStep.value = 2;
+  }
+
+  /// Store booking state before login
+  void _storeBookingStateForReturn() {
+    final bookingData = {
+      'service': service,
+      'selectedDate': selectedDate.value,
+      'selectedTime': selectedTime.value,
+      'selectedLocation': selectedLocation.value,
+      'selectedPaymentId': selectedPaymentId.value,
+      'returnFromLogin': true,
+    };
+
+    Get.put(bookingData, tag: 'pending_booking');
+  }
+
+  /// Restore booking state after login
+  void restoreBookingStateAfterLogin() {
+    try {
+      final bookingData = Get.find<Map<String, dynamic>>(tag: 'pending_booking');
+      if (bookingData['returnFromLogin'] == true) {
+        Get.toNamed(AppRoutes.unifiedBooking, arguments: bookingData);
+        Get.delete<Map<String, dynamic>>(tag: 'pending_booking');
+      }
+    } catch (e) {
+      print('No pending booking data found: $e');
+    }
+  }
+
+  // ------------------------ FINAL STEP ------------------------
+
+  void onDone() {
+    Get.back(); // Close booking page
+  }
+
+  void onBookMore() {
+    currentStep.value = 0; // Reset to first step
+  }
+}

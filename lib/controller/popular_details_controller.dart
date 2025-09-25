@@ -420,28 +420,28 @@ class DetailsController extends GetxController {
         image: AppAssets.rent1,
         price: '₹799',
         discount: AppStrings.discount30Off,
-        description: 'Beautiful designer lehenga for special occasions',
+        description: AppStrings.designerLehengaDesc,
       ),
       ServiceCategoryModel(
         name: AppStrings.bridalLehenga,
         image: AppAssets.rent2,
         price: '₹1099',
         discount: AppStrings.discount25Off,
-        description: 'Elegant bridal lehenga with intricate work',
+        description: AppStrings.bridalLehengaDesc,
       ),
       ServiceCategoryModel(
         name: AppStrings.partyLehenga,
         image: AppAssets.rent3,
         price: '₹999',
         discount: AppStrings.discount20Off,
-        description: 'Stylish party wear lehenga',
+        description: AppStrings.partyLehengaDesc,
       ),
       ServiceCategoryModel(
         name: AppStrings.festivalLehenga,
         image: AppAssets.rent4,
         price: '₹699',
         discount: null,
-        description: 'Traditional festival lehenga',
+        description: AppStrings.festivalLehengaDesc,
       ),
     ],
     AppStrings.sareeRental: [
@@ -450,28 +450,28 @@ class DetailsController extends GetxController {
         image: AppAssets.rent1,
         price: '₹799',
         discount: AppStrings.discount15Off,
-        description: 'Premium silk saree for formal events',
+        description: AppStrings.silkSareeDesc,
       ),
       ServiceCategoryModel(
         name: AppStrings.banarasiSaree,
         image: AppAssets.rent2,
         price: '₹1099',
         discount: AppStrings.discount20Off,
-        description: 'Authentic Banarasi silk saree',
+        description: AppStrings.banarasiSareeDesc,
       ),
       ServiceCategoryModel(
         name: AppStrings.georgetteSaree,
         image: AppAssets.rent3,
         price: '₹999',
         discount: null,
-        description: 'Lightweight georgette saree',
+        description: AppStrings.georgetteSareeDesc,
       ),
       ServiceCategoryModel(
         name: AppStrings.chiffonSaree,
         image: AppAssets.rent4,
         price: '₹699',
         discount: AppStrings.discount10Off,
-        description: 'Elegant chiffon saree',
+        description: AppStrings.chiffonSareeDesc,
       ),
     ],
     AppStrings.gownRental: [
@@ -480,28 +480,28 @@ class DetailsController extends GetxController {
         image: AppAssets.rent1,
         price: '₹799',
         discount: AppStrings.discount25Off,
-        description: 'Glamorous evening gown for special events',
+        description: AppStrings.eveningGownDesc,
       ),
       ServiceCategoryModel(
         name: AppStrings.cocktailDress,
         image: AppAssets.rent2,
         price: '₹1099',
         discount: AppStrings.discount20Off,
-        description: 'Chic cocktail dress for parties',
+        description: AppStrings.cocktailDressDesc,
       ),
       ServiceCategoryModel(
         name: AppStrings.promDress,
         image: AppAssets.rent3,
         price: '₹999',
         discount: null,
-        description: 'Beautiful prom dress',
+        description: AppStrings.promDressDesc,
       ),
       ServiceCategoryModel(
         name: AppStrings.weddingGown,
         image: AppAssets.rent4,
         price: '₹699',
         discount: AppStrings.discount30Off,
-        description: 'Elegant wedding gown',
+        description: AppStrings.weddingGownDesc,
       ),
     ],
     AppStrings.suitRental: [
@@ -510,28 +510,28 @@ class DetailsController extends GetxController {
         image: AppAssets.rent1,
         price: '₹799',
         discount: AppStrings.discount15Off,
-        description: 'Professional formal suit',
+        description: AppStrings.formalSuitDesc,
       ),
       ServiceCategoryModel(
         name: AppStrings.tuxedo,
         image: AppAssets.rent2,
         price: '₹1099',
         discount: AppStrings.discount20Off,
-        description: 'Classic tuxedo for formal events',
+        description: AppStrings.tuxedoDesc,
       ),
       ServiceCategoryModel(
         name: AppStrings.weddingSuit,
         image: AppAssets.rent3,
         price: '₹999',
         discount: null,
-        description: 'Elegant wedding suit',
+        description: AppStrings.weddingSuitDesc,
       ),
       ServiceCategoryModel(
         name: AppStrings.businessSuit,
         image: AppAssets.rent4,
         price: '₹699',
         discount: AppStrings.discount10Off,
-        description: 'Professional business suit',
+        description: AppStrings.businessSuitDesc,
       ),
     ],
   };
@@ -559,7 +559,7 @@ class DetailsController extends GetxController {
       } else if (arguments is PopularModel) {
         final salonData = arguments;
         currentItemId = salonData.id;
-        isBoutique.value = salonData.category == 'boutique';
+        isBoutique.value = salonData.category == AppStrings.boutiqueType;
         isFavorite.value = favoriteIds.contains(currentItemId ?? '');
 
         // Create business details model
@@ -590,23 +590,40 @@ class DetailsController extends GetxController {
       discountText = args.offerText;
       description = args.description;
     } else if (args is Map) {
-      final map = args as Map;
+      final map = args;
       currentPrice = (map['price'] as double?) ?? 0;
       oldPrice = map['oldPrice'] as double?;
       discountText = map['offerText'] as String?;
       description = map['description'] as String?;
     } else if (args is PopularModel) {
-      // PopularModel doesn't carry rent-specific price/discount; fallback to promotions
+      // Use rent-specific fields from PopularModel when available
+      if (args.price != null) {
+        currentPrice = args.price!.toDouble();
+      }
+      // Try to derive discount text from PopularModel.discount if present
+      if ((discountText == null || discountText.isEmpty) && args.discount.isNotEmpty) {
+        discountText = args.discount;
+      }
+      // No explicit old price in PopularModel; compute from discount if possible
+      if (discountText != null && currentPrice > 0) {
+        final m = RegExp(r'(\d+)%').firstMatch(discountText);
+        if (m != null) {
+          final pct = double.tryParse(m.group(1)!) ?? 0;
+          if (pct > 0 && pct < 90) {
+            oldPrice = currentPrice / (1 - pct / 100.0);
+          }
+        }
+      }
     }
 
     if (currentPrice == 0 || discountText == null) {
       final promo = details.promotions.isNotEmpty ? details.promotions.first : null;
       if (promo != null) {
         final priceNum = promo.price;
-        if (priceNum is num) currentPrice = priceNum.toDouble();
+        currentPrice = priceNum.toDouble();
         discountText = discountText ?? promo.discount;
-        if (oldPrice == null && discountText != null && currentPrice > 0) {
-          final m = RegExp(r'(\d+)%').firstMatch(discountText!);
+        if (oldPrice == null && currentPrice > 0) {
+          final m = RegExp(r'(\d+)%').firstMatch(discountText);
           if (m != null) {
             final pct = double.tryParse(m.group(1)!) ?? 0;
             if (pct > 0 && pct < 90) {
@@ -939,7 +956,7 @@ class DetailsController extends GetxController {
   // Check if current business is rent category
   bool get isRentCategory {
     final details = businessDetails.value;
-    return details?.category == 'rent';
+    return details?.category == AppStrings.rentType;
   }
 
   void onTitleTapped() {
@@ -949,15 +966,15 @@ class DetailsController extends GetxController {
     final List<BranchModel> branches = details.branches ?? [
       BranchModel(
         id: '${details.id}-1',
-        name: '${details.title} - Main Branch',
+        name: '${details.title} - ${AppStrings.mainBranch}',
         address: details.location,
         distance: AppStrings.oneKmSarthanaSurat,
         rating: 4.5,
       ),
       BranchModel(
         id: '${details.id}-2',
-        name: '${details.title} - City Center',
-        address: 'City Center, Surat',
+        name: '${details.title} - ${AppStrings.cityCenterBranch}',
+        address: AppStrings.cityCenterSurat,
         distance: AppStrings.twoKmMottaVarachhaSurat,
         rating: 5.5,
       ),
@@ -966,9 +983,11 @@ class DetailsController extends GetxController {
     Get.bottomSheet(
       BranchesBottomSheet(
         branches: branches,
-        title: '${details.title} Branches',
+        title: '${details.title} ${AppStrings.branchSuffix}',
       ),
       isScrollControlled: true,
     );
   }
 }
+
+

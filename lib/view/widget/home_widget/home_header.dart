@@ -67,7 +67,7 @@ class HomeHeader extends StatelessWidget {
             child: Image.asset(AppAssets.plus, height: AppSizes.spacing10),
           ),
           Positioned(
-            bottom: AppSizes.size80,
+            bottom: AppSizes.size90,
             left: AppSizes.size180,
             child: Image.asset(AppAssets.bubble, height: AppSizes.spacing12),
           ),
@@ -218,6 +218,7 @@ class HomeHeader extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     controller: controller.searchController,
+                    cursorColor: AppColors.primary,
                     decoration: InputDecoration(
                       hintText: AppStrings.searchBridalMakeup,
                       border: InputBorder.none,

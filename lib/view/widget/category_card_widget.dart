@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_text_style.dart';
 import '../../constants/app_sizes.dart';
@@ -37,6 +37,7 @@ class CategoryCardWidget extends StatelessWidget {
                   width: double.infinity,
                   height: MediaQuery.of(context).size.height * 0.18, // 18% of screen height
                   fit: BoxFit.cover,
+                  cacheHeight: 300, // Reduce memory usage
                 ),
               ),
               // Gradient Overlay at bottom

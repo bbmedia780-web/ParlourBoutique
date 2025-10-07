@@ -28,7 +28,7 @@ class BookingController extends GetxController with GetSingleTickerProviderState
       address:AppStrings.theBeautyRoomAdd,
       type: AppStrings.parlourType,
     ),
-    BookingServiceModel(
+    /*BookingServiceModel(
       image: AppAssets.boutique1,
       title: AppStrings.zivaBridal,
       subtitle: AppStrings.westernWear,
@@ -43,7 +43,7 @@ class BookingController extends GetxController with GetSingleTickerProviderState
       price: 145.00,
       address:AppStrings.theBeautyRoomAdd,
       type: AppStrings.boutiqueType,
-    ),
+    ),*/
     BookingServiceModel(
       image: AppAssets.rent1,
       title: AppStrings.fashionRentals,

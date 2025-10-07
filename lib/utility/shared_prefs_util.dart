@@ -13,6 +13,7 @@ class SharedPrefsUtil {
   static const String keyUserEmail = 'user_email';
   static const String keyUserGender = 'user_gender';
   static const String keyUserDob = 'user_dob';
+  static const String keyUserImage = 'user_image';
   static const String keyProfileCompleted = 'profile_completed';
   static const String keyIsLoggedIn = 'is_logged_in';
   static const String keyLoginTime = 'login_time';
@@ -32,6 +33,7 @@ class SharedPrefsUtil {
       prefs.remove(keyUserEmail),
       prefs.remove(keyUserGender),
       prefs.remove(keyUserDob),
+      prefs.remove(keyUserImage),
       prefs.remove(keyProfileCompleted),
       prefs.remove(keyIsLoggedIn),
       prefs.remove(keyLoginTime),

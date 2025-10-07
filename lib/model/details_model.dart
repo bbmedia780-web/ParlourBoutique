@@ -196,7 +196,7 @@ class BusinessDetailsModel {
       description: description ?? this.description,
       promotions: promotions ?? this.promotions,
       servicesByCategory: servicesByCategory ?? this.servicesByCategory,
-      branches: branches ?? this.branches,
+      branches: branches ?? branches,
     );
   }
 }

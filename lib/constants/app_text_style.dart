@@ -308,4 +308,5 @@ class AppTextStyles {
     fontSize: AppSizes.bodySmall,
     fontWeight: FontWeight.w600,
   );
+
 }

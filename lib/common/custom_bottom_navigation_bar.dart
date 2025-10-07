@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stylish_bottom_bar/stylish_bottom_bar.dart';
@@ -70,7 +71,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
     required int index,
   }) {
     final isSelected = selectedIndex == index;
-    
+
     return BottomBarItem(
       icon: Image.asset(
         icon,
@@ -86,7 +87,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
       ),
       title: Text(
         title,
-        style: isSelected 
+        style: isSelected
             ? AppTextStyles.priceText
             : AppTextStyles.hintText,
       ),

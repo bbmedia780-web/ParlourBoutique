@@ -24,8 +24,7 @@ class LanguageCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell
-(
+    return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppSizes.buttonRadius),
       child: Container(
@@ -40,10 +39,7 @@ class LanguageCardWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    language.name,
-                    style: AppTextStyles.profilePageText,
-                  ),
+                  Text(language.name, style: AppTextStyles.profilePageText),
                 ],
               ),
             ),

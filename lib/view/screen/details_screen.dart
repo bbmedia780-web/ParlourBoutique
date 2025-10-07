@@ -21,10 +21,10 @@ class DetailsScreen extends StatelessWidget {
       backgroundColor: AppColors.white,
       appBar: controller.isRentCategory
           ? AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: AppColors.white,
               elevation: 0,
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios, color: Colors.black),
+                icon: Icon(Icons.arrow_back_ios, color: AppColors.black),
                 onPressed: controller.onBackPressed,
               ),
               title: Text(AppStrings.details, style: AppTextStyles.appBarText),
@@ -325,14 +325,20 @@ class DetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('DEBUG: DetailsScreen build called');
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: controller.isRentCategory ? _buildRentAppBar() : null,
       body: Obx(() {
         final businessDetails = controller.businessDetails.value;
+        print('DEBUG: DetailsScreen Obx - businessDetails: $businessDetails');
 
-        if (businessDetails == null) return const _LoadingView();
+        if (businessDetails == null) {
+          print('DEBUG: Showing loading view');
+          return const _LoadingView();
+        }
 
+        print('DEBUG: Showing details layout');
         return controller.isRentCategory
             ? _RentDetailsLayout(controller: controller, details: businessDetails)
             : _BusinessDetailsLayout(controller: controller, details: businessDetails);
@@ -469,7 +475,7 @@ class _RentDetailsLayout extends StatelessWidget {
   Widget _buildDiscount() {
     final discount = controller.rentDiscountText.value;
     if (discount == null || discount.isEmpty) return const SizedBox();
-    return Text('${AppStrings.offerLabel} $discount', style: AppTextStyles.cardTitle);
+    return Text('${AppStrings.offerLabel} $discount', style: AppTextStyles.captionTitle);
   }
 
   Widget _buildRating() => Row(
@@ -477,7 +483,7 @@ class _RentDetailsLayout extends StatelessWidget {
       Image.asset(AppAssets.star, height: AppSizes.spacing14),
       const SizedBox(width: AppSizes.spacing6),
       Text('${details.rating} ${AppStrings.reviewsCount(90)}',
-          style: AppTextStyles.cardTitle),
+          style: AppTextStyles.captionTitle),
     ],
   );
 
@@ -536,7 +542,7 @@ class _BusinessDetailsLayout extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSizes.spacing24),
                 ],
-                _CategorySection(
+                Obx(() => _CategorySection(
                   title: "Category",
                   widget: CategoryTabWidget(
                     categories: controller.getCurrentCategories(),
@@ -544,7 +550,7 @@ class _BusinessDetailsLayout extends StatelessWidget {
                     onCategorySelected: controller.onServiceCategorySelected,
                     useSegmentedStyle: controller.isBoutique.value,
                   ),
-                ),
+                )),
                 const SizedBox(height: AppSizes.spacing24),
                 _ServicesGrid(controller: controller),
               ],
@@ -609,24 +615,26 @@ class _ServicesGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final services = controller.getCurrentItems();
-    return GridView.builder(
-      padding: EdgeInsets.zero,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: AppSizes.size250,
-        childAspectRatio: 0.95,
-        crossAxisSpacing: AppSizes.spacing8,
-        mainAxisSpacing: AppSizes.spacing8,
-      ),
-      itemCount: services.length,
-      itemBuilder: (context, index) {
-        return ServiceCardWidget(
-          service: services[index],
-          onPressed: () => controller.onServiceItemPressed(services[index]),
-        );
-      },
-    );
+    return Obx(() {
+      final services = controller.getCurrentItems();
+      return GridView.builder(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: AppSizes.size250,
+          childAspectRatio: 0.95,
+          crossAxisSpacing: AppSizes.spacing8,
+          mainAxisSpacing: AppSizes.spacing8,
+        ),
+        itemCount: services.length,
+        itemBuilder: (context, index) {
+          return ServiceCardWidget(
+            service: services[index],
+            onPressed: () => controller.onServiceItemPressed(services[index]),
+          );
+        },
+      );
+    });
   }
 }

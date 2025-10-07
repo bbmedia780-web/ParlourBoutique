@@ -7,7 +7,7 @@ import '../constants/app_text_style.dart';
 
 class AppButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool isPrimary;
   final double? width;
   final double? height;
@@ -18,7 +18,7 @@ class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    this.onPressed,
     this.isPrimary = true,
     this.width,
     this.height,
@@ -30,7 +30,6 @@ class AppButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bgColor = isPrimary ? AppColors.primary : AppColors.mediumLightGray;
-    final textColor = isPrimary ? AppColors.white : AppColors.extraLightGrey;
 
     return SizedBox(
       width: width,

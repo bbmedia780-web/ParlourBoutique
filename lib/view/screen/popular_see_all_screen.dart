@@ -143,7 +143,7 @@ class PopularSeeAllScreen extends StatelessWidget {
       elevation: 0,
       leading: IconButton(
         onPressed: () => Get.back(),
-        icon: const Icon(
+        icon: Icon(
           Icons.arrow_back_ios_new,
           color: AppColors.black,
           size: AppSizes.spacing20,

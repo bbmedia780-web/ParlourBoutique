@@ -348,6 +348,7 @@ class AuthController extends GetxController {
   static const _kEmail = 'user_email';
   static const _kGender = 'user_gender';
   static const _kDob = 'user_dob';
+  static const _kImage = 'user_image';
   static const _kProfileDone = 'profile_completed';
   static const _kLoggedIn = 'is_logged_in';
   static const _kLoginTime = 'login_time';
@@ -367,6 +368,7 @@ class AuthController extends GetxController {
   final userEmail = ''.obs;
   final userGender = ''.obs;
   final userDob = ''.obs;
+  final userImage = ''.obs;
   final profileCompleted = false.obs;
 
   // ------------------ 🚀 Lifecycle ------------------
@@ -392,6 +394,7 @@ class AuthController extends GetxController {
     userEmail.value = prefs.getString(_kEmail) ?? '';
     userGender.value = prefs.getString(_kGender) ?? '';
     userDob.value = prefs.getString(_kDob) ?? '';
+    userImage.value = prefs.getString(_kImage) ?? '';
     profileCompleted.value = prefs.getBool(_kProfileDone) ?? false;
   }
 
@@ -407,6 +410,7 @@ class AuthController extends GetxController {
     String email = '',
     String gender = '',
     String dob = '',
+    String image = '',
     bool profileDone = false,
   }) async {
     final prefs = await SharedPreferences.getInstance();
@@ -423,6 +427,7 @@ class AuthController extends GetxController {
       prefs.setString(_kEmail, email),
       prefs.setString(_kGender, gender),
       prefs.setString(_kDob, dob),
+      prefs.setString(_kImage, image),
       prefs.setBool(_kProfileDone, profileDone),
     ]);
 
@@ -438,6 +443,7 @@ class AuthController extends GetxController {
     userEmail.value = email;
     userGender.value = gender;
     userDob.value = dob;
+    userImage.value = image;
     profileCompleted.value = profileDone;
   }
 
@@ -455,7 +461,7 @@ class AuthController extends GetxController {
         email: data.userDetails?.email ?? '',
         gender: data.userDetails?.gender ?? '',
         dob: data.userDetails?.dateOfBirth ?? '',
-        profileDone: data.profileCompleted ?? false,
+        profileDone: data.profileCompleted,
       );
       return true;
     } catch (_) {
@@ -469,11 +475,13 @@ class AuthController extends GetxController {
     required String email,
     required String gender,
     required String dob,
+    String image = '',
   }) async {
     userName.value = name;
     userEmail.value = email;
     userGender.value = gender;
     userDob.value = dob;
+    userImage.value = image;
     profileCompleted.value = true;
 
     final prefs = await SharedPreferences.getInstance();
@@ -482,6 +490,7 @@ class AuthController extends GetxController {
       prefs.setString(_kEmail, email),
       prefs.setString(_kGender, gender),
       prefs.setString(_kDob, dob),
+      prefs.setString(_kImage, image),
       prefs.setBool(_kProfileDone, true),
     ]);
   }
@@ -502,6 +511,7 @@ class AuthController extends GetxController {
         email: userEmail.value,
         gender: userGender.value,
         dob: userDob.value,
+        image: userImage.value,
         profileDone: profileCompleted.value,
       );
       return true;
@@ -528,6 +538,7 @@ class AuthController extends GetxController {
       userEmail.value = '';
       userGender.value = '';
       userDob.value = '';
+      userImage.value = '';
       profileCompleted.value = false;
 
       if (Get.isRegistered<SignInController>()) {

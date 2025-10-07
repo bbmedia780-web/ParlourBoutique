@@ -311,6 +311,10 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
   VideoPlayerController? currentVideoController;
   final RxBool isMuted = false.obs;
 
+  // Memory optimization: Only keep video controllers for nearby reels
+  static const int _maxVideoControllersInMemory = 3; // Current + 1 before + 1 after
+  final Set<String> _initializedReelIds = {}; // Track which reels have been initialized
+
   // Pagination
   int currentPage = 1;
   final int pageSize = 10;
@@ -350,9 +354,14 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
 
     // Dispose all video controllers
     for (var controller in videoControllers.values) {
-      controller.dispose();
+      try {
+        controller.dispose();
+      } catch (e) {
+        print('Error disposing video controller: $e');
+      }
     }
     videoControllers.clear();
+    _initializedReelIds.clear();
     currentVideoController = null;
 
   }
@@ -398,12 +407,69 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
       controller.setLooping(true);
       controller.setVolume(isMuted.value ? 0.0 : 1.0);
       videoControllers[reelId] = controller;
+      _initializedReelIds.add(reelId);
     } catch (e) {
       print('Failed to initialize video controller for $reelId: $e');
     }
   }
 
-  /// ✅ Play video at specific index
+  /// ✅ Dispose video controller for a specific reel
+  Future<void> _disposeVideoController(String reelId) async {
+    final controller = videoControllers[reelId];
+    if (controller != null) {
+      try {
+        await controller.pause();
+        await controller.dispose();
+        videoControllers.remove(reelId);
+        _initializedReelIds.remove(reelId);
+      } catch (e) {
+        print('Error disposing video controller for $reelId: $e');
+      }
+    }
+  }
+
+  /// ✅ Clean up video controllers that are far from current index
+  Future<void> _cleanupDistantVideoControllers(int currentIndex) async {
+    if (reelsList.isEmpty) return;
+
+    final reelsToKeep = <String>{};
+    
+    // Keep current and adjacent videos
+    for (int i = currentIndex - 1; i <= currentIndex + 1; i++) {
+      if (i >= 0 && i < reelsList.length) {
+        final reelId = reelsList[i].id;
+        if (reelId != null) {
+          reelsToKeep.add(reelId);
+        }
+      }
+    }
+
+    // Dispose controllers not in the keep list
+    final controllersToDispose = videoControllers.keys
+        .where((reelId) => !reelsToKeep.contains(reelId))
+        .toList();
+
+    for (final reelId in controllersToDispose) {
+      await _disposeVideoController(reelId);
+    }
+  }
+
+  /// ✅ Preload videos near current index
+  Future<void> _preloadAdjacentVideos(int currentIndex) async {
+    if (reelsList.isEmpty) return;
+
+    // Load current and adjacent videos
+    for (int i = currentIndex - 1; i <= currentIndex + 1; i++) {
+      if (i >= 0 && i < reelsList.length) {
+        final reel = reelsList[i];
+        if (reel.id != null && !_initializedReelIds.contains(reel.id)) {
+          await initializeVideoController(reel.id!, reel.videoUrl);
+        }
+      }
+    }
+  }
+
+  /// ✅ Play video at specific index with lazy loading
   Future<void> playVideoAtIndex(int index) async {
     if (index < 0 || index >= reelsList.length) return;
 
@@ -412,6 +478,12 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
 
     // Pause all other videos
     _pauseAllVideos();
+
+    // Preload current and adjacent videos
+    await _preloadAdjacentVideos(index);
+
+    // Clean up distant video controllers to free memory
+    await _cleanupDistantVideoControllers(index);
 
     // Play the current video
     final reel = reelsList[index];
@@ -501,13 +573,15 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
     });
   }
 
-  /// ✅ Load reels data and initialize videos
+  /// ✅ Load reels data with lazy video initialization
   Future<void> _loadReelsData() async {
     final dummyReels = _generateDummyReels();
     reelsList.assignAll(dummyReels);
 
-    // Initialize video controllers for all reels
-    await _initializeAllVideoControllers(dummyReels);
+    // Only initialize the first video and its adjacent ones (lazy loading)
+    if (dummyReels.isNotEmpty) {
+      await _preloadAdjacentVideos(0);
+    }
 
     // Auto-play the first video only when Reels tab is active
     if (dummyReels.isNotEmpty && isActiveTab.value) {
@@ -515,13 +589,6 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
     }
 
     _setLoadingState(false);
-  }
-
-  /// ✅ Initialize all video controllers
-  Future<void> _initializeAllVideoControllers(List<ReelsModel> reels) async {
-    for (final reel in reels) {
-      await initializeVideoController(reel.id!, reel.videoUrl);
-    }
   }
 
   /// ✅ Set loading state

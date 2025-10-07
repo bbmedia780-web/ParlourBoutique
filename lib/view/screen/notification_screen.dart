@@ -22,7 +22,7 @@ class NotificationScreen extends StatelessWidget {
         backgroundColor: AppColors.white,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
             color: AppColors.black,
             size: AppSizes.spacing20,

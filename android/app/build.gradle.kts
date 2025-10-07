@@ -25,6 +25,14 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = 3
         versionName = 1.3.toString()
+        
+        // Memory optimization to prevent OOM crashes
+        multiDexEnabled = true
+    }
+    
+    // Enable large heap for better memory management
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {

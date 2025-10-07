@@ -12,8 +12,8 @@ import 'home_page_screen.dart';
 class MainNavigationScreen extends StatelessWidget {
   MainNavigationScreen({super.key});
 
-  final MainNavigationController controller =
-  Get.put(MainNavigationController(), permanent: true);
+  //final MainNavigationController controller = Get.put(MainNavigationController(), permanent: true);
+  final MainNavigationController controller = Get.find<MainNavigationController>();
 
   final List<Widget> _screens = [
     HomeScreen(),
@@ -26,7 +26,7 @@ class MainNavigationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+        backgroundColor: AppColors.white,
       extendBody: true,
       body: Obx(() {
         int selectedIndex = controller.selectedBottomBarIndex.value;
@@ -93,6 +93,6 @@ class MainNavigationScreen extends StatelessWidget {
           onItemTapped: controller.onBottomNavItemTapped,
         ),
       ),
-    );
+      );
   }
 }

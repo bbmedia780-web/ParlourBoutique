@@ -106,7 +106,7 @@ class PaymentHistoryPageView extends StatelessWidget {
   Widget _buildGroupHeader(String groupDate) {
     return Text(
       groupDate,
-      style: AppTextStyles.cardTitle,
+      style: AppTextStyles.captionTitle,
     );
   }
 

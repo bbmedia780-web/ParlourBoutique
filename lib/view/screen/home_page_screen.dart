@@ -10,6 +10,7 @@ import '../../constants/app_text_style.dart';
 import '../../controller/home_controller/home_controller.dart';
 import '../../controller/home_controller/unified_service_data_controller.dart';
 import '../../controller/auth_controller/auth_controller.dart';
+import '../../controller/theme_controller.dart';
 import '../../view/bottomsheet/filter_bottom_sheet.dart';
 import '../../controller/home_controller/filter_controller.dart';
 import '../widget/home_page_service_card_widget.dart';
@@ -27,14 +28,14 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.getBackgroundColor(context),
       body: Stack(
         children: [
             CustomScrollView(
               controller: controller.scrollController,
               slivers: [
             SliverAppBar(
-              backgroundColor: AppColors.white,
+              backgroundColor: AppColors.getBackgroundColor(context),
               automaticallyImplyLeading: false,
               pinned: true,
               floating: false,

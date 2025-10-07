@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:parlour_app/view/widget/parlour_service_card_widget.dart';
 import 'package:parlour_app/view/widget/rent_service_card_widget.dart';
-import '../../constants/app_assets.dart';
-import '../../constants/app_colors.dart';
-import '../../constants/app_sizes.dart';
 import '../../constants/app_strings.dart';
-import '../../constants/app_text_style.dart';
 import '../../model/unified_data_model.dart';
-import '../../routes/app_routes.dart';
 
 /*
 class UnifiedServiceCard extends StatelessWidget {

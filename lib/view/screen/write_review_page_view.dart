@@ -22,7 +22,7 @@ class WriteReviewScreen extends StatelessWidget {
         title: Text(AppStrings.writeReview, style: AppTextStyles.appBarText),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios_new,
             color: AppColors.black,
             size: AppSizes.spacing20,

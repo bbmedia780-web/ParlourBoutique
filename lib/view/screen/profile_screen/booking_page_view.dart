@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../constants/app_assets.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sizes.dart';
 import '../../../constants/app_strings.dart';
@@ -109,7 +108,7 @@ class BookingPageView extends StatelessWidget {
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: AppSizes.size250,
-          childAspectRatio: 0.88,
+          childAspectRatio: 0.85,
           mainAxisSpacing: AppSizes.spacing8,
           crossAxisSpacing: AppSizes.spacing8,
         ),

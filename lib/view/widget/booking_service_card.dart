@@ -72,7 +72,7 @@ class BookingServiceCard extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    '\₹${service.price.toStringAsFixed(2)}',
+                    '₹${service.price.toStringAsFixed(2)}',
                     style: AppTextStyles.priceText
                   ),
                   const Spacer(),

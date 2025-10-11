@@ -1,21 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../constants/app_colors.dart';
 import '../../constants/app_strings.dart';
 import '../../services/auth_services.dart';
 import '../../utility/global.dart';
 import '../../view/bottomsheet/otp_verification_bottom_sheet.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'otp_verification_controller.dart';
 
-
-class SignInController extends GetxController{
+/// SignInController - Manages sign-in screen logic
+///
+/// This controller handles the mobile number input and OTP sending
+/// functionality for user authentication. It follows the MVVM pattern
+/// where business logic is separated from the UI.
+///
+/// Responsibilities:
+/// - Validate mobile number input
+/// - Send OTP to the user's mobile
+/// - Show OTP verification bottom sheet
+/// - Handle loading states
+/// - Social login triggers (Facebook, Google, Apple)
+class SignInController extends GetxController {
+  // ==================== Dependencies ====================
+  /// Service for authentication API calls
   final AuthServices authServices = AuthServices();
+
+  // ==================== Controllers ====================
+  /// Text field controller for phone number input
   TextEditingController phoneController = TextEditingController();
+
+  // ==================== State ====================
+  /// Loading state for OTP sending
   final RxBool isLoading = false.obs;
-  // Auto-trigger disabled; OTP will be sent only on button tap
 
+  // ==================== Methods ====================
 
+  /// Sends OTP to the entered mobile number
+  ///
+  /// Validates the mobile number, shows loading state, makes API call,
+  /// and displays OTP verification bottom sheet on success.
+  ///
+  /// Validation:
+  /// - Mobile number should not be empty
+  /// - Mobile number should be at least 10 digits
   Future<void> sendOTP() async {
     if (isLoading.value) return; // prevent multiple API calls
     final mobile = phoneController.text.trim();
@@ -63,23 +91,36 @@ class SignInController extends GetxController{
     }
   }
 
-  // No onChanged auto-send; validation handled on button tap
+  // ==================== Social Login Methods ====================
 
+  /// Handles Facebook login
+  ///
+  /// TODO: Implement Facebook SDK integration
   void loginWithFacebook() {
-    // Add your Facebook login logic here
+    // Implement Facebook login logic
   }
 
+  /// Handles Google login
+  ///
+  /// TODO: Implement Google Sign-In integration
   void loginWithGoogle() {
-    // Add your Google login logic here
+    // Implement Google login logic
   }
 
+  /// Handles Apple login
+  ///
+  /// TODO: Implement Sign in with Apple
   void loginWithApple() {
-    // Add your Apple login logic here
+    // Implement Apple login logic
   }
 
+  // ==================== Lifecycle ====================
+
+  /// Cleanup resources when controller is removed
   @override
   void onClose() {
     phoneController.dispose();
     super.onClose();
   }
 }
+

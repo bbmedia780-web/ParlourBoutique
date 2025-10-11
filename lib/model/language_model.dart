@@ -1,3 +1,6 @@
+/// Language model for multi-language support
+///
+/// Represents a language option with ID, English name, native name, and selection state
 class LanguageModel {
   final String id;
   final String name;
@@ -11,6 +14,27 @@ class LanguageModel {
     this.isSelected = false,
   });
 
+  /// Creates LanguageModel from JSON
+  factory LanguageModel.fromJson(Map<String, dynamic> json) {
+    return LanguageModel(
+      id: json['id']?.toString() ?? '',
+      name: json['name']?.toString() ?? '',
+      nativeName: json['nativeName']?.toString() ?? '',
+      isSelected: json['isSelected'] == true,
+    );
+  }
+
+  /// Converts LanguageModel to JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'nativeName': nativeName,
+      'isSelected': isSelected,
+    };
+  }
+
+  /// Creates a copy of LanguageModel with updated fields
   LanguageModel copyWith({
     String? id,
     String? name,
@@ -24,4 +48,7 @@ class LanguageModel {
       isSelected: isSelected ?? this.isSelected,
     );
   }
+
+  @override
+  String toString() => 'LanguageModel(id: $id, name: $name, isSelected: $isSelected)';
 }

@@ -47,13 +47,14 @@ class UnifiedServiceDataController extends GetxController {
   }
 
   // -------------------- PARLOUR DATA --------------------
+/*
   void _loadParlourData() {
     dataList.value = [
       UnifiedDataModel(
         id: 'parlour_1',
-        title: AppStrings.meeraBeautyParlour,
+        title: AppStrings.bhavinsBeautySalon,
         subtitle: AppStrings.trendyCuts,
-        location: AppStrings.oneKmSarthanaSurat,
+        location: AppStrings.bhavinsBeautySalonAddress,
         rating: AppStrings.rating38120Reviews,
         image: AppAssets.beauty1,
         discount: AppStrings.discount20Off,
@@ -63,9 +64,9 @@ class UnifiedServiceDataController extends GetxController {
       ),
       UnifiedDataModel(
         id: 'parlour_2',
-        title: AppStrings.rasmiBeauty,
+        title: AppStrings.cherHairAndBeautyLounge,
         subtitle: AppStrings.bridalMakeup,
-        location: AppStrings.twoKmMottaVarachhaSurat,
+        location: AppStrings.cherHairAndBeautyLoungeAddress,
         rating: AppStrings.rating38120Reviews,
         image: AppAssets.beauty2,
         discount: AppStrings.discount15Off,
@@ -75,9 +76,9 @@ class UnifiedServiceDataController extends GetxController {
       ),
       UnifiedDataModel(
         id: 'parlour_3',
-        title: AppStrings.glowShineSalon,
+        title: AppStrings.enrichBeauty,
         subtitle: AppStrings.facialHairCuts,
-        location: AppStrings.location15kmAdajan,
+        location: AppStrings.enrichSalonAddress1,
         rating: AppStrings.rating47_210,
         image: AppAssets.beauty1,
         discount: AppStrings.discount10OffFull,
@@ -87,9 +88,9 @@ class UnifiedServiceDataController extends GetxController {
       ),
       UnifiedDataModel(
         id: 'parlour_4',
-        title: AppStrings.blushBeautyHub,
+        title: AppStrings.missGlamourBeautyParlour,
         subtitle: AppStrings.makeupStudio,
-        location: AppStrings.location21kmVesu,
+        location: AppStrings.missGlamourBeautyParlourAddress,
         rating: AppStrings.rating46_180,
         image: AppAssets.beauty2,
         discount: AppStrings.discount15OffFull,
@@ -99,9 +100,9 @@ class UnifiedServiceDataController extends GetxController {
       ),
       UnifiedDataModel(
         id: 'parlour_5',
-        title: AppStrings.urbanCuts,
+        title: AppStrings.looksSalon,
         subtitle: AppStrings.trendyHairCutSpa,
-        location: AppStrings.location30kmVarachha,
+        location: AppStrings.looksSalonAddress,
         rating: AppStrings.rating45_95,
         image: AppAssets.beauty1,
         discount: AppStrings.discount20OffFull,
@@ -111,9 +112,9 @@ class UnifiedServiceDataController extends GetxController {
       ),
       UnifiedDataModel(
         id: 'parlour_6',
-        title: AppStrings.eliteMakeover,
+        title: AppStrings.theRedScissorsHairAndBeautySalon,
         subtitle: AppStrings.bridalMakeupFacial,
-        location: AppStrings.location08kmKatargam,
+        location: AppStrings.theRedScissorsHairAndBeautySalonAddress1,
         rating: AppStrings.rating48_320,
         image: AppAssets.beauty2,
         discount: AppStrings.discount25OffFull,
@@ -123,9 +124,9 @@ class UnifiedServiceDataController extends GetxController {
       ),
       UnifiedDataModel(
         id: 'parlour_7',
-        title: AppStrings.silkGlow,
+        title: AppStrings.ashaBeautyStudio,
         subtitle: AppStrings.waxingSpa,
-        location: AppStrings.location24kmPal,
+        location: AppStrings.ashaBeautyStudioAddress,
         rating: AppStrings.rating43_60,
         image: AppAssets.beauty1,
         discount: AppStrings.discount5OffFull,
@@ -135,6 +136,85 @@ class UnifiedServiceDataController extends GetxController {
       ),
     ];
   }
+*/
+
+  void _loadParlourData() {
+    dataList.value = [
+      UnifiedDataModel(
+        id: 'parlour_1',
+        title: AppStrings.bhavinsBeautySalon,
+        subtitle: AppStrings.trendyCuts,
+        location: AppStrings.bhavinsBeautySalonAddress,
+        rating: AppStrings.rating38120Reviews,
+        image: AppAssets.bhavinsBeautySalon,
+        discount: AppStrings.discount20Off,
+        isOpen: true,
+        type: AppStrings.parlourType,
+        isFavorite: favoriteIds.contains('parlour_1'),
+      ),
+      UnifiedDataModel(
+        id: 'parlour_2',
+        title: AppStrings.cherHairAndBeautyLounge,
+        subtitle: AppStrings.bridalMakeup,
+        location: AppStrings.cherHairAndBeautyLoungeAddress,
+        rating: AppStrings.rating38120Reviews,
+        image: AppAssets.cherHairAndBeautyLounge,
+        discount: AppStrings.discount15Off,
+        isOpen: false,
+        type: AppStrings.parlourType,
+        isFavorite: favoriteIds.contains('parlour_2'),
+      ),
+      UnifiedDataModel(
+        id: 'parlour_3',
+        title: AppStrings.enrichBeauty,
+        subtitle: AppStrings.facialHairCuts,
+        location: AppStrings.enrichSalonAddress1,
+        rating: AppStrings.rating47_210,
+        image: AppAssets.enrichSalon,
+        discount: AppStrings.discount10OffFull,
+        isOpen: true,
+        type: AppStrings.parlourType,
+        isFavorite: favoriteIds.contains('parlour_3'),
+      ),
+      UnifiedDataModel(
+        id: 'parlour_4',
+        title: AppStrings.missGlamourBeautyParlour,
+        subtitle: AppStrings.makeupStudio,
+        location: AppStrings.missGlamourBeautyParlourAddress,
+        rating: AppStrings.rating46_180,
+        image: AppAssets.missGlamourBeautyParlour,
+        discount: AppStrings.discount15OffFull,
+        isOpen: true,
+        type: AppStrings.parlourType,
+        isFavorite: favoriteIds.contains('parlour_4'),
+      ),
+      UnifiedDataModel(
+        id: 'parlour_5',
+        title: AppStrings.looksSalon,
+        subtitle: AppStrings.trendyHairCutSpa,
+        location: AppStrings.looksSalonAddress,
+        rating: AppStrings.rating45_95,
+        image: AppAssets.looksSalon,
+        discount: AppStrings.discount20OffFull,
+        isOpen: true,
+        type: AppStrings.parlourType,
+        isFavorite: favoriteIds.contains('parlour_5'),
+      ),
+      UnifiedDataModel(
+        id: 'parlour_7',
+        title: AppStrings.ashaBeautyStudio,
+        subtitle: AppStrings.waxingSpa,
+        location: AppStrings.ashaBeautyStudioAddress,
+        rating: AppStrings.rating43_60,
+        image: AppAssets.ashaBeautyStudio,
+        discount: AppStrings.discount5OffFull,
+        isOpen: false,
+        type: AppStrings.parlourType,
+        isFavorite: favoriteIds.contains('parlour_7'),
+      ),
+    ];
+  }
+
 
   // -------------------- BOUTIQUE DATA --------------------
   void _loadBoutiqueData() {

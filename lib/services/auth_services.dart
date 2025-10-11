@@ -1,14 +1,33 @@
 import 'package:dio/dio.dart';
-import '../model/auth/auth_otp_response.dart';
+import 'package:get/get.dart';
+
 import '../api/base_api.dart';
 import '../config/api_config.dart';
-import '../model/auth/auth_verify_response.dart';
-import 'package:get/get.dart';
 import '../controller/auth_controller/auth_controller.dart';
+import '../model/auth/auth_otp_response.dart';
+import '../model/auth/auth_verify_response.dart';
+import '../utility/api_error_handler.dart';
 
+/// AuthServices - Handles all authentication-related API calls
+///
+/// This service extends BaseApi to inherit Dio configuration and
+/// provides methods for:
+/// - Sending OTP
+/// - Verifying OTP
+/// - Resending OTP
+/// - Updating user profile
+/// - Logout
+/// - Token refresh
 class AuthServices extends BaseApi {
+  // ==================== OTP Operations ====================
 
-  /// send otp
+  /// Sends OTP to the specified mobile number
+  ///
+  /// Parameters:
+  /// - [mobile]: The mobile number to send OTP to
+  ///
+  /// Returns:
+  /// - [AuthOtpResponse] containing success status and message
   Future<AuthOtpResponse> sendOtp(String mobile) async {
     try {
       final response = await dio.post(
@@ -16,15 +35,22 @@ class AuthServices extends BaseApi {
         data: {'mobile': mobile},
         options: Options(contentType: Headers.jsonContentType),
       );
-      return AuthOtpResponse.fromJson(response.data);
 
+      return AuthOtpResponse.fromJson(response.data);
     } catch (error) {
-      final message = _mapDioError(error);
+      final message = ApiErrorHandler.handleError(error);
       return AuthOtpResponse(success: false, message: message, data: null);
     }
   }
 
-  /// ✅ Verify OTP API
+  /// Verifies the OTP sent to the mobile number
+  ///
+  /// Parameters:
+  /// - [mobile]: The mobile number
+  /// - [otp]: The OTP code to verify
+  ///
+  /// Returns:
+  /// - [AuthVerifyResponse] containing tokens and user data on success
   Future<AuthVerifyResponse> verifyOtp(String mobile, String otp) async {
     try {
       final response = await dio.post(
@@ -37,15 +63,19 @@ class AuthServices extends BaseApi {
       );
 
       return AuthVerifyResponse.fromJson(response.data);
-
     } catch (error) {
-      print('Debug Exception in verifyOtp: $error');
-      final message = _mapDioError(error);
+      final message = ApiErrorHandler.handleError(error);
       return AuthVerifyResponse(success: false, message: message, data: null);
     }
   }
 
-  /// Resend otp
+  /// Resends OTP to the specified mobile number
+  ///
+  /// Parameters:
+  /// - [mobile]: The mobile number to resend OTP to
+  ///
+  /// Returns:
+  /// - [AuthOtpResponse] containing success status and message
   Future<AuthOtpResponse> resendOtp(String mobile) async {
     try {
       final response = await dio.post(
@@ -53,16 +83,26 @@ class AuthServices extends BaseApi {
         data: {'mobile': mobile},
         options: Options(contentType: Headers.jsonContentType),
       );
-      return AuthOtpResponse.fromJson(response.data);
 
+      return AuthOtpResponse.fromJson(response.data);
     } catch (error) {
-      final message = _mapDioError(error);
+      final message = ApiErrorHandler.handleError(error);
       return AuthOtpResponse(success: false, message: message, data: null);
     }
   }
 
+  // ==================== Profile Operations ====================
 
-  /// Update user profile details for new users
+  /// Updates user profile details for new users
+  ///
+  /// Parameters:
+  /// - [fullName]: User's full name
+  /// - [email]: User's email address
+  /// - [gender]: User's gender
+  /// - [dateOfBirth]: User's date of birth
+  ///
+  /// Returns:
+  /// - [AuthVerifyResponse] with updated user data
   Future<AuthVerifyResponse> updateProfile({
     required String fullName,
     required String email,
@@ -71,9 +111,6 @@ class AuthServices extends BaseApi {
   }) async {
     try {
       final auth = Get.find<AuthController>();
-      print('🔧 Sending update profile API request...');
-      print('📋 Data: fullName=$fullName, email=$email, gender=$gender, dob=$dateOfBirth');
-      print('🔑 Auth Headers: ${auth.getAuthHeaders()}');
 
       final response = await dio.post(
         ApiConfig.completeProfile,
@@ -89,76 +126,65 @@ class AuthServices extends BaseApi {
         ),
       );
 
-      print('✅ API Response Status: ${response.statusCode}');
-      print('📊 API Response Body: ${response.data}');
-
       return AuthVerifyResponse.fromJson(response.data);
     } catch (error) {
-      print('Debug Exception in updateProfile: $error');
-      final message = _mapDioError(error);
+      final message = ApiErrorHandler.handleError(error);
       return AuthVerifyResponse(success: false, message: message, data: null);
     }
   }
 
-  /// Logout API
+  // ==================== Logout Operations ====================
+
+  /// Logs out the current user
+  ///
+  /// Sends logout request to server to invalidate tokens.
+  /// Even if API fails, local session should be cleared.
+  ///
+  /// Returns:
+  /// - [bool] indicating if logout was successful on server
   Future<bool> logout() async {
     try {
       final auth = Get.find<AuthController>();
+
       final response = await dio.post(
         ApiConfig.logout,
         data: {
-          // Sending tokens in body to be safe with PHP backend handlers
           'access_token': auth.accessToken.value,
           'refresh_token': auth.refreshToken.value,
         },
         options: Options(
           contentType: Headers.jsonContentType,
           headers: auth.getAuthHeaders(),
-          // Do not throw on non-2xx; we handle success boolean from body
           validateStatus: (_) => true,
         ),
       );
 
-      // Expecting { success: boolean, message: string, data: any }
+      // Parse response
       if (response.data is Map<String, dynamic>) {
         final map = response.data as Map<String, dynamic>;
         return map['success'] == true;
       }
+
       return response.statusCode == 200;
     } catch (error) {
-      // Even if API fails, we'll proceed to clear local session per guide
+      // API failed but we should still clear local session
       return false;
     }
   }
 
-  /// Check token validity
-/*
-  Future<bool> checkTokenStatus() async {
-    try {
-      final auth = Get.find<AuthController>();
-      final response = await dio.post(
-        ApiConfig.checkTokenStatus,
-        options: Options(
-          contentType: Headers.jsonContentType,
-          headers: auth.getAuthHeaders(),
-          validateStatus: (_) => true,
-        ),
-      );
-      if (response.data is Map<String, dynamic>) {
-        final map = response.data as Map<String, dynamic>;
-        return map['valid'] == true;
-      }
-      return response.statusCode == 200;
-    } catch (_) {
-      return false;
-    }
-  }
-*/
+  // ==================== Token Operations ====================
 
-  /// Refresh tokens
+  /// Refreshes authentication tokens using refresh token
+  ///
+  /// Called automatically when API returns 401 Unauthorized.
+  ///
+  /// Returns:
+  /// - [AuthVerifyResponse] with new tokens on success
+  /// - [null] if refresh failed
   Future<AuthVerifyResponse?> refreshTokens() async {
     try {
       final auth = Get.find<AuthController>();
+
       final response = await dio.post(
         ApiConfig.refreshToken,
         data: {
@@ -170,38 +196,18 @@ class AuthServices extends BaseApi {
           validateStatus: (_) => true,
         ),
       );
+
       if (response.data is Map<String, dynamic>) {
         final parsed = AuthVerifyResponse.fromJson(response.data);
         if (parsed.success && parsed.data != null) {
           return parsed;
         }
       }
+
       return null;
     } catch (_) {
       return null;
     }
   }
-
-
-  String _mapDioError(Object error) {
-    if (error is DioException) {
-      if (error.type == DioExceptionType.connectionTimeout ||
-          error.type == DioExceptionType.receiveTimeout ||
-          error.type == DioExceptionType.sendTimeout ||
-          error.type == DioExceptionType.connectionError) {
-        return 'Something went wrong. Please check your connection.';
-      }
-      try {
-        final data = error.response?.data;
-        if (data is Map<String, dynamic>) {
-          if (data['message'] is String && (data['message'] as String).isNotEmpty) {
-            return data['message'] as String;
-          }
-        }
-      } catch (_) {}
-      return error.message ?? 'Request failed';
-    }
-    return error.toString();
-  }
-
 }
+

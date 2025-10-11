@@ -30,10 +30,7 @@ class FavouriteScreen extends StatelessWidget {
           ),
           onPressed: () => controller.onBackPressed(),
         ),
-        title: Text(
-          AppStrings.favourite.tr,
-          style: AppTextStyles.appBarText,
-        ),
+        title: Text(AppStrings.favourite.tr, style: AppTextStyles.appBarText),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -44,11 +41,11 @@ class FavouriteScreen extends StatelessWidget {
               child: TabBarView(
                 controller: controller.tabController,
                 children: [
-                  _buildFavouriteTab(context,controller.allFavourites),
-                  _buildFavouriteTab(context,controller.parlourFavourites),
+                  _buildFavouriteTab(context, controller.allFavourites),
+                  _buildFavouriteTab(context, controller.parlourFavourites),
                   // Disabled for Phase 1: Boutique favourites tab
                   // _buildFavouriteTab(controller.boutiqueFavourites),
-                  _buildFavouriteTab(context,controller.rentFavourites),
+                  _buildFavouriteTab(context, controller.rentFavourites),
                 ],
               ),
             ),
@@ -93,16 +90,12 @@ class FavouriteScreen extends StatelessWidget {
           const SizedBox(height: AppSizes.spacing16),
           Text(
             AppStrings.noFavouritesYet.tr,
-            style: AppTextStyles.appBarText.copyWith(
-              color: AppColors.grey,
-            ),
+            style: AppTextStyles.appBarText.copyWith(color: AppColors.grey),
           ),
           const SizedBox(height: AppSizes.spacing8),
           Text(
             AppStrings.addFavouriteHint.tr,
-            style: AppTextStyles.bodyText.copyWith(
-              color: AppColors.grey,
-            ),
+            style: AppTextStyles.bodyText.copyWith(color: AppColors.grey),
             textAlign: TextAlign.center,
           ),
         ],
@@ -110,7 +103,10 @@ class FavouriteScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFavouriteTab(BuildContext context,RxList<dynamic> favouriteItems) {
+  Widget _buildFavouriteTab(
+    BuildContext context,
+    RxList<dynamic> favouriteItems,
+  ) {
     return Obx(() {
       if (controller.isLoading.value) {
         return const Center(child: CircularProgressIndicator());
@@ -120,47 +116,11 @@ class FavouriteScreen extends StatelessWidget {
         return _buildEmptyState();
       }
 
-/*
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing20),
+      return SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing16),
         child: GridView.builder(
-          padding: const EdgeInsets.symmetric(vertical: AppSizes.spacing16),
-          gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.70,
-            mainAxisSpacing: AppSizes.spacing8,
-            crossAxisSpacing: AppSizes.spacing8,
-          ),
-          itemCount: favouriteItems.length,
-          itemBuilder: (context, index) {
-            final item = favouriteItems[index];
-            if (item is PopularModel) {
-              return GestureDetector(
-                onTap: () => controller.onItemTap(item),
-                child: CommonPopularCard(
-                  data: item,
-                  onFavoriteTap: () => controller.removeFromFavourites(item),
-                ),
-              );
-            } else if (item is UnifiedDataModel) {
-              return GestureDetector(
-                onTap: () => controller.onItemTap(item),
-                child: CategoryCardWidget(
-                  data: item,
-                  onFavoriteTap: () => controller.removeFromFavourites(item),
-                ),
-              );
-            }
-
-            return const SizedBox.shrink();
-          },
-        ),
-      );
-*/
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing20),
-        child: GridView.builder(
-          padding: const EdgeInsets.symmetric(vertical: AppSizes.spacing16),
+          padding: const EdgeInsets.symmetric(vertical: AppSizes.spacing10),
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
@@ -193,7 +153,6 @@ class FavouriteScreen extends StatelessWidget {
           },
         ),
       );
-
     });
   }
 }

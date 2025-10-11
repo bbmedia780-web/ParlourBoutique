@@ -169,12 +169,21 @@ class SettingsPageView extends StatelessWidget {
           ),
         );
       case SettingsType.navigation:
-      // Removed language value rendering to hide 'English'
+        // Removed language value rendering to hide 'English'
         return const Icon(
           Icons.arrow_forward_ios,
           color: AppColors.mediumGrey,
           size: AppSizes.spacing16,
         );
+      case SettingsType.info:
+        // Info type: Display value if available, otherwise show nothing
+        if (setting.value != null && setting.value!.isNotEmpty) {
+          return Text(
+            setting.value!,
+            style: AppTextStyles.hintText,
+          );
+        }
+        return const SizedBox.shrink();
     }
   }
 

@@ -441,7 +441,7 @@ class AppStrings {
   static const priyaBeauty = "Priya Beauty";
   static const anjaliBeauty = "Anjali Beauty";
   
-  // Additional Business Names
+  // Additional parlour Names
   static const meenaBeauty = "Meena Beauty";
   static const raaniBeauty = "Raani Beauty";
   static const siyaMakeover = "Siya Makeover";
@@ -450,7 +450,89 @@ class AppStrings {
   static const fashionHub = "Fashion Hub";
   static const styleStudio = "Style Studio";
   static const trendyBoutique = "Trendy Boutique";
-  
+
+  // 🔹 Salon Names
+  static const String bhavinsBeautySalon = "Bhavin’s Beauty Salon";
+  static const String ashaBeautyStudio = "Asha Beauty Studio";
+  static const String cherHairAndBeautyLounge = "Cher Hair & Beauty Lounge";
+  static const String affinitiSalon = "Affiniti Salon";
+  static const String looksSalon = "Looks Salon";
+  static const String enrichBeauty = "Enrich Beauty / Enrich Salon";
+  static const String aOneHairAndBeautyStudio = "A-One Hair & Beauty Studio";
+  static const String nailedIttLuxurySalonAndAcademy = "Nailed Itt Luxury Salon & Academy";
+  static const String ambellishSalon = "Ambellish Salon";
+  static const String wasimsSalonHairBeauty = "Wasims Salon Hair Beauty";
+  static const String theRedScissorsHairAndBeautySalon = "The Red Scissors Hair & Beauty Salon";
+  static const String missGlamourBeautyParlour = "Miss Glamour Beauty Parlour";
+
+  // 🔹 Salon Addresses
+  static const String bhavinsBeautySalonAddress =
+      "Amizara Shopping Centre, Shop No. UL/1, Amizara Shopping Complex, Near Police Parade Ground, Athwalines, Chopati, Athwalines, Athwa, Surat, Gujarat 395001";
+
+  static const String ashaBeautyStudioAddress =
+      "Shop No. A/G - 1/2, Umiya Complex, Tirupati Society, Near Maruti Chowk, Lambe Hanuman Road, Varachha Road, Surat, Gujarat 395006";
+
+  static const String cherHairAndBeautyLoungeAddress =
+      "Ground Floor, Silver Crest, Ghod Dod Rd, Opp. Kakadiya Complex, Athwa, Surat, Gujarat 395007";
+
+  static const String affinitiSalonAddress =
+      "Opp. Sargam Shopping Center, Parle Point, City Light Town, Athwa, Surat, Gujarat 395007";
+
+  static const String looksSalonAddress =
+      "G-7, The Lenora, New City Light Rd, Opp. St. Thomas School, New Tirumala, New City Light, Althan, Surat, Gujarat 395007";
+
+  // 🔹 Enrich Salon has multiple branches
+  static const String enrichSalonAddress1 =
+      "Shop No. 4, 5, 6, 7, Eco Commerz, Opp. Rajhans Zion, G D Goenka School Lane, Vesu Canal Road, VIP Rd, Vesu, Surat, Gujarat 395007";
+  static const String enrichSalonAddress2 =
+      "Ground Floor, Silverstone Arcade, Shop No. 27 A + B, Causeway Rd, Beside D'mart, Katargam, Singanpor, Surat, Gujarat 395004";
+  static const String enrichSalonAddress3 =
+      "G-37, 38, Silver Business Park, Uttran, Surat, Gujarat 394105";
+
+  // 🔹 A-One Salon has multiple branches
+  static const String aOneHairAndBeautyStudioAddress1 =
+      "Vrshabh Tower, Navyug College Rd, Krishna Nagar Society, Choksi Wadi, Narotam Nagar, Surat, Gujarat 395009";
+  static const String aOneHairAndBeautyStudioAddress2 =
+      "G-27, Laxmi Enclave, Opp. Gajera School, Katargam, Surat, Gujarat 395004";
+  static const String aOneHairAndBeautyStudioAddress3 =
+      "Shop No. 52, Opera Business Hub, Lajamni Chok, Mota Varachha, Surat, Gujarat 394101";
+
+  static const String nailedIttLuxurySalonAndAcademyAddress =
+      "Ghod Dod Rd, Opp. Tuli Hospital, Ram Chowk, Adarsh Society, Athwa, Surat, Gujarat 395001";
+
+  static const String ambellishSalonAddress =
+      "1, Trinidhi Apartment, Ghod Dod Rd, Next to Regent Mall, Athwa, Surat, Gujarat 395007";
+
+  // 🔹 Wasims Salon has multiple branches
+  static const String wasimsSalonHairBeautyAddress1 =
+      "1st Floor, Shikhar Complex, Surat - Dumas Rd, Opp. Sargam Shopping Center, City Light Town, Athwa, Surat, Gujarat 395007";
+  static const String wasimsSalonHairBeautyAddress2 =
+      "Shop No. SF/3, 1st Floor, Shikhar Complex, Pipod Road, Parle Point, City Light Town, Athwa, Surat, Gujarat 395007";
+
+  // 🔹 Red Scissors has multiple branches
+  static const String theRedScissorsHairAndBeautySalonAddress1 =
+      "Shop No. U-1, Shiv Kartik Enclave - Tower B, Opp. Nandini-2, E3 Block, Vesu, Surat, Gujarat 395007";
+  static const String theRedScissorsHairAndBeautySalonAddress2 =
+      "136, Avadh Viceroy, Nr. D-mart, Sarthana Jakat Naka, Surat, Gujarat 395013";
+  static const String theRedScissorsHairAndBeautySalonAddress3 =
+      "4RR3+87G, Apcha Nagar, Althan, Surat, Gujarat 395007";
+
+  static const String missGlamourBeautyParlourAddress =
+      "177, Nandanvan Row House, Near Madhavbaug, Parvat Patia, Surat, Gujarat 395012";
+
+  static const String kacmeHairAndBeautySalonAddress =
+      "Upper G.F.10, Divya Kanti Appt., Parle Point, City Light Town, Athwa, Surat, Gujarat 395007";
+
+  static const String richAndCareBeautyParlourAddress =
+      "U/1-2, Orchid Nest, Opp. Palm Garden, Nr. Rajhans Apple, Palanpur, Surat, Gujarat 395009";
+
+  // 🔹 Bonanza Salon has multiple branches
+  static const String bonanzaLadiesSalonAddress1 =
+      "109, 1st Floor, Above 24 Carate, Parle Point, Complex, Surat, Gujarat 395007";
+  static const String bonanzaLadiesSalonAddress2 =
+      "Shop No. 138, 1st Floor, AR Mall, Opp. Panvel Point, Mota Varachha, Surat, Gujarat 394105";
+
+
   // Additional Locations
   static const shyamdhamChowkSurat = "Shyamdham Chowk, Surat";
   static const nanaVarachhaSurat = "Nana Varachha, Surat";
@@ -772,9 +854,9 @@ class AppStrings {
 
   // Details/Services - Parlour (Waxing variants)
   static const fullArmsWaxing = "Full Arms Waxing";
-  static const fullLegsWaxing = "Full Legs Waxing";
+  static const fullHandWaxing = "Full Hand Waxing";
   static const bikiniWaxing = "Bikini Waxing";
-  static const fullBodyWaxing = "Full Body Waxing";
+  static const upperLipsWax = "Upper Lips Waxing";
 
   // Details/Services - Parlour (Nail Art variants)
   static const basicManicure = "Basic Manicure";

@@ -47,4 +47,6 @@ flutter:
     - assets/images/
     - assets/profile/
     - assets/home/
+    - assets/services/
+    - assets/parlour/
 

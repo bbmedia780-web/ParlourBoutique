@@ -1,8 +1,34 @@
-enum BusinessType { parlour, boutique }
+/// Business type enumeration
+///
+/// Represents the type of business in the app
+enum BusinessType {
+  parlour,
+  boutique,
+}
 
-enum GenderType { male, female,other }
+/// Gender type enumeration
+///
+/// Represents user gender options
+enum GenderType {
+  male,
+  female,
+  other,
+}
 
-enum ParlourServiceType { homeService, parlourService }
+/// Parlour service type enumeration
+///
+/// Indicates whether service is provided at home or at the parlour
+enum ParlourServiceType {
+  homeService,
+  parlourService,
+}
 
-enum SettingsType { toggle, navigation}
+/// Settings type enumeration
+///
+/// Defines the type of UI control for a setting
+enum SettingsType {
+  toggle,      // Switch/toggle button
+  navigation,  // Navigation arrow
+  info,        // Information display only
+}
 

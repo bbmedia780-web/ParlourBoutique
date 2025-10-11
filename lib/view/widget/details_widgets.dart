@@ -149,6 +149,8 @@ class BusinessHeaderWidget extends StatelessWidget {
                         child: Text(
                           businessDetails.location,
                           style: AppTextStyles.whiteAddressText,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],

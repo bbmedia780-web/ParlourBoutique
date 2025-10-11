@@ -86,4 +86,41 @@ class AppAssets {
   static const rentIcon = 'assets/home/rent.png';
 
 
+  ///  Services
+  static const facial1 = 'assets/services/facial1.jpg';
+  static const facial2 = 'assets/services/facial2.jpg';
+  static const facial3 = 'assets/services/facial3.jpg';
+  static const facial4 = 'assets/services/facial4.jpg';
+  static const nail1 = 'assets/services/nail1.jpg';
+  static const nail2 = 'assets/services/nail2.jpg';
+  static const nail3 = 'assets/services/nail3.jpg';
+  static const nail4 = 'assets/services/nail4.jpg';
+  static const bridal = 'assets/services/bridal.jpg';
+  static const engagement = 'assets/services/engagement.jpg';
+  static const party = 'assets/services/party.jpg';
+  static const natural = 'assets/services/natural.jpg';
+  static const wex1 = 'assets/services/wex1.jpg';
+  static const wex2 = 'assets/services/wex2.jpg';
+  static const wex3 = 'assets/services/wex3.jpg';
+  static const wex4 = 'assets/services/wex4.jpg';
+
+  static const String bhavinsBeautySalon = "assets/parlour/Bhavin's_Beauty_Salon.jpg";
+  static const String ashaBeautyStudio = "assets/parlour/Asha_Beauty_Studio.jpg";
+  static const String cherHairAndBeautyLounge = "assets/parlour/cher_hair_beauty.jpg";
+  static const String affinitiSalon = "assets/parlour/affiniti_salon.jpg";
+  static const String looksSalon = "assets/parlour/looks_salon.jpg";
+  static const String enrichSalon = "assets/parlour/Enrich_Beauty.jpg";
+  static const String aOneHairAndBeautyStudio = "assets/parlour/a-one_hair_beauty studio.jpg";
+  static const String nailedIttLuxurySalonAndAcademy = "assets/parlour/5nailed_itt_luxury_salon.jpg";
+  static const String ambellishSalon = "assets/parlour/1ambellish_salon.jpg";
+  static const String wasimsSalonHairBeauty = "assets/parlour/7Wasim's_Salon_Hair.jpg";
+  static const String theRedScissorsHairAndBeautySalon = "assets/The_red_scissors.jpg";
+  static const String missGlamourBeautyParlour = "assets/parlour/4Miss_Glamour_Beauty.jpg";
+  static const String kacmeHairAndBeautySalon = "assets/parlour/3K-A’Cme_Hair_Beauty Salon.jpg";
+  static const String richAndCareBeautyParlour = "assets/parlour/6Rich_Care_Beauty.jpg";
+  static const String bonanzaLadiesSalon = "assets/parlour/2Bonanza_Ladies_Salon.jpg";
+
+
+
+
 }

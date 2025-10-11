@@ -1,3 +1,15 @@
-enum BusinessType { parlour, boutique }
+/// Business type enumeration
+///
+/// Represents the type of business in the app
+enum BusinessType {
+  parlour,
+  boutique,
+}
 
-enum GenderType { male, female }
+/// Gender type enumeration
+///
+/// Represents user gender options
+enum GenderType {
+  male,
+  female,
+}

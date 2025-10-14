@@ -91,7 +91,8 @@ class CategoryScreen extends StatelessWidget {
               },
               child: CategoryCardWidget(
                 data: data,
-                onFavoriteTap: () => controller.toggleFavorite(index),
+                // onFavoriteTap: () => controller.toggleFavorite(index), // COMMENTED OUT
+                onFavoriteTap: () {}, // Empty function to avoid errors
               ),
             );
           },
@@ -113,21 +114,26 @@ import '../../constants/app_sizes.dart';
 import '../../controller/home_controller/main_navigation_controller.dart';
 import '../../controller/home_controller/unified_service_data_controller.dart';
 import '../widget/category_card_widget.dart';
+import '../../utility/responsive_helper.dart';
+import '../../constants/responsive_sizes.dart';
+import '../../common/responsive_layout.dart';
 
 class CategoryScreen extends StatelessWidget {
   const CategoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final UnifiedServiceDataController controller =
-    Get.find<UnifiedServiceDataController>();
-    final MainNavigationController navController =
-    Get.find<MainNavigationController>();
+    final UnifiedServiceDataController controller = Get.find<UnifiedServiceDataController>();
+    final MainNavigationController navController = Get.find<MainNavigationController>();
 
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: _CategoryAppBar(onBack: () => _onBackPressed(navController)),
-      body: _CategoryGrid(controller: controller),
+      body: ResponsiveLayout(
+        useSafeArea: true,
+        useScrollView: false,
+        child: _CategoryGrid(controller: controller),
+      ),
     );
   }
 
@@ -181,33 +187,26 @@ class _CategoryGrid extends StatelessWidget {
       final dataList = controller.dataList;
 
       if (dataList.isEmpty) {
-        return  Center(child: Text(AppStrings.noCategory));
+        return Center(child: Text(AppStrings.noCategory));
       }
 
-      return GridView.builder(
-        padding: EdgeInsets.only(
-          left: AppSizes.spacing12,
-          right: AppSizes.spacing12,
-          bottom: MediaQuery.of(context).padding.bottom + AppSizes.spacing20,
-        ),
-        physics: const BouncingScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: AppSizes.size250,
-          childAspectRatio: 0.70,
-          crossAxisSpacing: AppSizes.spacing8,
-          mainAxisSpacing: AppSizes.spacing8,
-        ),
-        itemCount: dataList.length,
-        itemBuilder: (context, index) {
-          final data = dataList[index];
+      // Use responsive grid
+      return ResponsiveGrid(
+        children: dataList.map((data) {
           return GestureDetector(
             onTap: () => Get.toNamed(AppRoutes.details, arguments: data),
             child: CategoryCardWidget(
               data: data,
-              onFavoriteTap: () => controller.toggleFavorite(index),
+              onFavoriteTap: () => controller.toggleFavorite(dataList.indexOf(data)),
             ),
           );
-        },
+        }).toList(),
+        childAspectRatio: 0.70,
+        crossAxisSpacing: ResponsiveSizes.getSpacing8(context),
+        mainAxisSpacing: ResponsiveSizes.getSpacing8(context),
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).padding.bottom + ResponsiveSizes.getSpacing20(context),
+        ),
       );
     });
   }

@@ -69,19 +69,11 @@ class LanguageController extends GetxController {
       selectedLanguageId.value = selectedLanguage.id;
 
 
-      ShowSnackBar.show(
-        'language_changed'.tr,
-        'language_updated'.tr,
-        backgroundColor: AppColors.primary,
-      );
+      ShowToast.success('language_updated'.tr);
 
       Get.back(); // Navigate back
     } catch (e) {
-      ShowSnackBar.show(
-        AppStrings.error.tr,
-        AppStrings.somethingWentWrong,
-        backgroundColor: AppColors.red,
-      );
+      ShowToast.error(AppStrings.somethingWentWrong);
     }
   }
 

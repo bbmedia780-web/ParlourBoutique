@@ -36,7 +36,8 @@ class WelcomeScreen extends StatelessWidget {
     final int pageCount = pages.length;
 
     return Scaffold(
-      body: Column(
+      body: SafeArea(
+        child: Column(
         children: [
           Expanded(
             child: PageView.builder(
@@ -55,6 +56,7 @@ class WelcomeScreen extends StatelessWidget {
           ),
           WelcomeButtonsWidget(pageController: pageController, pageCount: pageCount).paddingOnly(bottom: AppSizes.spacing20)
         ],
+        ),
       ),
     );
   }

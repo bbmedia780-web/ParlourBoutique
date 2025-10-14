@@ -22,7 +22,8 @@ class UploadCreationScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: _buildAppBar(),
-      body: Padding(
+      body: SafeArea(
+        child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing16),
         child: Column(
           children: [
@@ -35,6 +36,7 @@ class UploadCreationScreen extends StatelessWidget {
             _buildUploadButton(),
             const SizedBox(height: AppSizes.spacing40),
           ],
+        ),
         ),
       ),
     );

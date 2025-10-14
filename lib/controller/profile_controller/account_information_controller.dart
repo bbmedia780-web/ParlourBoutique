@@ -159,11 +159,17 @@ class AccountInformationController extends GetxController {
       isSubmitting.value = false;
 
       // ✅ Show success message
-      ShowSnackBar.show(
-        AppStrings.success,
-        "Information saved successfully",
-        backgroundColor: AppColors.green,
-      );
+      DateTime? birthDate = selectedDate.value;
+      if (birthDate == null && dateOfBirthController.text.isNotEmpty) {
+        birthDate = _parseDateFromText(dateOfBirthController.text);
+      }
+      
+      if (birthDate != null) {
+        final age = _calculateAge(birthDate);
+        ShowToast.success("Information saved successfully! Age verified: $age years old");
+      } else {
+        ShowToast.success("Information saved successfully!");
+      }
 
       // Close keyboard if open
       FocusManager.instance.primaryFocus?.unfocus();
@@ -175,32 +181,72 @@ class AccountInformationController extends GetxController {
       Get.until((route) => route.settings.name == AppRoutes.home);
     } catch (e) {
       isSubmitting.value = false;
-      ShowSnackBar.show(
-        AppStrings.error,
-        "Failed to save information",
-        backgroundColor: AppColors.red,
-      );
+      ShowToast.error("Failed to save information");
     }
   }
 
   /// ✅ Input validation helper
   bool _validateInputs() {
     if (fullNameController.text.trim().isEmpty) {
-      ShowSnackBar.show(AppStrings.error, AppStrings.pleaseEnterFullName,
-          backgroundColor: AppColors.red);
+      ShowToast.error(AppStrings.pleaseEnterFullName);
       return false;
     }
     if (emailController.text.trim().isEmpty) {
-      ShowSnackBar.show(AppStrings.error, AppStrings.pleaseEnterEmail,
-          backgroundColor: AppColors.red);
+      ShowToast.error(AppStrings.pleaseEnterEmail);
       return false;
     }
     if (dateOfBirthController.text.trim().isEmpty) {
-      ShowSnackBar.show(AppStrings.error, AppStrings.pleaseSelectDateOfBirth,
-          backgroundColor: AppColors.red);
+      ShowToast.error(AppStrings.pleaseSelectDateOfBirth);
       return false;
     }
+    
+    // Age validation - check if user is under 12 years old
+    DateTime? birthDate = selectedDate.value;
+    
+    // If selectedDate is null, try to parse from the text field
+    if (birthDate == null && dateOfBirthController.text.isNotEmpty) {
+      birthDate = _parseDateFromText(dateOfBirthController.text);
+    }
+    
+    if (birthDate != null) {
+      final age = _calculateAge(birthDate);
+      if (age < 12) {
+      ShowToast.error("You must be at least 12 years old to use this app");
+        return false;
+      }
+    }
+    
     return true;
+  }
+
+  /// Calculate age from date of birth
+  int _calculateAge(DateTime birthDate) {
+    final now = DateTime.now();
+    int age = now.year - birthDate.year;
+    
+    // Check if birthday hasn't occurred this year
+    if (now.month < birthDate.month || 
+        (now.month == birthDate.month && now.day < birthDate.day)) {
+      age--;
+    }
+    
+    return age;
+  }
+
+  /// Parse date from text field format (DD-MM-YYYY)
+  DateTime? _parseDateFromText(String dateText) {
+    try {
+      final parts = dateText.split('-');
+      if (parts.length == 3) {
+        final day = int.parse(parts[0]);
+        final month = int.parse(parts[1]);
+        final year = int.parse(parts[2]);
+        return DateTime(year, month, day);
+      }
+    } catch (e) {
+      // If parsing fails, return null
+    }
+    return null;
   }
 
 

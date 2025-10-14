@@ -6,6 +6,7 @@ import '../controller/auth_controller/information_controller.dart';
 import '../controller/auth_controller/otp_verification_controller.dart';
 import '../controller/auth_controller/sign_in_controller.dart';
 import '../controller/auth_controller/welcome_controller.dart';
+import '../controller/guest_mode_controller.dart';
 
 // Home Controllers
 import '../controller/booking_controller.dart';
@@ -45,6 +46,7 @@ class AppBinding extends Bindings {
     // ==================== Core Controllers ====================
     // Must be initialized first as other controllers depend on them
     Get.put(AuthController(), permanent: true);
+    Get.put(GuestModeController(), permanent: true);
     Get.put(UnifiedServiceDataController(), permanent: true);
 
     // ==================== Auth Flow Controllers ====================

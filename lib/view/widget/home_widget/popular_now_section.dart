@@ -57,7 +57,8 @@ class PopularNowSection extends StatelessWidget {
                 final item = filteredItems[index];
                 return PopularCard(
                   data: item,
-                  onFavoriteTap: () => popularController.toggleFavoriteById(item.id ?? ''),
+                  // onFavoriteTap: () => popularController.toggleFavoriteById(item.id ?? ''), // COMMENTED OUT
+                  onFavoriteTap: () {}, // Empty function to avoid errors
                 );
               },
             );

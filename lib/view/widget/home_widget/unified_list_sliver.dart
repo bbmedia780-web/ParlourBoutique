@@ -42,8 +42,9 @@ class UnifiedListSliver extends StatelessWidget {
               child: UnifiedServiceCard(
                 data: data,
                 index: index,
-                onFavoriteTap: () =>
-                    controller.toggleFavoriteById(data.id ?? ''),
+                // onFavoriteTap: () =>
+                //     controller.toggleFavoriteById(data.id ?? ''), // COMMENTED OUT
+                onFavoriteTap: () {}, // Empty function to avoid errors
               ),
             );
           },

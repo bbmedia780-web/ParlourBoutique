@@ -60,8 +60,10 @@ class DetailsScreen extends StatelessWidget {
               BusinessHeaderWidget(
                 businessDetails: businessDetails,
                 onBackPressed: controller.onBackPressed,
-                onSharePressed: controller.onSharePressed,
-                onFavoritePressed: controller.onFavoritePressed,
+                // onSharePressed: controller.onSharePressed, // COMMENTED OUT
+                onSharePressed: () {}, // Empty function to avoid errors
+                // onFavoritePressed: controller.onFavoritePressed, // COMMENTED OUT
+                onFavoritePressed: () {}, // Empty function to avoid errors
                 isFavorite: controller.isFavorite.value,
                 onTitlePressed: controller.onTitleTapped,
               ),
@@ -200,7 +202,7 @@ class DetailsScreen extends StatelessWidget {
                 text: AppStrings.rentNow.tr,
                 onPressed: isRent
                     ? controller.onRentNowPressed
-                    : controller.onSharePressed,
+                    : () {}, // Share functionality commented out
               ),
             );
           }),
@@ -329,7 +331,8 @@ class DetailsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: controller.isRentCategory ? _buildRentAppBar() : null,
-      body: Obx(() {
+      body: SafeArea(
+        child: Obx(() {
         final businessDetails = controller.businessDetails.value;
         print('DEBUG: DetailsScreen Obx - businessDetails: $businessDetails');
 
@@ -342,7 +345,8 @@ class DetailsScreen extends StatelessWidget {
         return controller.isRentCategory
             ? _RentDetailsLayout(controller: controller, details: businessDetails)
             : _BusinessDetailsLayout(controller: controller, details: businessDetails);
-      }),
+        }),
+      ),
       bottomNavigationBar: Obx(() {
         final isRent = controller.businessDetails.value?.category == AppStrings.rentType;
         if (!isRent) return const SizedBox.shrink(); // No button if not rent
@@ -516,7 +520,7 @@ class _BusinessDetailsLayout extends StatelessWidget {
         BusinessHeaderWidget(
           businessDetails: details,
           onBackPressed: controller.onBackPressed,
-          onSharePressed: controller.onSharePressed,
+          //onSharePressed: controller.onSharePressed,
           onFavoritePressed: controller.onFavoritePressed,
           isFavorite: controller.isFavorite.value,
           onTitlePressed: controller.onTitleTapped,

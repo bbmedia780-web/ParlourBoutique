@@ -24,6 +24,13 @@ class AppStrings {
   static const connectWith = "Or connect with";
   static const brightBrewText = "Powered by Brightbrew Media & Solutions Pvt Ltd";
   
+  // Login Bottom Sheet
+  static const login = "Login";
+  static const loginToContinue = "Login to Continue";
+  static const loginDescription = "Enter your mobile number to get started with our services";
+  static const enterMobileNumber = "Enter Mobile Number";
+  static const pleaseWait = "Please wait...";
+  
   // OTP Verification
   static const verification = "Verification";
   static const otpInstruction = "Enter the OTP code from the phone we just sent you.";
@@ -269,11 +276,19 @@ class AppStrings {
   static const success = "Success";
   static const failed = "Failed";
   static const warning = "Warning";
+  
+  // Toast Messages
+  static const toastSuccess = "Success";
+  static const toastError = "Error";
+  static const toastWarning = "Warning";
+  static const toastInfo = "Info";
   static const pleaseEnterPhoneNumber = "Please enter your phone number";
   static const pleaseEnterFullName = "Please enter your full name";
   static const pleaseEnterEmail = "Please enter your email";
   static const pleaseSelectDateOfBirth = "Please select your date of birth";
   static const pleaseSelectGender = "Please select your gender";
+  static const ageValidationError = "You must be at least 12 years old to use this app";
+  static const ageValidationSuccess = "Age validation successful";
   static const informationSavedSuccessfully = "Information saved successfully";
   static const informationUpToDate = "Information is already saved and up to date";
   static const otpResent = "OTP Resent";

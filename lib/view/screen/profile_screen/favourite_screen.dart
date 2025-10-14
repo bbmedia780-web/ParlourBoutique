@@ -137,7 +137,8 @@ class FavouriteScreen extends StatelessWidget {
                 onTap: () => controller.onItemTap(item),
                 child: CommonPopularCard(
                   data: item,
-                  onFavoriteTap: () => controller.removeFromFavourites(item),
+                  // onFavoriteTap: () => controller.removeFromFavourites(item), // COMMENTED OUT
+                  onFavoriteTap: () {}, // Empty function to avoid errors
                 ),
               );
             } else if (item is UnifiedDataModel) {
@@ -145,7 +146,8 @@ class FavouriteScreen extends StatelessWidget {
                 onTap: () => controller.onItemTap(item),
                 child: CategoryCardWidget(
                   data: item,
-                  onFavoriteTap: () => controller.removeFromFavourites(item),
+                  // onFavoriteTap: () => controller.removeFromFavourites(item), // COMMENTED OUT
+                  onFavoriteTap: () {}, // Empty function to avoid errors
                 ),
               );
             }

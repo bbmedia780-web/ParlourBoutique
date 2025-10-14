@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../../constants/app_sizes.dart';
 import '../../model/popular_model.dart';
 import '../../routes/app_routes.dart';
+import '../../utility/navigation_helper.dart';
 import 'common_popular_card_widget.dart';
 
 class PopularCard extends StatelessWidget {
@@ -20,7 +21,7 @@ class PopularCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.toNamed(AppRoutes.details, arguments: data),
+      onTap: () => NavigationHelper.navigateToDetails(data),
       child: SizedBox(
         width: AppSizes.size160,
         child: CommonPopularCard(

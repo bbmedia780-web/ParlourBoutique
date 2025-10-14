@@ -281,7 +281,7 @@ class AuthController extends GetxController {
       // Navigate to Welcome screen so next launch starts fresh
       print('[AuthController] 🧭 Navigating to Welcome screen');
       Get.offAllNamed(AppRoutes.welcome);
-      ShowSnackBar.show(AppStrings.success, AppStrings.logoutSuccess, backgroundColor: AppColors.green);
+      ShowToast.success(AppStrings.logoutSuccess);
     } finally {
       isLoading.value = false;
     }
@@ -306,7 +306,7 @@ class AuthController extends GetxController {
 
     Get.offAllNamed(AppRoutes.signIn);
     if (reason != null) {
-      ShowSnackBar.show(AppStrings.warning, reason, backgroundColor: AppColors.red);
+      ShowToast.warning(reason);
     }
   }
 
@@ -334,6 +334,7 @@ import '../../model/auth/auth_verify_response.dart';
 import '../../constants/app_strings.dart';
 import '../../constants/app_colors.dart';
 import '../../utility/global.dart';
+import '../../controller/guest_mode_controller.dart';
 import 'sign_in_controller.dart';
 
 class AuthController extends GetxController {
@@ -541,13 +542,17 @@ class AuthController extends GetxController {
       userImage.value = '';
       profileCompleted.value = false;
 
+      // Enter guest mode
+      if (Get.isRegistered<GuestModeController>()) {
+        Get.find<GuestModeController>().enterGuestMode();
+      }
+
       if (Get.isRegistered<SignInController>()) {
         Get.find<SignInController>().phoneController.clear();
       }
 
       Get.offAllNamed(AppRoutes.welcome);
-      ShowSnackBar.show(AppStrings.success, AppStrings.logoutSuccess,
-          backgroundColor: AppColors.green);
+      ShowToast.success(AppStrings.logoutSuccess);
     } finally {
       isLoading.value = false;
     }

@@ -29,9 +29,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.getBackgroundColor(context),
-      body: Stack(
-        children: [
-            CustomScrollView(
+      body: SafeArea(
+        child: Stack(
+          children: [
+              CustomScrollView(
               controller: controller.scrollController,
               slivers: [
             SliverAppBar(
@@ -84,7 +85,8 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
-      );
+      ),
+    );
   }
 
   Widget _buildHeaderSection(BuildContext context) {
@@ -467,7 +469,8 @@ class HomeScreen extends StatelessWidget {
                 final item = filteredItems[index];
                 return PopularCard(
                   data: item,
-                  onFavoriteTap: () => popularController.toggleFavoriteById(item.id ?? ''),
+                  // onFavoriteTap: () => popularController.toggleFavoriteById(item.id ?? ''), // COMMENTED OUT
+                  onFavoriteTap: () {}, // Empty function to avoid errors
                 );
               },
             );
@@ -545,7 +548,8 @@ class HomeScreen extends StatelessWidget {
               child: UnifiedServiceCard(
                 data: data,
                 index: index,
-                onFavoriteTap: () => unifiedServiceController.toggleFavoriteById(data.id ?? ''),
+                // onFavoriteTap: () => unifiedServiceController.toggleFavoriteById(data.id ?? ''), // COMMENTED OUT
+                onFavoriteTap: () {}, // Empty function to avoid errors
               ),
             );
           },
@@ -683,19 +687,28 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: Stack(
-        children: [
-          CustomScrollView(
+    return GestureDetector(
+      onTap: () {
+        // Dismiss keyboard when tapping outside
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        body: Stack(
+          children: [
+            CustomScrollView(
             controller: controller.scrollController,
             slivers: [
               SliverAppBar(
                 backgroundColor: AppColors.white,
                 automaticallyImplyLeading: false,
                 pinned: true,
+                floating: false,
+                snap: false,
                 expandedHeight: AppSizes.size380,
+                toolbarHeight: 0, // No toolbar, just the flexible space
                 flexibleSpace: FlexibleSpaceBar(
+                  collapseMode: CollapseMode.pin,
                   background: HomeHeader(
                     controller: controller,
                     authController: authController,
@@ -737,7 +750,7 @@ class HomeScreen extends StatelessWidget {
           Obx(
             () => controller.showFloatingSearchBar.value
                 ? Positioned(
-                    top: MediaQuery.of(context).padding.top,
+                    top: 0,
                     left: 0,
                     right: 0,
                     child: FloatingSearchBarWidget(controller: controller),
@@ -745,6 +758,7 @@ class HomeScreen extends StatelessWidget {
                 : const SizedBox.shrink(),
           ),
         ],
+      ),
       ),
     );
   }

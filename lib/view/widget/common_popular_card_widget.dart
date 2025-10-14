@@ -56,18 +56,19 @@ class CommonPopularCard extends StatelessWidget {
                   style: AppTextStyles.whiteSmallText,
                 ),
               ),
-              Positioned(
-                top: AppSizes.spacing12,
-                right: AppSizes.spacing10,
-                child: GestureDetector(
-                  onTap: onFavoriteTap,
-                  child: Icon(
-                    data.isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: data.isFavorite ? AppColors.red : AppColors.white,
-                    size: AppSizes.spacing18,
-                  ),
-                ),
-              ),
+              // Favorite Button - COMMENTED OUT
+              // Positioned(
+              //   top: AppSizes.spacing12,
+              //   right: AppSizes.spacing10,
+              //   child: GestureDetector(
+              //     onTap: onFavoriteTap,
+              //     child: Icon(
+              //       data.isFavorite ? Icons.favorite : Icons.favorite_border,
+              //       color: data.isFavorite ? AppColors.red : AppColors.white,
+              //       size: AppSizes.spacing18,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           Padding(
@@ -151,18 +152,19 @@ class CommonPopularCard extends StatelessWidget {
                 ),
               ),
               // Gradient, discount badge, favorite icon...
-              Positioned(
-                top: AppSizes.spacing12,
-                right: AppSizes.spacing10,
-                child: GestureDetector(
-                  onTap: onFavoriteTap,
-                  child: Icon(
-                    data.isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: data.isFavorite ? AppColors.red : AppColors.white,
-                    size: AppSizes.spacing18,
-                  ),
-                ),
-              ),
+              // Favorite Button - COMMENTED OUT
+              // Positioned(
+              //   top: AppSizes.spacing12,
+              //   right: AppSizes.spacing10,
+              //   child: GestureDetector(
+              //     onTap: onFavoriteTap,
+              //     child: Icon(
+              //       data.isFavorite ? Icons.favorite : Icons.favorite_border,
+              //       color: data.isFavorite ? AppColors.red : AppColors.white,
+              //       size: AppSizes.spacing18,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           Padding(

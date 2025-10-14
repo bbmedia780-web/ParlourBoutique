@@ -4,6 +4,7 @@ import '../constants/app_assets.dart';
 import '../constants/app_strings.dart';
 import '../model/booking_service_model.dart';
 import '../routes/app_routes.dart';
+import '../utility/navigation_helper.dart';
 
 class BookingController extends GetxController with GetSingleTickerProviderStateMixin {
   final searchController = TextEditingController();
@@ -82,8 +83,8 @@ class BookingController extends GetxController with GetSingleTickerProviderState
   }
 
   void onBookNowTap(BookingServiceModel service) {
-    // Navigate to unified booking screen
-    Get.toNamed(AppRoutes.unifiedBooking, arguments: service);
+    // Navigate to unified booking screen with auth check
+    NavigationHelper.navigateToUnifiedBooking(service);
   }
 
   void onLearnMoreTap() {
@@ -95,7 +96,7 @@ class BookingController extends GetxController with GetSingleTickerProviderState
   }
 
   void onShareTap() {
-    // Handle share button tap for sponsored ad
+    // Handle share button tap for sponsored ad - COMMENTED OUT
   }
 
   @override

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:parlour_app/utility/global.dart';
 import '../../constants/app_strings.dart';
 import '../../routes/app_routes.dart';
+import '../../controller/auth_controller/auth_controller.dart';
+import '../../controller/guest_mode_controller.dart';
 import 'home_controller.dart';
 import 'reels_controller.dart';
 
@@ -21,12 +23,48 @@ class MainNavigationController extends GetxController {
   // -------------------- Navigation --------------------
   /// Handle bottom navigation bar taps
   void onBottomNavItemTapped(int index) {
+    // Check if user is trying to access restricted features as guest
+    if (_isRestrictedTab(index)) {
+      _handleRestrictedAccess(index);
+      return;
+    }
+    
     selectedBottomBarIndex.value = index;
     _setReelsActive(index == 3); // Reels tab at index 3
   }
 
+  /// Check if a tab is restricted for guest users
+  bool _isRestrictedTab(int index) {
+    // Category (1), Reels (3), and Profile (4) are restricted for guests
+    return index == 1 || index == 3 || index == 4;
+  }
+
+  /// Handle restricted access for guest users
+  void _handleRestrictedAccess(int index) {
+    final authController = Get.find<AuthController>();
+    
+    if (!authController.isLoggedIn.value) {
+      // User is guest, show login bottom sheet
+      final guestController = Get.find<GuestModeController>();
+      guestController.showLoginBottomSheet();
+    } else {
+      // User is logged in, allow access
+      selectedBottomBarIndex.value = index;
+      _setReelsActive(index == 3);
+    }
+  }
+
   /// Handle Add (+) button tap
   void onAddButtonTapped() {
+    final authController = Get.find<AuthController>();
+    
+    if (!authController.isLoggedIn.value) {
+      // User is guest, show login bottom sheet
+      final guestController = Get.find<GuestModeController>();
+      guestController.showLoginBottomSheet();
+      return;
+    }
+
     final HomeController homeController = Get.find<HomeController>();
     final int topTab = homeController.selectedTopTabIndex.value;
 

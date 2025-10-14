@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../common/common_button.dart';
@@ -24,7 +25,9 @@ class AccountInformationPageView extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: _buildAppBar(),
-      body: _buildBody(context),
+      body: SafeArea(
+        child: _buildBody(context),
+      ),
     );
   }
 
@@ -203,6 +206,207 @@ class AccountInformationPageView extends StatelessWidget {
           ).paddingOnly(bottom: AppSizes.spacing20),
         ],
       ).paddingSymmetric(horizontal: AppSizes.spacing20),
+    );
+  }
+
+}
+*/
+
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../common/common_button.dart';
+import '../../../common/common_container_text_field.dart';
+import '../../../constants/app_assets.dart';
+import '../../../constants/app_colors.dart';
+import '../../../constants/app_sizes.dart';
+import '../../../constants/app_strings.dart';
+import '../../../constants/app_text_style.dart';
+import '../../../controller/auth_controller/auth_controller.dart';
+import '../../../controller/profile_controller/account_information_controller.dart';
+
+class AccountInformationPageView extends StatelessWidget {
+  AccountInformationPageView({super.key});
+
+  final AccountInformationController controller = Get.find<AccountInformationController>();
+  final AuthController authController = Get.find<AuthController>();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.white,
+      appBar: _buildAppBar(),
+      body: SafeArea(
+        child: _buildBody(context),
+      ),
+      bottomNavigationBar: _buildBottomButton(),
+    );
+  }
+
+  // ------------------ APP BAR ------------------
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      backgroundColor: AppColors.white,
+      elevation: 0,
+      leading: IconButton(
+        icon: const Icon(
+          Icons.arrow_back_ios,
+          color: AppColors.black,
+          size: AppSizes.spacing20,
+        ),
+        onPressed: () => Get.back(),
+      ),
+      title: Text(
+        AppStrings.accountInformation,
+        style: AppTextStyles.appBarText,
+      ),
+      centerTitle: true,
+    );
+  }
+
+  // ------------------ BODY ------------------
+  Widget _buildBody(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(vertical: AppSizes.spacing20),
+      child: Column(
+        children: [
+          const SizedBox(height: AppSizes.spacing10),
+          _buildProfilePhotoSection(),
+          const SizedBox(height: AppSizes.spacing28),
+          _buildFormFields(context),
+        ],
+      ),
+    );
+  }
+
+  // ------------------ PROFILE PHOTO ------------------
+  Widget _buildProfilePhotoSection() {
+    return Center(
+      child: GestureDetector(
+        onTap: controller.changePhoto, // ✅ Tap anywhere to change photo
+        behavior: HitTestBehavior.opaque, // ensures full area is clickable
+        child: Stack(
+          alignment: Alignment.bottomRight,
+          children: [
+            // Profile Photo
+            Obx(() {
+              final imagePath = controller.selectedImagePath.value;
+              return Container(
+                width: AppSizes.size120,
+                height: AppSizes.size120,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: AppColors.lightGrey,
+                    width: AppSizes.spacing2,
+                  ),
+                ),
+                child: ClipOval(
+                  child: imagePath.isNotEmpty
+                      ? Image.file(File(imagePath), fit: BoxFit.cover)
+                      : Image.asset(AppAssets.user, fit: BoxFit.cover),
+                ),
+              );
+            }),
+
+            // Camera Icon Overlay
+            Container(
+              width: AppSizes.spacing36,
+              height: AppSizes.spacing36,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: AppColors.white,
+              ),
+              child: const Icon(
+                Icons.camera_alt_outlined,
+                color: AppColors.mediumGrey,
+                size: AppSizes.spacing22,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // ------------------ FORM FIELDS ------------------
+  Widget _buildFormFields(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+
+          // Full Name
+          Text(AppStrings.fullName, style: AppTextStyles.profilePageText).paddingOnly(bottom: AppSizes.spacing8),
+          CommonContainerTextField(
+            controller: controller.fullNameController,
+            keyboardType: TextInputType.name,
+            textStyle: AppTextStyles.hintText,
+          ).paddingOnly(bottom: AppSizes.spacing24),
+
+          // email
+          Text(AppStrings.yourEmail, style: AppTextStyles.profilePageText).paddingOnly(bottom: AppSizes.spacing8),
+          CommonContainerTextField(
+            controller: controller.emailController,
+            textStyle: AppTextStyles.hintText,
+            keyboardType: TextInputType.emailAddress,
+          ).paddingOnly(bottom: AppSizes.spacing24),
+
+          // dob
+          Text(AppStrings.dateOfBirth, style: AppTextStyles.profilePageText).paddingOnly(bottom: AppSizes.spacing8),
+          CommonContainerTextField(
+            controller: controller.dateOfBirthController,
+            textStyle: AppTextStyles.hintText,
+            keyboardType: TextInputType.none,
+            readOnly: true,
+            onTap: () => controller.selectDate(context),
+            suffixIcon: InkWell(
+              onTap: () => controller.selectDate(context),
+              child: Container(
+                height: AppSizes.size100,
+                width: AppSizes.size50,
+                decoration: BoxDecoration(
+                  color: AppColors.lightPink,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(AppSizes.buttonRadius),
+                    bottomRight:
+                    Radius.circular(AppSizes.buttonRadius),
+                  ),
+                ),
+                alignment: Alignment.center,
+                child: Image.asset(
+                  AppAssets.calender,
+                  color: AppColors.primary,
+                  height: AppSizes.spacing26,
+                ),
+              ),
+            ),
+          ).paddingOnly(bottom: AppSizes.spacing24),
+        ],
+      ),
+    );
+  }
+
+  // ------------------ SAVE BUTTON (BOTTOM) ------------------
+  Widget _buildBottomButton() {
+    return SafeArea(
+      minimum: const EdgeInsets.symmetric(
+        horizontal: AppSizes.spacing20,
+        vertical: AppSizes.spacing20,
+      ),
+      child: Obx(() {
+        return AppButton(
+          width: double.infinity,
+          height: AppSizes.spacing45,
+          textStyle: AppTextStyles.buttonText,
+          text: AppStrings.save.tr,
+          isLoading: controller.isSubmitting.value,
+          onPressed: controller.isSubmitting.value
+              ? null
+              : controller.saveInformation,
+        );
+      }),
     );
   }
 

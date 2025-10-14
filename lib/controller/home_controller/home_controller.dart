@@ -61,11 +61,17 @@ class HomeController extends GetxController {
   
   /// Handles scroll events to show/hide floating search bar
   ///
-  /// Shows the floating search bar when user scrolls more than 200px down
+  /// Shows the floating search bar when user scrolls more than 320px down
+  /// (after the SliverAppBar header is mostly collapsed)
   void _onScroll() {
-    final shouldShow = scrollController.offset > 200;
+    final shouldShow = scrollController.offset > 320;
     if (shouldShow != showFloatingSearchBar.value) {
       showFloatingSearchBar.value = shouldShow;
+    }
+    
+    // Dismiss keyboard when user starts scrolling
+    if (Get.context != null) {
+      FocusScope.of(Get.context!).unfocus();
     }
   }
 

@@ -213,10 +213,11 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
     _updateFollowStatus(reel.id, updatedReel.isFollowing);
   }
 
-  void shareReel(int index) {
-    if (index < 0 || index >= reelsList.length) return;
-    _shareReel(reelsList[index]);
-  }
+  // Share functionality - COMMENTED OUT
+  // void shareReel(int index) {
+  //   if (index < 0 || index >= reelsList.length) return;
+  //   _shareReel(reelsList[index]);
+  // }
 
   void commentOnReel(int index) {
     if (index < 0 || index >= reelsList.length) return;
@@ -254,7 +255,8 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
   }
 
   // ==================== PRIVATE HELPERS ====================
-  void _shareReel(ReelsModel reel) => print('Sharing reel: ${reel.title}');
+  // Share functionality - COMMENTED OUT
+  // void _shareReel(ReelsModel reel) => print('Sharing reel: ${reel.title}');
   void _navigateToComments(ReelsModel reel) => print('Opening comments for reel: ${reel.title}');
 
   Future<void> _updateLikeStatus(String? reelId, bool isLiked) async {
@@ -647,12 +649,13 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
   }
 
   /// ✅ Share reel
-  void shareReel(int index) {
-    if (index >= 0 && index < reelsList.length) {
-      final reel = reelsList[index];
-      _shareReel(reel);
-    }
-  }
+  // Share functionality - COMMENTED OUT
+  // void shareReel(int index) {
+  //   if (index >= 0 && index < reelsList.length) {
+  //     final reel = reelsList[index];
+  //     _shareReel(reel);
+  //   }
+  // }
 
   /// ✅ Comment on reel
   void commentOnReel(int index) {
@@ -816,11 +819,12 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
   }
 
   /// ✅ Share reel functionality
-  void _shareReel(ReelsModel reel) {
-    // TODO: Implement share functionality
-    // This could use share_plus package or native sharing
-    print('Sharing reel: ${reel.title}');
-  }
+  // Share functionality - COMMENTED OUT
+  // void _shareReel(ReelsModel reel) {
+  //   // TODO: Implement share functionality
+  //   // This could use share_plus package or native sharing
+  //   print('Sharing reel: ${reel.title}');
+  // }
 
   /// ✅ Navigate to comments screen
   void _navigateToComments(ReelsModel reel) {

@@ -41,10 +41,11 @@ class UnifiedBookingPageView extends StatelessWidget {
         title: Text(AppStrings.booking, style: AppTextStyles.appBarText),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppSizes.spacing20,
               ),
@@ -75,6 +76,7 @@ class UnifiedBookingPageView extends StatelessWidget {
             ),
           ),
         ],
+        ),
       ),
     );
   }

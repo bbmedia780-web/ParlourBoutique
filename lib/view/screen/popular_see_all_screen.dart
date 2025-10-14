@@ -93,7 +93,8 @@ class PopularSeeAllScreen extends StatelessWidget {
                   final item = filteredItems[index];
                   return PopularCard(
                     data: item,
-                    onFavoriteTap: () => popularController.toggleFavoriteById(item.id ?? ''),
+                    // onFavoriteTap: () => popularController.toggleFavoriteById(item.id ?? ''), // COMMENTED OUT
+                    onFavoriteTap: () {}, // Empty function to avoid errors
                   );
                 },
               );
@@ -131,7 +132,9 @@ class PopularSeeAllScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: _buildAppBar(),
-      body: _buildBody(),
+      body: SafeArea(
+        child: _buildBody(),
+      ),
     );
   }
 

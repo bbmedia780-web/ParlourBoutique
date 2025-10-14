@@ -27,8 +27,10 @@ class MainNavigationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: AppColors.white,
+      resizeToAvoidBottomInset: false, // Prevents keyboard from pushing up bottom nav
       extendBody: true,
-      body: Obx(() {
+      body: SafeArea(
+        child: Obx(() {
         int selectedIndex = controller.selectedBottomBarIndex.value;
 
         int screenIndex;
@@ -61,7 +63,8 @@ class MainNavigationScreen extends StatelessWidget {
             _screens[4],
           ],
         );
-      }),
+        }),
+      ),
       floatingActionButton: Container(
         width: AppSizes.spacing54,
         height: AppSizes.spacing54,

@@ -140,10 +140,10 @@ class HomeHeader extends StatelessWidget {
           onPressed: controller.onNotificationTap,
           icon: Image.asset(AppAssets.notification, height: AppSizes.spacing32),
         ),
-        IconButton(
+        /*IconButton(
           onPressed: controller.onChatTap,
           icon: Image.asset(AppAssets.message, height: AppSizes.spacing32),
-        ),
+        ),*/
       ],
     );
   }
@@ -219,6 +219,11 @@ class HomeHeader extends StatelessWidget {
                   child: TextField(
                     controller: controller.searchController,
                     cursorColor: AppColors.primary,
+                    textInputAction: TextInputAction.search,
+                    onSubmitted: (value) {
+                      // Dismiss keyboard when search is submitted
+                      FocusScope.of(Get.context!).unfocus();
+                    },
                     decoration: InputDecoration(
                       hintText: AppStrings.searchBridalMakeup,
                       border: InputBorder.none,
@@ -226,11 +231,11 @@ class HomeHeader extends StatelessWidget {
                     ),
                   ),
                 ),
-                GestureDetector(
+               /* GestureDetector(
                   onTap: controller.onMicrophoneTap,
                   child: Image.asset(AppAssets.mic,
                       width: AppSizes.spacing20, color: AppColors.mediumGrey),
-                ),
+                ),*/
               ],
             ),
           ),

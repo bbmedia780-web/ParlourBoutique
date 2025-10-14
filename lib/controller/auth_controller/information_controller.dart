@@ -7,6 +7,8 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
 import '../../routes/app_routes.dart';
 import '../../utility/global.dart';
+import '../../utility/validation_helper.dart';
+import '../../utility/form_focus_helper.dart';
 import 'auth_controller.dart';
 
 class InformationController extends GetxController {
@@ -15,16 +17,28 @@ class InformationController extends GetxController {
   final emailController = TextEditingController();
   final dateOfBirthController = TextEditingController();
   final genderController = TextEditingController();
+  
+  // ---------------- Focus Nodes ----------------
+  final fullNameFocusNode = FocusNode();
+  final emailFocusNode = FocusNode();
+  final dateOfBirthFocusNode = FocusNode();
+  final genderFocusNode = FocusNode();
 
   // ---------------- State ----------------
   final RxString selectedGender = "".obs;
-  final Rx<DateTime?> selectedDate = DateTime.now().obs;
+  final Rx<DateTime?> selectedDate = Rx<DateTime?>(null);
   final RxBool isSubmitting = false.obs;
+  
+  // ---------------- Validation States ----------------
+  final RxString fullNameError = ''.obs;
+  final RxString emailError = ''.obs;
+  final RxString dateOfBirthError = ''.obs;
+  final RxString genderError = ''.obs;
+  final RxBool isFormValid = false.obs;
 
   final List<String> genderOptions = [
     AppStrings.female,
     AppStrings.male,
-    AppStrings.other,
   ];
 
   final _authServices = AuthServices();
@@ -44,8 +58,15 @@ class InformationController extends GetxController {
     genderController.clear();
 
     selectedGender.value = '';
-    selectedDate.value = DateTime.now();
+    selectedDate.value = null;
     isSubmitting.value = false;
+    
+    // Reset validation states
+    fullNameError.value = '';
+    emailError.value = '';
+    dateOfBirthError.value = '';
+    genderError.value = '';
+    isFormValid.value = false;
   }
 
   // ---------------- Load User Data ----------------
@@ -58,8 +79,20 @@ class InformationController extends GetxController {
     // DOB
     if (auth.userDob.isNotEmpty) {
       dateOfBirthController.text = auth.userDob.value;
-    } else {
-      dateOfBirthController.text = formatDate(selectedDate.value!);
+      // Parse the existing DOB if available
+      try {
+        final parts = auth.userDob.value.split('-');
+        if (parts.length == 3) {
+          selectedDate.value = DateTime(
+            int.parse(parts[2]), // year
+            int.parse(parts[1]), // month
+            int.parse(parts[0]), // day
+          );
+        }
+      } catch (e) {
+        // If parsing fails, keep selectedDate as null
+        selectedDate.value = null;
+      }
     }
 
     // Gender
@@ -75,7 +108,80 @@ class InformationController extends GetxController {
     emailController.dispose();
     dateOfBirthController.dispose();
     genderController.dispose();
+    
+    // Dispose focus nodes
+    fullNameFocusNode.dispose();
+    emailFocusNode.dispose();
+    dateOfBirthFocusNode.dispose();
+    genderFocusNode.dispose();
+    
     super.onClose();
+  }
+
+  // ---------------- Validation Methods ----------------
+  /// Validates full name field
+  void validateFullName() {
+    final error = ValidationHelper.validateName(fullNameController.text);
+    fullNameError.value = error ?? '';
+    updateFormValidity();
+  }
+  
+  /// Validates email field
+  void validateEmail() {
+    final error = ValidationHelper.validateEmail(emailController.text);
+    emailError.value = error ?? '';
+    updateFormValidity();
+  }
+  
+  /// Validates date of birth field
+  void validateDateOfBirth() {
+    final error = ValidationHelper.validateDate(dateOfBirthController.text);
+    dateOfBirthError.value = error ?? '';
+    updateFormValidity();
+  }
+  
+  /// Validates gender selection
+  void validateGender() {
+    final error = ValidationHelper.validateDropdown(selectedGender.value, 'gender');
+    genderError.value = error ?? '';
+    updateFormValidity();
+  }
+  
+  /// Updates form validity based on all field validations
+  void updateFormValidity() {
+    isFormValid.value = fullNameError.value.isEmpty &&
+        emailError.value.isEmpty &&
+        dateOfBirthError.value.isEmpty &&
+        genderError.value.isEmpty;
+  }
+  
+  /// Validates all form fields
+  bool validateForm() {
+    validateFullName();
+    validateEmail();
+    validateDateOfBirth();
+    validateGender();
+    return isFormValid.value;
+  }
+  
+  /// Gets all focus nodes for form fields
+  List<FocusNode> getFocusNodes() {
+    return [
+      fullNameFocusNode,
+      emailFocusNode,
+      dateOfBirthFocusNode,
+      genderFocusNode,
+    ];
+  }
+  
+  /// Gets all validation errors
+  List<String?> getValidationErrors() {
+    return [
+      fullNameError.value.isNotEmpty ? fullNameError.value : null,
+      emailError.value.isNotEmpty ? emailError.value : null,
+      dateOfBirthError.value.isNotEmpty ? dateOfBirthError.value : null,
+      genderError.value.isNotEmpty ? genderError.value : null,
+    ];
   }
 
   // ---------------- Helpers ----------------
@@ -85,13 +191,36 @@ class InformationController extends GetxController {
         "${date.year}";
   }
 
+  // ---------------- Age Validation ----------------
+  int calculateAge(DateTime birthDate) {
+    final now = DateTime.now();
+    int age = now.year - birthDate.year;
+    
+    // Check if birthday hasn't occurred this year
+    if (now.month < birthDate.month || 
+        (now.month == birthDate.month && now.day < birthDate.day)) {
+      age--;
+    }
+    
+    return age;
+  }
+
+  bool isAgeValid(DateTime birthDate) {
+    return calculateAge(birthDate) >= 12;
+  }
+
   // ---------------- UI Actions ----------------
   Future<void> selectDate(BuildContext context) async {
+    final now = DateTime.now();
+    final initialDate = selectedDate.value != null && selectedDate.value!.isBefore(now) 
+        ? selectedDate.value! 
+        : now.subtract(const Duration(days: 365 * 18)); // Default to 18 years ago
+    
     final picked = await showDatePicker(
       context: context,
-      initialDate: selectedDate.value ?? DateTime.now(),
+      initialDate: initialDate,
       firstDate: DateTime(1900),
-      lastDate: DateTime.now(),
+      lastDate: now,
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
@@ -109,6 +238,16 @@ class InformationController extends GetxController {
     if (picked != null) {
       selectedDate.value = picked;
       dateOfBirthController.text = formatDate(picked);
+      
+      // Validate date after selection
+      validateDateOfBirth();
+      
+      // Validate age after date selection
+      if (isAgeValid(picked)) {
+        ShowToast.success(AppStrings.ageValidationSuccess);
+      } else {
+        ShowToast.error(AppStrings.ageValidationError);
+      }
     }
   }
 
@@ -141,6 +280,7 @@ class InformationController extends GetxController {
               onTap: () {
                 selectedGender.value = gender;
                 genderController.text = gender;
+                validateGender(); // Validate after selection
                 Get.back();
               },
             )),
@@ -154,28 +294,31 @@ class InformationController extends GetxController {
   }
 
   // ---------------- Continue ----------------
-  Future<void> continueToNext() async {
+  Future<void> continueToNext(BuildContext context, ScrollController scrollController) async {
     if (isSubmitting.value) return;
 
-    // Validate
-    if (fullNameController.text.trim().isEmpty) {
-      ShowSnackBar.show(AppStrings.error, AppStrings.pleaseEnterFullName,
-          backgroundColor: Colors.red);
+    // Validate all form fields
+    if (!validateForm()) {
+      // Scroll to first invalid field
+      FormFocusHelper.scrollToFirstInvalidField(
+        context: context,
+        scrollController: scrollController,
+        focusNodes: getFocusNodes(),
+        validationErrors: getValidationErrors(),
+      );
+      
+      // Show first error message
+      final firstError = ValidationHelper.getFirstError(getValidationErrors());
+      
+      if (firstError != null && firstError.isNotEmpty) {
+        ShowToast.error(firstError);
+      }
       return;
     }
-    if (emailController.text.trim().isEmpty) {
-      ShowSnackBar.show(AppStrings.error, AppStrings.pleaseEnterEmail,
-          backgroundColor: Colors.red);
-      return;
-    }
-    if (dateOfBirthController.text.trim().isEmpty) {
-      ShowSnackBar.show(AppStrings.error, AppStrings.pleaseSelectDateOfBirth,
-          backgroundColor: Colors.red);
-      return;
-    }
-    if (genderController.text.trim().isEmpty) {
-      ShowSnackBar.show(AppStrings.error, AppStrings.pleaseSelectGender,
-          backgroundColor: Colors.red);
+    
+    // Additional age validation
+    if (selectedDate.value != null && !isAgeValid(selectedDate.value!)) {
+      ShowToast.error(AppStrings.ageValidationError);
       return;
     }
 
@@ -197,13 +340,9 @@ class InformationController extends GetxController {
       );
 
       if (!response.success || response.data == null) {
-        ShowSnackBar.show(
-          AppStrings.error,
-          response.message.isNotEmpty
-              ? response.message
-              : AppStrings.failedUpdateProfile,
-          backgroundColor: Colors.red,
-        );
+        ShowToast.error(response.message.isNotEmpty
+            ? response.message
+            : AppStrings.failedUpdateProfile);
         return;
       }
 
@@ -215,19 +354,15 @@ class InformationController extends GetxController {
         dob: dateOfBirthController.text.trim(),
       );
 
-      ShowSnackBar.show(
-        AppStrings.success,
-        AppStrings.informationSavedSuccessfully,
-        backgroundColor: Colors.green,
-      );
+      ShowToast.success(AppStrings.informationSavedSuccessfully);
 
       Get.offAllNamed(AppRoutes.home);
     } catch (e) {
-      ShowSnackBar.show(AppStrings.error, e.toString(),
-          backgroundColor: Colors.red);
+      ShowToast.error(e.toString());
     } finally {
       isSubmitting.value = false;
     }
   }
 }
+
 

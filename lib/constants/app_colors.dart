@@ -9,6 +9,7 @@ class AppColors {
   static const Color yellowGold = Color(0xFFF8C946); // yellow gold
   static const Color kellyGreen = Color(0xFF64BB19); // yellow gold
   static const Color green = Color(0xFF4CAF50); // Green for open status
+  static const Color orange = Color(0xFFFF9800); // Orange for warnings
   static const Color primary = Color(0xFFD74C7C); // Primary pink
   static const Color lightPinkAccent = Color(0xFFFF74C7); // #FF74C7
   static const Color pinkAccent = Color(0xFFE91E63); // Pink Accent
@@ -36,5 +37,15 @@ class AppColors {
   // Additional colors for service details
   static const Color facebookBlue = Color(0xFF1877F2);
   static const Color yellow = Color(0xFFFFD700);
+
+  // Toast colors matching the image design
+  static const Color toastErrorBg = Color(0xFFFFE1E1); // Light red background
+  static const Color toastErrorIcon = Color(0xFFE53E3E); // Red icon
+  static const Color toastInfoBg = Color(0xFFE6F3FF); // Light blue background
+  static const Color toastInfoIcon = Color(0xFF3182CE); // Blue icon
+  static const Color toastSuccessBg = Color(0xFFE6FFE6); // Light green background
+  static const Color toastSuccessIcon = Color(0xFF38A169); // Green icon
+  static const Color toastWarningBg = Color(0xFFFFF8E1); // Light yellow background
+  static const Color toastWarningIcon = Color(0xFFD69E2E); // Yellow icon
 
 }

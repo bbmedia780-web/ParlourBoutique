@@ -15,74 +15,100 @@ class FloatingSearchBarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: AppSizes.size50,
-            decoration: BoxDecoration(
-              border: Border.all(color: AppColors.mediumGrey),
-              borderRadius: BorderRadius.circular(AppSizes.spacing8),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing16),
-            child: Row(
-              children: [
-                Image.asset(
-                  AppAssets.search,
-                  width: AppSizes.spacing20,
-                  color: AppColors.mediumGrey,
-                ),
-                const SizedBox(width: AppSizes.spacing12),
-                Expanded(
-                  child: TextField(
-                    controller: controller.searchController,
-                    cursorColor: AppColors.primary,
-                    decoration: InputDecoration(
-                      hintText: AppStrings.searchBridalMakeup,
-                      border: InputBorder.none,
-                      hintStyle: AppTextStyles.reviewTextTitle,
-                    ),
+    return Container(
+      color: AppColors.white,
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).padding.top + AppSizes.spacing8,
+        bottom: AppSizes.spacing8,
+        left: AppSizes.spacing18,
+        right: AppSizes.spacing18,
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              height: AppSizes.size50,
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                border: Border.all(color: AppColors.mediumGrey),
+                borderRadius: BorderRadius.circular(AppSizes.spacing8),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.08),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
                   ),
-                ),
-                GestureDetector(
-                  onTap: controller.onMicrophoneTap,
-                  child: Image.asset(
-                    AppAssets.mic,
+                ],
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing16),
+              child: Row(
+                children: [
+                  Image.asset(
+                    AppAssets.search,
                     width: AppSizes.spacing20,
                     color: AppColors.mediumGrey,
                   ),
+                  const SizedBox(width: AppSizes.spacing12),
+                  Expanded(
+                    child: TextField(
+                      controller: controller.searchController,
+                      cursorColor: AppColors.primary,
+                      textInputAction: TextInputAction.search,
+                      onSubmitted: (value) {
+                        // Dismiss keyboard when search is submitted
+                        FocusScope.of(context).unfocus();
+                      },
+                      decoration: InputDecoration(
+                        hintText: AppStrings.searchBridalMakeup,
+                        border: InputBorder.none,
+                        hintStyle: AppTextStyles.reviewTextTitle,
+                      ),
+                    ),
+                  ),
+                  /*GestureDetector(
+                    onTap: controller.onMicrophoneTap,
+                    child: Image.asset(
+                      AppAssets.mic,
+                      width: AppSizes.spacing20,
+                      color: AppColors.mediumGrey,
+                    ),
+                  ),*/
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(width: AppSizes.spacing12),
+          Container(
+            width: AppSizes.size50,
+            height: AppSizes.size50,
+            decoration: BoxDecoration(
+              color: AppColors.white,
+              border: Border.all(color: AppColors.mediumGrey),
+              borderRadius: BorderRadius.circular(AppSizes.spacing8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.08),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
-          ),
-        ),
-        const SizedBox(width: AppSizes.spacing12),
-        Container(
-          width: AppSizes.size50,
-          height: AppSizes.size50,
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.mediumGrey),
-            borderRadius: BorderRadius.circular(AppSizes.spacing8),
-          ),
-          child: IconButton(
-            onPressed: () {
-              Get.bottomSheet(
-                const FilterBottomSheet(),
-                isScrollControlled: true,
-              );
-            },
-            icon: Image.asset(
-              AppAssets.filterBlack,
-              width: AppSizes.spacing20,
-              height: AppSizes.spacing20,
+            child: IconButton(
+              onPressed: () {
+                Get.bottomSheet(
+                  const FilterBottomSheet(),
+                  isScrollControlled: true,
+                );
+              },
+              icon: Image.asset(
+                AppAssets.filterBlack,
+                width: AppSizes.spacing20,
+                height: AppSizes.spacing20,
+              ),
             ),
           ),
-        ),
-      ],
-    ).paddingOnly(
-      right: AppSizes.spacing18,
-      left: AppSizes.spacing18,
-      top: AppSizes.spacing4,
+        ],
+      ),
     );
   }
 }

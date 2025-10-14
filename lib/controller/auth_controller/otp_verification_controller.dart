@@ -6,6 +6,7 @@ import '../../constants/app_strings.dart';
 import '../../routes/app_routes.dart';
 import '../../services/auth_services.dart';
 import '../../utility/global.dart';
+import '../../controller/guest_mode_controller.dart';
 import 'auth_controller.dart';
 import 'information_controller.dart';
 import 'sign_in_controller.dart';
@@ -91,18 +92,14 @@ class OtpVerificationController extends GetxController {
       final mobile = signInController.phoneController.text.trim();
 
       if (mobile.isEmpty) {
-        ShowSnackBar.show(
-          AppStrings.error,
-          AppStrings.mobileNumberMissing,
-          backgroundColor: AppColors.red,
-        );
+        ShowToast.error(AppStrings.mobileNumberMissing);
         return;
       }
 
       final response = await _authServices.sendOtp(mobile);
 
       if (response.success) {
-        ShowSnackBar.show(AppStrings.otpResent, AppStrings.newOtpSent);
+        ShowToast.success(AppStrings.newOtpSent);
         _startResendTimer();
       } else {
         _showError(response.message.isNotEmpty
@@ -134,31 +131,28 @@ class OtpVerificationController extends GetxController {
       final response = await _authServices.verifyOtp(mobile, otp);
 
       if (response.success && response.data?.verified == true) {
-        ShowSnackBar.show(
-          AppStrings.success,
-          AppStrings.otpVerifiedSuccessfully,
-          backgroundColor: AppColors.green,
-        );
+        ShowToast.success(AppStrings.otpVerifiedSuccessfully);
 
         final authController = Get.find<AuthController>();
+        final guestController = Get.find<GuestModeController>();
         final saved = await authController.login(response.data!);
 
         if (!saved) {
-          ShowSnackBar.show(
-            AppStrings.warning,
-            AppStrings.failedSaveLoginData,
-          );
+          ShowToast.warning(AppStrings.failedSaveLoginData);
         }
 
         await authController.refreshTokens();
 
+        // Exit guest mode since user is now logged in
+        guestController.exitGuestMode();
+
         Get.back(); // close OTP sheet
 
-        // Check if there's a pending booking after login
+    /*    // Check if there's a pending booking after login
         if (_hasPendingBooking()) {
           _handleReturnToBooking();
           return;
-        }
+        }*/
 
         /// Navigate based on profile completion
         if (response.data?.profileCompleted == true) {
@@ -189,11 +183,10 @@ class OtpVerificationController extends GetxController {
   void _showError(String message) {
     showError.value = true;
     errorMessage.value = message;
-    ShowSnackBar.show(AppStrings.failed, message,
-        backgroundColor: AppColors.red);
+    ShowToast.error(message);
   }
 
-  /// Check if there's a pending booking waiting for login
+/*  /// Check if there's a pending booking waiting for login
   bool _hasPendingBooking() {
     try {
       Get.find<Map<String, dynamic>>(tag: 'pending_booking');
@@ -213,11 +206,7 @@ class OtpVerificationController extends GetxController {
         Get.offAllNamed(AppRoutes.unifiedBooking, arguments: bookingData);
         
         // Show success message
-        ShowSnackBar.show(
-          'Welcome Back!',
-          'You can now confirm your payment',
-          backgroundColor: AppColors.green,
-        );
+        ShowToast.success('Welcome Back! You can now confirm your payment');
         
         // Clean up the stored data
         Get.delete<Map<String, dynamic>>(tag: 'pending_booking');
@@ -227,5 +216,5 @@ class OtpVerificationController extends GetxController {
       Get.offAllNamed(AppRoutes.home);
       print('Error handling return to booking: $e');
     }
-  }
+  }*/
 }

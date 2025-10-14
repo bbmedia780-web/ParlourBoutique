@@ -63,11 +63,7 @@ import '../../model/settings_model.dart';
     // ThemeController removed; no-op for theme change
 
     // Show feedback
-    ShowSnackBar.show(
-      'Dark Mode',
-      value ? 'Dark mode enabled' : 'Light mode enabled',
-      backgroundColor: AppColors.primary,
-    );
+    ShowToast.info(value ? 'Dark mode enabled' : 'Light mode enabled');
   }
 
   /// Toggle notification setting
@@ -76,11 +72,7 @@ import '../../model/settings_model.dart';
     _updateSetting('notification', value);
 
     // Show feedback
-    ShowSnackBar.show(
-      AppStrings.notification,
-      value ? AppStrings.notificationEnable : AppStrings.notificationDisabled,
-      backgroundColor: AppColors.primary,
-    );
+    ShowToast.info(value ? AppStrings.notificationEnable : AppStrings.notificationDisabled);
 
     // TODO: Add notification service logic here
     // _updateNotificationSettings(value);
@@ -172,11 +164,7 @@ class SettingsController extends GetxController {
     _updateSetting('notification', value);
 
     // Show feedback
-    ShowSnackBar.show(
-      AppStrings.notification,
-      value ? AppStrings.notificationEnable : AppStrings.notificationDisabled,
-      backgroundColor: AppColors.primary,
-    );
+    ShowToast.info(value ? AppStrings.notificationEnable : AppStrings.notificationDisabled);
 
   }
 

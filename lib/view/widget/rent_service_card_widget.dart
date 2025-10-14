@@ -6,6 +6,7 @@ import '../../constants/app_sizes.dart';
 import '../../constants/app_text_style.dart';
 import '../../model/unified_data_model.dart';
 import '../../routes/app_routes.dart';
+import '../../utility/navigation_helper.dart';
 
 class RentServiceCardWidget extends StatelessWidget {
   final UnifiedDataModel data;
@@ -20,7 +21,7 @@ class RentServiceCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.toNamed(AppRoutes.details, arguments: data),
+      onTap: () => NavigationHelper.navigateToDetails(data),
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.white,
@@ -142,14 +143,15 @@ class RentServiceCardWidget extends StatelessWidget {
     return Row(
       children: [
         Expanded(child: Text(data.title, style: AppTextStyles.cardTitle)),
-        GestureDetector(
-          onTap: onFavoriteTap,
-          child: Icon(
-            data.isFavorite ? Icons.favorite : Icons.favorite_border,
-            color: AppColors.red,
-            size: AppSizes.spacing18,
-          ),
-        ),
+        // Favorite Button - COMMENTED OUT
+        // GestureDetector(
+        //   onTap: onFavoriteTap,
+        //   child: Icon(
+        //     data.isFavorite ? Icons.favorite : Icons.favorite_border,
+        //     color: AppColors.red,
+        //     size: AppSizes.spacing18,
+        //   ),
+        // ),
       ],
     );
   }

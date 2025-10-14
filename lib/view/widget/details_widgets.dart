@@ -11,7 +11,7 @@ import 'package:get/get.dart';
 class BusinessHeaderWidget extends StatelessWidget {
   final BusinessDetailsModel businessDetails;
   final VoidCallback onBackPressed;
-  final VoidCallback onSharePressed;
+  //final VoidCallback onSharePressed;
   final VoidCallback onFavoritePressed;
   final VoidCallback? onTitlePressed;
   final bool isFavorite;
@@ -20,7 +20,7 @@ class BusinessHeaderWidget extends StatelessWidget {
     super.key,
     required this.businessDetails,
     required this.onBackPressed,
-    required this.onSharePressed,
+   // required this.onSharePressed,
     required this.onFavoritePressed,
     required this.isFavorite,
     this.onTitlePressed,
@@ -40,15 +40,17 @@ class BusinessHeaderWidget extends StatelessWidget {
         iconColor: AppColors.black,
       ),
       actions: [
-        _buildActionButton(
-          imageAsset: AppAssets.share,
-          onPressed: onSharePressed,
-        ),
-        _buildActionButton(
-          icon: isFavorite ? Icons.favorite : Icons.favorite_border,
-          onPressed: onFavoritePressed,
-          iconColor: isFavorite ? AppColors.red : AppColors.white,
-        ),
+        // Share Button - COMMENTED OUT
+        // _buildActionButton(
+        //   imageAsset: AppAssets.share,
+        //   onPressed: onSharePressed,
+        // ),
+        // Favorite Button - COMMENTED OUT
+        // _buildActionButton(
+        //   icon: isFavorite ? Icons.favorite : Icons.favorite_border,
+        //   onPressed: onFavoritePressed,
+        //   iconColor: isFavorite ? AppColors.red : AppColors.white,
+        // ),
       ],
       flexibleSpace: FlexibleSpaceBar(
         background: _buildHeaderBackground(context),
@@ -405,20 +407,21 @@ class ServiceCardWidget extends StatelessWidget {
                         style: AppTextStyles.whiteSmallText,
                       ),
                     ),
-                  Positioned(
-                    top: AppSizes.spacing8,
-                    right: AppSizes.spacing8,
-                    child: Padding(
-                      padding: const EdgeInsets.all(AppSizes.spacing6),
-                      child: Icon(
-                        service.isFavorite == true
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        size: AppSizes.spacing16,
-                        color: AppColors.white,
-                      ),
-                    ),
-                  ),
+                  // Favorite Button - COMMENTED OUT
+                  // Positioned(
+                  //   top: AppSizes.spacing8,
+                  //   right: AppSizes.spacing8,
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(AppSizes.spacing6),
+                  //     child: Icon(
+                  //       service.isFavorite == true
+                  //           ? Icons.favorite
+                  //           : Icons.favorite_border,
+                  //       size: AppSizes.spacing16,
+                  //       color: AppColors.white,
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
 

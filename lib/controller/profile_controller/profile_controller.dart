@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:parlour_app/routes/app_routes.dart';
 import '../../common/common_button.dart';
 import '../../constants/app_sizes.dart';
@@ -8,6 +9,8 @@ import '../../constants/app_text_style.dart';
 import '../auth_controller/auth_controller.dart';
 
 class ProfileController extends GetxController {
+  final AuthController authController = Get.find<AuthController>();
+
 
   // ---------------- Menu Navigation ----------------
   /// Handles navigation when a profile menu item is tapped
@@ -47,6 +50,16 @@ class ProfileController extends GetxController {
     }
   }
 
+  /// ----------------- PROFILE IMAGE -----------------
+  void onProfileImageTapped() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+    //  authController.updateUserImage(image.path);
+      authController.userImage(image.path);
+    }
+  }
+
   // ---------------- Logout ----------------
   /// Show confirmation dialog before logging out
   void _showLogoutDialog() {
@@ -73,11 +86,11 @@ class ProfileController extends GetxController {
           // Cancel Button
           AppButton(
             text: AppStrings.cancel,
-            isPrimary: true,
+            isPrimary: false,
             onPressed: () => Get.back(),
-            height: AppSizes.spacing30,
-            width: AppSizes.size80,
-            borderRadius: AppSizes.spacing6,
+            height: AppSizes.spacing45,
+            width: AppSizes.size100,
+            borderRadius: AppSizes.spacing8,
             textStyle: AppTextStyles.buttonText,
           ),
           // Logout Button
@@ -88,9 +101,9 @@ class ProfileController extends GetxController {
               Get.back();
               _performLogout();
             },
-            height: AppSizes.spacing30,
-            width: AppSizes.size80,
-            borderRadius: AppSizes.spacing6,
+            height: AppSizes.spacing45,
+            width: AppSizes.size100,
+            borderRadius: AppSizes.spacing8,
             textStyle: AppTextStyles.buttonText,
           ),
         ],

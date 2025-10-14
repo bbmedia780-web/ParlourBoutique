@@ -72,30 +72,18 @@ class SupportTicketFormController extends GetxController {
   void submitTicket() {
     // Validate subject
     if (formData.value.subject.trim().isEmpty) {
-      ShowSnackBar.show(
-        AppStrings.error.tr,
-        AppStrings.errorPleaseEnterSubject.tr,
-        backgroundColor: AppColors.red,
-      );
+      ShowToast.error(AppStrings.errorPleaseEnterSubject.tr);
       return;
     }
 
     // Validate description
     if (formData.value.description.trim().isEmpty) {
-      ShowSnackBar.show(
-        AppStrings.error.tr,
-        AppStrings.errorPleaseEnterDescription.tr,
-        backgroundColor: AppColors.red,
-      );
+      ShowToast.error(AppStrings.errorPleaseEnterDescription.tr);
       return;
     }
 
     // Show success message
-    ShowSnackBar.show(
-      AppStrings.success.tr,
-      AppStrings.successTicketSubmitted.tr,
-      backgroundColor: AppColors.green,
-    );
+    ShowToast.success(AppStrings.successTicketSubmitted.tr);
 
     // Navigate back to help & support screen
     Get.back();

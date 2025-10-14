@@ -26,6 +26,7 @@ class WelcomeController extends GetxController {
   }
 
   void onGetStarted(){
+    // Navigate to HomeScreen as guest user
     Get.offAllNamed(AppRoutes.home);
   }
 }

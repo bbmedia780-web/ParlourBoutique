@@ -62,6 +62,11 @@ class AppSizes {
   // Radius
   static const double buttonRadius = 8;
   static const double cardRadius = 12;
+  
+  // Border widths
+  static const double borderWidth1 = 1;
+  static const double borderWidth1_5 = 1.5;
+  static const double borderWidth2 = 2;
 
 
   // height and width

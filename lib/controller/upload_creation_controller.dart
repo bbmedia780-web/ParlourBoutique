@@ -56,7 +56,7 @@ class UploadCreationController extends GetxController {
   Future<void> upload() async {
     final file = _videoController.selectedVideo.value;
     if (file == null) {
-      ShowSnackBar.show(AppStrings.warning, 'Please select or record a video first', backgroundColor: AppColors.red);
+      ShowToast.warning('Please select or record a video first');
       return;
     }
 
@@ -82,7 +82,7 @@ class UploadCreationController extends GetxController {
         final rc = Get.find<ReelsController>();
         await rc.addLocalReel(newReel);
         
-        ShowSnackBar.show(AppStrings.success, 'Video uploaded successfully', backgroundColor: AppColors.green);
+        ShowToast.success('Video uploaded successfully');
       } else {
         throw Exception('ReelsController not found');
       }
@@ -96,7 +96,7 @@ class UploadCreationController extends GetxController {
       Get.back();
     } catch (e) {
       print('DEBUG: Upload error: $e');
-      ShowSnackBar.show(AppStrings.error, 'Failed to upload video: $e', backgroundColor: AppColors.red);
+      ShowToast.error('Failed to upload video: $e');
     } finally {
       isUploading.value = false;
     }

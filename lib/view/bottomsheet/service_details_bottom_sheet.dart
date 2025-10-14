@@ -112,42 +112,44 @@ class ServiceDetailsBottomSheet extends StatelessWidget {
               Text(service.name, style: AppTextStyles.appBarText),
               Row(
                 children: [
-                  GestureDetector(
-                    onTap: onShare,
-                    child: Container(
-                      padding: const EdgeInsets.all(AppSizes.spacing8),
-                      decoration: BoxDecoration(
-                        color: AppColors.grey.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(
-                          AppSizes.buttonRadius,
-                        ),
-                      ),
-                      child: Image.asset(
-                        AppAssets.shareArrow,
-                        height: AppSizes.spacing16,
-                        width: AppSizes.spacing16,
-                      ),
-                    ),
-                  ),
+                  // Share Button - COMMENTED OUT
+                  // GestureDetector(
+                  //   onTap: onShare,
+                  //   child: Container(
+                  //     padding: const EdgeInsets.all(AppSizes.spacing8),
+                  //     decoration: BoxDecoration(
+                  //       color: AppColors.grey.withValues(alpha: 0.1),
+                  //       borderRadius: BorderRadius.circular(
+                  //         AppSizes.buttonRadius,
+                  //       ),
+                  //     ),
+                  //     child: Image.asset(
+                  //       AppAssets.shareArrow,
+                  //       height: AppSizes.spacing16,
+                  //       width: AppSizes.spacing16,
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(width: AppSizes.spacing8),
 
-                  GestureDetector(
-                    onTap: onFavorite,
-                    child: Container(
-                      padding: const EdgeInsets.all(AppSizes.spacing8),
-                      decoration: BoxDecoration(
-                        color: AppColors.grey.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(
-                          AppSizes.buttonRadius,
-                        ),
-                      ),
-                      child: Obx(() => Icon(
-                        favoriteState.value ? Icons.favorite : Icons.favorite_border,
-                        color: AppColors.red,
-                        size: AppSizes.spacing16,
-                      )),
-                    ),
-                  ),
+                  // Favorite Button - COMMENTED OUT
+                  // GestureDetector(
+                  //   onTap: onFavorite,
+                  //   child: Container(
+                  //     padding: const EdgeInsets.all(AppSizes.spacing8),
+                  //     decoration: BoxDecoration(
+                  //       color: AppColors.grey.withValues(alpha: 0.1),
+                  //       borderRadius: BorderRadius.circular(
+                  //         AppSizes.buttonRadius,
+                  //       ),
+                  //     ),
+                  //     child: Obx(() => Icon(
+                  //       favoriteState.value ? Icons.favorite : Icons.favorite_border,
+                  //       color: AppColors.red,
+                  //       size: AppSizes.spacing16,
+                  //     )),
+                  //   ),
+                  // ),
                 ],
               ),
             ],

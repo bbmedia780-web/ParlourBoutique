@@ -215,13 +215,14 @@ class UnifiedBookingController extends GetxController {
     final authController = Get.find<AuthController>();
     
     if (!authController.isLoggedIn.value) {
-      // User is not logged in, redirect to login screen
+      // User is not logged in, show login bottom sheet
       // Store current booking state for returning after login
       _storeBookingStateForReturn();
       
-      // Navigate to login screen
-      Get.toNamed(AppRoutes.signIn);
-      ShowSnackBar.show(AppStrings.loginRequired, AppStrings.pleaseLogin,backgroundColor: AppColors.red);
+      // Show login bottom sheet
+      final guestController = Get.find<GuestModeController>();
+      guestController.showLoginBottomSheet();
+      ShowToast.warning(AppStrings.pleaseLogin);
       return;
     }
     
@@ -303,6 +304,7 @@ import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import '../constants/app_assets.dart';
 import '../controller/auth_controller/auth_controller.dart';
+import '../controller/guest_mode_controller.dart';
 import '../model/booking_service_model.dart';
 import '../model/payment_method_model.dart';
 import '../model/details_model.dart';
@@ -478,6 +480,24 @@ class UnifiedBookingController extends GetxController {
       initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppColors.primary,
+              onPrimary: AppColors.white,
+              surface: AppColors.white,
+              onSurface: AppColors.black,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.primary,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (picked != null) {
@@ -488,10 +508,45 @@ class UnifiedBookingController extends GetxController {
   }
 
   /// Show time picker and update selected time
+
   Future<void> selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppColors.primary,
+              onPrimary: AppColors.white,
+              surface: AppColors.white,
+              onSurface: AppColors.black,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.primary,
+              ),
+            ),
+            timePickerTheme: TimePickerThemeData(
+              dialHandColor: AppColors.primary,
+              entryModeIconColor: AppColors.white,
+              dayPeriodColor: MaterialStateColor.resolveWith((states) {
+                if (states.contains(MaterialState.selected)) {
+                  return AppColors.primary;
+                }
+                return AppColors.white;
+              }),
+              dayPeriodTextColor: MaterialStateColor.resolveWith((states) {
+                if (states.contains(MaterialState.selected)) {
+                  return AppColors.white;
+                }
+                return AppColors.primary;
+              }),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (picked != null) {
@@ -505,14 +560,28 @@ class UnifiedBookingController extends GetxController {
     }
   }
 
+
   // ------------------------ STEP NAVIGATION ------------------------
 
-  /// Move to next step
+  /// --- Booking Step Controller ---
   void onNextStep() {
+    // Move to next step if not on the last one
     if (currentStep.value < totalSteps.value - 1) {
       currentStep.value++;
+    } else {
+      onConfirmPayment();
     }
   }
+
+
+/*
+  void onConfirmPayment() {
+    currentStep.value = 2;
+  }*/
+  void onConfirmPayment() {
+    currentStep.value = totalSteps.value - 1;
+  }
+
 
   /// Move to previous step or exit if first step
   void onBackTap() {
@@ -526,6 +595,7 @@ class UnifiedBookingController extends GetxController {
   // ------------------------ PAYMENT CONFIRMATION ------------------------
 
   /// Confirm payment after login check
+  /*
   void onConfirmPayment() async {
     final authController = Get.find<AuthController>();
 
@@ -535,17 +605,15 @@ class UnifiedBookingController extends GetxController {
 
       // Redirect to login
       Get.toNamed(AppRoutes.signIn);
-      ShowSnackBar.show(
-        AppStrings.loginRequired,
-        AppStrings.pleaseLogin,
-        backgroundColor: AppColors.red,
-      );
+      ShowToast.error(AppStrings.pleaseLogin);
       return;
     }
 
     // Move to confirmation step
     currentStep.value = 2;
   }
+*/
+
 
   /// Store booking state before login
   void _storeBookingStateForReturn() {
@@ -577,7 +645,8 @@ class UnifiedBookingController extends GetxController {
   // ------------------------ FINAL STEP ------------------------
 
   void onDone() {
-    Get.back(); // Close booking page
+    // Navigate to home screen after successful booking
+    Get.offAllNamed(AppRoutes.home);
   }
 
   void onBookMore() {

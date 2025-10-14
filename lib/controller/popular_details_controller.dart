@@ -6,6 +6,9 @@ import '../model/details_model.dart';
 import '../model/popular_model.dart';
 import '../model/unified_data_model.dart';
 import '../routes/app_routes.dart';
+import '../controller/auth_controller/auth_controller.dart';
+import '../controller/guest_mode_controller.dart';
+import '../utility/navigation_helper.dart';
 import 'favourite_controller.dart';
 import '../view/bottomsheet/branches_bottom_sheet.dart';
 import '../view/bottomsheet/service_details_bottom_sheet.dart';
@@ -833,9 +836,10 @@ class DetailsController extends GetxController {
     Get.back();
   }
 
-  void onSharePressed() {
-    // TODO: Implement share functionality
-  }
+  // Share functionality - COMMENTED OUT
+  // void onSharePressed() {
+  //   // TODO: Implement share functionality
+  // }
 
   void onRentNowPressed() {
     final details = businessDetails.value;
@@ -856,15 +860,25 @@ class DetailsController extends GetxController {
       type: AppStrings.rentType,
     );
 
-    Get.toNamed(AppRoutes.unifiedBooking, arguments: {'service': bookingService});
+    NavigationHelper.navigateToUnifiedBooking(bookingService);
   }
 
   void onFavoritePressed() {
+    // Check if user is logged in
+    final authController = Get.find<AuthController>();
+    
+    if (!authController.isLoggedIn.value) {
+      // User is guest, show login bottom sheet
+      final guestController = Get.find<GuestModeController>();
+      guestController.showLoginBottomSheet();
+      return;
+    }
+
     if (currentItemId != null) {
       if (favoriteIds.contains(currentItemId!)) {
         favoriteIds.remove(currentItemId!);
       } else {
-        favoriteIds.add(currentItemId!);
+favoriteIds.add(currentItemId!);
       }
 
       isFavorite.value = favoriteIds.contains(currentItemId!);
@@ -992,7 +1006,7 @@ class DetailsController extends GetxController {
   }
 
   void _handleServiceShare(ServiceCategoryModel service) {
-    // TODO: Handle service share logic
+    // TODO: Handle service share logic - COMMENTED OUT
   }
 
   bool _isServiceFavorite(ServiceCategoryModel service) {

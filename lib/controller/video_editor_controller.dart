@@ -79,7 +79,7 @@ class VideoEditorController extends GetxController {
   }
 
   void _showError(String message) {
-    ShowSnackBar.show(AppStrings.error, message, backgroundColor: AppColors.red);
+    ShowToast.error(message);
   }
 
   @override

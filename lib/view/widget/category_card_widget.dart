@@ -109,19 +109,19 @@ class CategoryCardWidget extends StatelessWidget {
                     style: AppTextStyles.whiteSmallText,
                   ),
                 ),
-              // Favorite Icon
-              Positioned(
-                top: AppSizes.spacing12,
-                right: AppSizes.spacing10,
-                child: GestureDetector(
-                  onTap: onFavoriteTap,
-                  child: Icon(
-                    data.isFavorite ? Icons.favorite : Icons.favorite_border,
-                    color: data.isFavorite ? AppColors.red : AppColors.white,
-                    size: AppSizes.spacing18,
-                  ),
-                ),
-              ),
+              // Favorite Icon - COMMENTED OUT
+              // Positioned(
+              //   top: AppSizes.spacing12,
+              //   right: AppSizes.spacing10,
+              //   child: GestureDetector(
+              //     onTap: onFavoriteTap,
+              //     child: Icon(
+              //       data.isFavorite ? Icons.favorite : Icons.favorite_border,
+              //       color: data.isFavorite ? AppColors.red : AppColors.white,
+              //       size: AppSizes.spacing18,
+              //     ),
+              //   ),
+              // ),
             ],
           ),
           Padding(

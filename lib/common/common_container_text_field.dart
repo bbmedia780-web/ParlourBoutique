@@ -16,6 +16,8 @@ class CommonContainerTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final TextStyle? textStyle;
   final TextStyle? hintStyle;
+  final bool showErrorBorder;
+  final String? errorText;
 
   const CommonContainerTextField({
     super.key,
@@ -29,43 +31,61 @@ class CommonContainerTextField extends StatelessWidget {
     this.suffixIcon,
     this.textStyle,
     this.hintStyle,
+    this.showErrorBorder = false,
+    this.errorText,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: AppSizes.size50,
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        border: Border.all(
-          color: AppColors.mediumLightGray,
-          width: 1.0,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          height: AppSizes.size50,
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            border: Border.all(
+              color: showErrorBorder ? AppColors.red : AppColors.mediumLightGray,
+              width: showErrorBorder ? 1.5 : 1.0,
+            ),
+            borderRadius: BorderRadius.circular(AppSizes.buttonRadius),
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  cursorColor: AppColors.primary,
+                  controller: controller,
+                  keyboardType: keyboardType,
+                  readOnly: readOnly,
+                  enabled: enabled,
+                  onTap: onTap,
+                  onChanged: onChanged,
+                  style: textStyle ?? AppTextStyles.welcomePageDes,
+                  decoration: InputDecoration(
+                    hintText: hintText,
+                    hintStyle: hintStyle ?? AppTextStyles.hintText,
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.only(left: AppSizes.spacing14),
+                  ),
+                ),
+              ),
+              if (suffixIcon != null) suffixIcon!,
+            ],
+          ),
         ),
-        borderRadius: BorderRadius.circular(AppSizes.buttonRadius),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextFormField(
-              cursorColor: AppColors.primary,
-              controller: controller,
-              keyboardType: keyboardType,
-              readOnly: readOnly,
-              onTap: onTap,
-              onChanged:onChanged,
-              style: textStyle ?? AppTextStyles.welcomePageDes,
-              decoration: InputDecoration(
-                hintText: hintText,
-                hintStyle: hintStyle ?? AppTextStyles.hintText,
-                border: InputBorder.none,
-               // isCollapsed: true,
-                contentPadding: const EdgeInsets.only(left: AppSizes.spacing14),
+        if (errorText != null && errorText!.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.only(top: AppSizes.spacing8, left: AppSizes.spacing14),
+            child: Text(
+              errorText!,
+              style: AppTextStyles.hintText.copyWith(
+                color: AppColors.red,
+                fontSize: 12,
               ),
             ),
           ),
-          if (suffixIcon != null) suffixIcon!,
-        ],
-      ),
+      ],
     );
   }
 }

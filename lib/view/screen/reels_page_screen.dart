@@ -16,7 +16,8 @@ class ReelsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.black,
-      body: Obx(() {
+      body: SafeArea(
+        child: Obx(() {
           // Ensure playback is controlled by active tab state
           // (UI still builds; controller manages play/pause)
           if (controller.isLoading.value && controller.reelsList.isEmpty) {
@@ -63,6 +64,7 @@ class ReelsScreen extends StatelessWidget {
 
           return _buildReelsList(controller);
         }),
+      ),
     );
   }
 
@@ -181,18 +183,19 @@ class ReelsScreen extends StatelessWidget {
               ),
             ),
 
-            // Right side interaction buttons
-            Positioned(
+            /// Right side interaction buttons phase 2
+           /* Positioned(
               right: AppSizes.spacing16,
               bottom: bottomSafeInset + AppSizes.size70,
               child: Column(
                 children: [
-                  _buildActionButton(
-                    icon: Icons.favorite,
-                    count: reel.formattedLikesCount,
-                    isActive: reel.isLiked,
-                    onTap: () => controller.toggleLike(index),
-                  ),
+                  // Favorite Button - COMMENTED OUT
+                  // _buildActionButton(
+                  //   icon: Icons.favorite,
+                  //   count: reel.formattedLikesCount,
+                  //   isActive: reel.isLiked,
+                  //   onTap: () => controller.toggleLike(index),
+                  // ),
                   const SizedBox(height: AppSizes.spacing20),
                   _buildActionButton(
                     icon: Icons.chat_bubble_outline,
@@ -200,11 +203,12 @@ class ReelsScreen extends StatelessWidget {
                     onTap: () => controller.commentOnReel(index),
                   ),
                   const SizedBox(height: AppSizes.spacing20),
-                  _buildActionButton(
-                    icon: Icons.share,
-                    count: reel.formattedSharesCount,
-                    onTap: () => controller.shareReel(index),
-                  ),
+                  // Share Button - COMMENTED OUT
+                  // _buildActionButton(
+                  //   icon: Icons.share,
+                  //   count: reel.formattedSharesCount,
+                  //   onTap: () => controller.shareReel(index),
+                  // ),
                   const SizedBox(height: AppSizes.spacing20),
                   _buildActionButton(
                     icon: Icons.more_vert,
@@ -212,7 +216,7 @@ class ReelsScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
+            ),*/
 
             // (Removed top-right mute/unmute icon per request)
 

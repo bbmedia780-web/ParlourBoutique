@@ -94,9 +94,17 @@ class NotificationController extends GetxController {
       filteredNotifications.value = notifications.where((notification) {
         final nameMatch = notification.businessName.toLowerCase().contains(query.toLowerCase());
         final offerMatch = notification.offerDescription.toLowerCase().contains(query.toLowerCase());
-        return nameMatch || offerMatch;
+        final callToActionMatch = notification.callToAction.toLowerCase().contains(query.toLowerCase());
+        return nameMatch || offerMatch || callToActionMatch;
       }).toList();
     }
+  }
+
+  /// Clear search and show all notifications
+  void clearSearch() {
+    searchController.clear();
+    searchQuery.value = '';
+    filteredNotifications.value = notifications;
   }
 
   // -------------------- Notification Actions --------------------

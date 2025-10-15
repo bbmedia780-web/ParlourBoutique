@@ -12,6 +12,7 @@ class CommonTextField extends StatelessWidget {
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
   final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final bool obscureText;
   final Color? cursorColor;
   final Function(String)? onChanged;
@@ -29,6 +30,7 @@ class CommonTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.next,
     this.prefixIcon,
+    this.suffixIcon,
     this.obscureText = false,
     this.cursorColor,
     this.onChanged,
@@ -60,6 +62,7 @@ class CommonTextField extends StatelessWidget {
         hintText: hintText,
         hintStyle: AppTextStyles.hintText,
         prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
         errorText: errorText,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppSizes.spacing16,

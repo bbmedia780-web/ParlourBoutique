@@ -694,71 +694,81 @@ class HomeScreen extends StatelessWidget {
       },
       child: Scaffold(
         backgroundColor: AppColors.white,
-        body: Stack(
-          children: [
-            CustomScrollView(
-            controller: controller.scrollController,
-            slivers: [
-              SliverAppBar(
-                backgroundColor: AppColors.white,
-                automaticallyImplyLeading: false,
-                pinned: true,
-                floating: false,
-                snap: false,
-                expandedHeight: AppSizes.size380,
-                toolbarHeight: 0, // No toolbar, just the flexible space
-                flexibleSpace: FlexibleSpaceBar(
-                  collapseMode: CollapseMode.pin,
-                  background: HomeHeader(
-                    controller: controller,
-                    authController: authController,
-                    unifiedServiceController: unifiedServiceController,
-                  ),
-                ),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.spacing20,
-                ),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate([
-                    const SizedBox(height: AppSizes.spacing12),
-                    PopularNowSection(
-                      controller: controller,
-                      popularController: popularController,
+        resizeToAvoidBottomInset: false, // Prevent keyboard from resizing the scaffold
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return Stack(
+              children: [
+                CustomScrollView(
+                  controller: controller.scrollController,
+                  physics: const ClampingScrollPhysics(), // Better keyboard handling
+                  slivers: [
+                    SliverAppBar(
+                      backgroundColor: AppColors.white,
+                      automaticallyImplyLeading: false,
+                      pinned: true,
+                      floating: false,
+                      snap: false,
+                      expandedHeight: AppSizes.size380,
+                      toolbarHeight: 0, // No toolbar, just the flexible space
+                      flexibleSpace: FlexibleSpaceBar(
+                        collapseMode: CollapseMode.pin,
+                        background: HomeHeader(
+                          controller: controller,
+                          authController: authController,
+                          unifiedServiceController: unifiedServiceController,
+                        ),
+                      ),
                     ),
-                    const SizedBox(height: AppSizes.spacing12),
-                    ServicesSection(
-                      controller: controller,
-                      unifiedServiceController: unifiedServiceController,
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSizes.spacing20,
+                      ),
+                      sliver: SliverList(
+                        delegate: SliverChildListDelegate([
+                          const SizedBox(height: AppSizes.spacing12),
+                          PopularNowSection(
+                            controller: controller,
+                            popularController: popularController,
+                          ),
+                          const SizedBox(height: AppSizes.spacing12),
+                          ServicesSection(
+                            controller: controller,
+                            unifiedServiceController: unifiedServiceController,
+                          ),
+                          const SizedBox(height: AppSizes.spacing30),
+                        ]),
+                      ),
                     ),
-                    const SizedBox(height: AppSizes.spacing30),
-                  ]),
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: AppSizes.spacing20,
+                      ),
+                      sliver: UnifiedListSliver(controller: unifiedServiceController),
+                    ),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: MediaQuery.of(context).viewInsets.bottom > 0 
+                            ? MediaQuery.of(context).viewInsets.bottom + AppSizes.spacing20
+                            : AppSizes.size100,
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSizes.spacing20,
+                Obx(
+                  () => controller.showFloatingSearchBar.value
+                      ? Positioned(
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          child: FloatingSearchBarWidget(controller: controller),
+                        )
+                      : const SizedBox.shrink(),
                 ),
-                sliver: UnifiedListSliver(controller: unifiedServiceController),
-              ),
-              SliverToBoxAdapter(
-                child: const SizedBox(height: AppSizes.size100),
-              ),
-            ],
-          ),
-          Obx(
-            () => controller.showFloatingSearchBar.value
-                ? Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: FloatingSearchBarWidget(controller: controller),
-                  )
-                : const SizedBox.shrink(),
-          ),
-        ],
-      ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

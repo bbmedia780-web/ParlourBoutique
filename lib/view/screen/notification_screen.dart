@@ -45,11 +45,12 @@ class NotificationScreen extends StatelessWidget {
   }
 
   Widget _buildSearchBar() {
-    return  CommonTextField(
+    return Obx(() => CommonTextField(
       controller: controller.searchController,
       hintText: AppStrings.searchHere,
       keyboardType: TextInputType.text,
       cursorColor: AppColors.grey,
+      onChanged: controller.onSearchChanged,
       prefixIcon: Padding(
         padding: const EdgeInsets.all(AppSizes.spacing8),
         child: Container(
@@ -69,24 +70,63 @@ class NotificationScreen extends StatelessWidget {
           ),
         ),
       ),
-    ).paddingSymmetric(horizontal: AppSizes.spacing18);
+      suffixIcon: controller.searchQuery.value.isNotEmpty
+          ? IconButton(
+              icon: Icon(
+                Icons.clear,
+                color: AppColors.mediumGrey,
+                size: AppSizes.spacing20,
+              ),
+              onPressed: controller.clearSearch,
+            )
+          : null,
+    )).paddingSymmetric(horizontal: AppSizes.spacing18);
   }
 
   Widget _buildNotificationList() {
-    return Obx(() => ListView.separated(
+    return Obx(() {
+      if (controller.filteredNotifications.isEmpty && controller.searchQuery.value.isNotEmpty) {
+        // Show no results message when search has no matches
+        return Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.search_off,
+                size: AppSizes.spacing48,
+                color: AppColors.mediumGrey,
+              ),
+              const SizedBox(height: AppSizes.spacing16),
+              Text(
+                'No notifications found',
+                style: AppTextStyles.bodyText.copyWith(
+                  color: AppColors.grey,
+                ),
+              ),
+              const SizedBox(height: AppSizes.spacing8),
+              Text(
+                'Try searching with different keywords',
+                style: AppTextStyles.hintText,
+              ),
+            ],
+          ),
+        );
+      }
+      
+      return ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing18),
-        itemCount: controller.notifications.length,
+        itemCount: controller.filteredNotifications.length,
         separatorBuilder: (context, index) =>
         const Divider(height: 1, color: AppColors.extraLightGrey),
         itemBuilder: (context, index) {
-          final notification = controller.notifications[index];
+          final notification = controller.filteredNotifications[index];
           return NotificationTile(
             notification: notification,
             onTap: () => controller.onNotificationTap(notification),
           );
         },
-      ),
-    );
+      );
+    });
   }
 }
 

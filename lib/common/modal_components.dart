@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_sizes.dart';
+import '../constants/app_strings.dart';
 import '../constants/app_text_style.dart';
 
 /// Reusable modal components for the app
@@ -127,14 +128,14 @@ class ModalComponents {
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: Text('Cancel', style: AppTextStyles.primaryButtonText),
+            child: Text(AppStrings.cancel, style: AppTextStyles.primaryButtonText),
           ),
           TextButton(
             onPressed: () {
               onConfirm(textController.text.trim());
               Get.back();
             },
-            child: Text('Add', style: AppTextStyles.primaryButtonText),
+            child: Text(AppStrings.add, style: AppTextStyles.primaryButtonText),
           ),
         ],
       ),

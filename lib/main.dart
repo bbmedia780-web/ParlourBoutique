@@ -8,6 +8,7 @@ import 'package:parlour_app/utility/localization_service.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
 import 'binding/app_binding.dart';
+import 'view/widget/network_wrapper.dart';
 
 
 void main() {
@@ -57,14 +58,16 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        builder: (context, child) => ResponsiveBreakpoints.builder(
-          child: child!,
-          breakpoints: const [
-            Breakpoint(start: 0, end: 450, name: MOBILE),
-            Breakpoint(start: 451, end: 800, name: TABLET),
-            Breakpoint(start: 801, end: 1200, name: DESKTOP),
-            Breakpoint(start: 1201, end: double.infinity, name: '4K'),
-          ],
+        builder: (context, child) => NetworkWrapper(
+          child: ResponsiveBreakpoints.builder(
+            child: child!,
+            breakpoints: const [
+              Breakpoint(start: 0, end: 450, name: MOBILE),
+              Breakpoint(start: 451, end: 800, name: TABLET),
+              Breakpoint(start: 801, end: 1200, name: DESKTOP),
+              Breakpoint(start: 1201, end: double.infinity, name: '4K'),
+            ],
+          ),
         ),
       );
   }

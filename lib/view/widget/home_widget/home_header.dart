@@ -130,7 +130,7 @@ class HomeHeader extends StatelessWidget {
               Obx(() => Text(
                 authController.mobile.value.isNotEmpty
                     ? authController.mobile.value
-                    : AppStrings.userAddress,
+                    : "",
                 style: AppTextStyles.faqsDescriptionText,
               )),
             ],

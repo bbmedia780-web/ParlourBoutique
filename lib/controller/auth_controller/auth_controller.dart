@@ -335,6 +335,7 @@ import '../../constants/app_strings.dart';
 import '../../constants/app_colors.dart';
 import '../../utility/global.dart';
 import '../../controller/guest_mode_controller.dart';
+import '../home_controller/main_navigation_controller.dart';
 import 'sign_in_controller.dart';
 
 class AuthController extends GetxController {
@@ -377,6 +378,12 @@ class AuthController extends GetxController {
   void onInit() {
     super.onInit();
     _loadFromPrefs();
+  }
+
+  // ------------------ 🆕 First Time User ------------------
+  /// Check if this is the first time user is opening the app
+  Future<bool> isFirstTimeUser() async {
+    return await SharedPrefsUtil.isFirstTimeUser();
   }
 
   // ------------------ 📥 Load ------------------
@@ -551,7 +558,16 @@ class AuthController extends GetxController {
         Get.find<SignInController>().phoneController.clear();
       }
 
-      Get.offAllNamed(AppRoutes.welcome);
+      // Navigate to home as guest instead of welcome screen
+      Get.offAllNamed(AppRoutes.home);
+      
+      // Reset navigation to home tab (index 0) after logout
+      Future.delayed(const Duration(milliseconds: 100), () {
+        if (Get.isRegistered<MainNavigationController>()) {
+          Get.find<MainNavigationController>().resetToHome();
+        }
+      });
+      
       ShowToast.success(AppStrings.logoutSuccess);
     } finally {
       isLoading.value = false;

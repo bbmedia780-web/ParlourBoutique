@@ -22,7 +22,17 @@ class SplashController extends GetxController {
       final authController = Get.find<AuthController>();
       final guestController = Get.find<GuestModeController>();
 
-      // Check login status
+      // Check if this is first time user
+      final isFirstTime = await authController.isFirstTimeUser();
+      
+      if (isFirstTime) {
+        // First time user, always show welcome screen
+        guestController.enterGuestMode();
+        Get.offAllNamed(AppRoutes.welcome);
+        return;
+      }
+
+      // Check login status for returning users
       final prefsLoggedIn = authController.isLoggedIn.value;
 
       if (prefsLoggedIn) {
@@ -38,15 +48,15 @@ class SplashController extends GetxController {
             guestController.exitGuestMode();
             Get.offAllNamed(AppRoutes.home);
           } else {
-            // Token refresh failed, go to welcome screen
+            // Token refresh failed, go to home as guest
             guestController.enterGuestMode();
-            Get.offAllNamed(AppRoutes.welcome);
+            Get.offAllNamed(AppRoutes.home);
           }
         }
       } else {
-        // No login data, go to welcome screen as guest
+        // No login data, go to home as guest (returning user who logged out)
         guestController.enterGuestMode();
-        Get.offAllNamed(AppRoutes.welcome);
+        Get.offAllNamed(AppRoutes.home);
       }
     } catch (e) {
       print('Error during auto-login check: $e');

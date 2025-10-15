@@ -17,8 +17,10 @@ class SharedPrefsUtil {
   static const String keyProfileCompleted = 'profile_completed';
   static const String keyIsLoggedIn = 'is_logged_in';
   static const String keyLoginTime = 'login_time';
+  static const String keyIsFirstTime = 'is_first_time';
 
   /// Clears all session-related keys from SharedPreferences
+  /// Note: Does NOT clear keyIsFirstTime, as we want to preserve first-time experience state
   static Future<void> clearSession() async {
     final prefs = await SharedPreferences.getInstance();
     print('[SharedPrefsUtil] 🔄 Clearing session keys from SharedPreferences...');
@@ -37,8 +39,22 @@ class SharedPrefsUtil {
       prefs.remove(keyProfileCompleted),
       prefs.remove(keyIsLoggedIn),
       prefs.remove(keyLoginTime),
+      // Note: NOT clearing keyIsFirstTime - user should not see welcome again after logout
     ]);
     print('[SharedPrefsUtil] ✅ Session cleared.');
+  }
+
+  /// Check if this is the first time user is opening the app
+  static Future<bool> isFirstTimeUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool(keyIsFirstTime) ?? true; // Default to true for first time
+  }
+
+  /// Mark that user has completed first-time experience
+  static Future<void> markFirstTimeCompleted() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(keyIsFirstTime, false);
+    print('[SharedPrefsUtil] ✅ First time experience completed.');
   }
 }
 

@@ -50,6 +50,7 @@ class UnifiedBookingController extends GetxController {
       // Convert ServiceCategoryModel to BookingServiceModel
       final price = double.tryParse(args.price) ?? 0.0;
       service = BookingServiceModel(
+        id: 'service_${args.name.toLowerCase().replaceAll(' ', '_')}',
         image: args.image,
         title: args.name,
         subtitle: args.description ?? AppStrings.getProfessionalServiceDescription(args.name.toLowerCase()),
@@ -64,6 +65,7 @@ class UnifiedBookingController extends GetxController {
     } else {
       // Fallback to a default service if no valid arguments
       service = BookingServiceModel(
+        id: 'default_service',
         image: AppAssets.beauty1,
         title: AppStrings.hairCutting,
         subtitle: AppStrings.hairCuttingHomeService,
@@ -304,6 +306,7 @@ import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import '../constants/app_assets.dart';
 import '../controller/auth_controller/auth_controller.dart';
+import '../controller/booking_controller.dart';
 import '../controller/guest_mode_controller.dart';
 import '../model/booking_service_model.dart';
 import '../model/payment_method_model.dart';
@@ -365,6 +368,7 @@ class UnifiedBookingController extends GetxController {
       // Convert ServiceCategoryModel to BookingServiceModel
       final price = double.tryParse(args.price) ?? 0.0;
       service = BookingServiceModel(
+        id: 'service_${args.name.toLowerCase().replaceAll(' ', '_')}',
         image: args.image,
         title: args.name,
         subtitle: args.description ??
@@ -378,6 +382,7 @@ class UnifiedBookingController extends GetxController {
     } else {
       // Fallback default service
       service = BookingServiceModel(
+        id: 'default_service',
         image: AppAssets.beauty1,
         title: AppStrings.hairCutting,
         subtitle: AppStrings.hairCuttingHomeService,
@@ -644,7 +649,15 @@ class UnifiedBookingController extends GetxController {
 
   // ------------------------ FINAL STEP ------------------------
 
-  void onDone() {
+  void onDone() async {
+    // Mark the service as booked
+    try {
+      final bookingController = Get.find<BookingController>();
+      await bookingController.markServiceAsBooked(service.id);
+    } catch (e) {
+      print('Error marking service as booked: $e');
+    }
+    
     // Navigate to home screen after successful booking
     Get.offAllNamed(AppRoutes.home);
   }

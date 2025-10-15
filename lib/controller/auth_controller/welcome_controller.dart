@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../routes/app_routes.dart';
+import '../../utility/shared_prefs_util.dart';
+import '../home_controller/main_navigation_controller.dart';
 
 class WelcomeController extends GetxController {
   var currentPage = 0.obs;
@@ -25,9 +27,19 @@ class WelcomeController extends GetxController {
     controller.jumpToPage(pageCount - 1);
   }
 
-  void onGetStarted(){
+  void onGetStarted() async {
+    // Mark first-time experience as completed
+    await SharedPrefsUtil.markFirstTimeCompleted();
+    
     // Navigate to HomeScreen as guest user
     Get.offAllNamed(AppRoutes.home);
+    
+    // Reset navigation to home tab (index 0) after welcome screen
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (Get.isRegistered<MainNavigationController>()) {
+        Get.find<MainNavigationController>().resetToHome();
+      }
+    });
   }
 }
 

@@ -20,6 +20,13 @@ class MainNavigationController extends GetxController {
     _setReelsActive(false);
   }
 
+  // -------------------- Reset --------------------
+  /// Reset navigation to home tab (index 0)
+  void resetToHome() {
+    selectedBottomBarIndex.value = 0;
+    _setReelsActive(false);
+  }
+
   // -------------------- Navigation --------------------
   /// Handle bottom navigation bar taps
   void onBottomNavItemTapped(int index) {

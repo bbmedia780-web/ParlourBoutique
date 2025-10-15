@@ -19,7 +19,9 @@ class SettingsPageView extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: _buildAppBar(),
-      body: _buildBody(),
+      body: SafeArea(
+        child: _buildBody(),
+      ),
     );
   }
 

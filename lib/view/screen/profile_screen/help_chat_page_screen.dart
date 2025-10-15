@@ -148,7 +148,7 @@ class HelpChatPageView extends StatelessWidget {
       child: CommonContainerTextField(
         controller: controller.messageController,
         keyboardType: TextInputType.text,
-        hintText: 'ask_question'.tr,
+        hintText: AppStrings.askQuestion.tr,
         suffixIcon: GestureDetector(
           onTap: controller.sendMessage,
           child: Image.asset(

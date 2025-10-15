@@ -188,7 +188,7 @@ class SupportTicketFormPageView extends StatelessWidget {
           onChanged: controller.updateSubject,
           cursorColor: AppColors.primary,
           decoration: InputDecoration(
-            hintText: 'Enter subject'.tr,
+            hintText: AppStrings.enterSubject.tr,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.spacing8),
               borderSide: BorderSide(color: AppColors.lightGrey),
@@ -224,7 +224,7 @@ class SupportTicketFormPageView extends StatelessWidget {
           cursorColor: AppColors.primary,
           maxLines: 4,
           decoration: InputDecoration(
-            hintText: 'Enter Description'.tr,
+            hintText: AppStrings.enterDescription.tr,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(AppSizes.spacing12),
               borderSide: BorderSide(color: AppColors.lightGrey),

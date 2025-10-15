@@ -324,21 +324,24 @@ class ProfileScreen extends StatelessWidget {
           title: AppStrings.booking,
           onTap: () => controller.onMenuItemTapped(AppStrings.menuItemBooking),
         ),
-        _buildMenuItem(
+
+        /*_buildMenuItem(
           image: AppAssets.payment,
           title: AppStrings.paymentHistory,
           onTap: () => controller.onMenuItemTapped(AppStrings.menuItemPaymentHistory),
-        ),
-        _buildMenuItem(
+        ),*/
+
+        /*_buildMenuItem(
           image: AppAssets.settings,
           title: AppStrings.setting,
           onTap: () => controller.onMenuItemTapped(AppStrings.menuItemSettings),
-        ),
-        _buildMenuItem(
+        ),*/
+
+       /* _buildMenuItem(
           image: AppAssets.helpSupport,
           title: AppStrings.helpSupport,
           onTap: () => controller.onMenuItemTapped(AppStrings.menuItemHelpSupport),
-        ),
+        ),*/
         _buildMenuItem(
           image: AppAssets.faq,
           title: AppStrings.faqs,
@@ -346,6 +349,17 @@ class ProfileScreen extends StatelessWidget {
         ),
 
         AppGlobal.commonDivider(color: AppColors.lightGrey.withOpacity(0.4)),
+        const SizedBox(height: AppSizes.spacing12),
+
+        // Delete Account
+        _buildMenuItem(
+          image: AppAssets.delete,
+          title: AppStrings.deleteAccount,
+          isDeleteAccount: true,
+          showArrow: false,
+          onTap: () => controller.onMenuItemTapped(AppStrings.menuItemDeleteAccount),
+        ),
+
         const SizedBox(height: AppSizes.spacing12),
 
         // Logout
@@ -366,6 +380,7 @@ class ProfileScreen extends StatelessWidget {
     required String title,
     required VoidCallback onTap,
     bool isLogout = false,
+    bool isDeleteAccount = false,
     bool showArrow = true,
   }) {
     return Container(
@@ -375,12 +390,37 @@ class ProfileScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppSizes.buttonRadius),
         child: Row(
           children: [
-            Image.asset(image, height: AppSizes.spacing36),
+            // Icon display
+            SizedBox(
+              width: AppSizes.spacing36,
+              height: AppSizes.spacing36,
+              child: isDeleteAccount
+                  ? Image.asset(
+                      image,
+                      height: AppSizes.spacing36,
+                      width: AppSizes.spacing36,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        // Fallback to icon if image fails
+                        return Icon(
+                          Icons.delete_forever_rounded,
+                          size: AppSizes.spacing36,
+                          color: AppColors.red,
+                        );
+                      },
+                    )
+                  : Image.asset(
+                      image,
+                      height: AppSizes.spacing36,
+                      width: AppSizes.spacing36,
+                      fit: BoxFit.contain,
+                    ),
+            ),
             const SizedBox(width: AppSizes.spacing20),
             Expanded(
               child: Text(
                 title,
-                style: isLogout
+                style: (isLogout || isDeleteAccount)
                     ? AppTextStyles.redText
                     : AppTextStyles.profilePageText,
               ),
@@ -388,7 +428,7 @@ class ProfileScreen extends StatelessWidget {
             if (showArrow)
               Icon(
                 Icons.arrow_forward_ios,
-                color: isLogout ? AppColors.red : AppColors.mediumGrey,
+                color: (isLogout || isDeleteAccount) ? AppColors.red : AppColors.mediumGrey,
                 size: AppSizes.spacing16,
               ),
           ],

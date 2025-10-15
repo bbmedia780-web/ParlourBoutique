@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
+import '../../constants/app_strings.dart';
 import '../../constants/app_text_style.dart';
 
 class GenderBottomSheet extends StatelessWidget {
@@ -33,7 +34,7 @@ class GenderBottomSheet extends StatelessWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          Text("Select Gender", style: AppTextStyles.titleText),
+          Text(AppStrings.selectGenderText, style: AppTextStyles.titleText),
           const SizedBox(height: AppSizes.spacing20),
           ...genderOptions.map((gender) => ListTile(
             title: Text(gender),

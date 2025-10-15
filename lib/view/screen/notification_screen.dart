@@ -35,11 +35,13 @@ class NotificationScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: Column(
+      body: SafeArea(
+        child: Column(
         children: [
           _buildSearchBar(),
           Expanded(child: _buildNotificationList()),
         ],
+        ),
       ),
     );
   }

@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
+import '../controller/network_controller.dart';
 
 class ApiErrorHandler {
   ApiErrorHandler._();
@@ -6,9 +8,26 @@ class ApiErrorHandler {
   /// Handles DioException and returns a user-friendly error message
   static String handleError(Object error) {
     if (error is DioException) {
+      // Update network controller with connection status
+      _updateNetworkStatus(error);
       return _handleDioError(error);
     }
     return error.toString();
+  }
+
+  /// Update network controller based on error type
+  static void _updateNetworkStatus(DioException error) {
+    try {
+      final networkController = Get.find<NetworkController>();
+      
+      // Check if it's a network connectivity issue
+      if (isNoInternetError(error)) {
+        // Force update network status to disconnected
+        networkController.isConnectedObs.value = false;
+      }
+    } catch (e) {
+      // NetworkController not found, ignore
+    }
   }
 
   /// Handles different types of DioException

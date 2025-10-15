@@ -3,6 +3,8 @@ import 'package:get/get.dart' hide Response;
 
 import '../config/api_config.dart';
 import '../controller/auth_controller/auth_controller.dart';
+import '../controller/network_controller.dart';
+import '../utility/api_error_handler.dart';
 
 class BaseApi {
   /// Dio instance for making HTTP requests
@@ -67,11 +69,21 @@ class BaseApi {
     return handler.next(options);
   }
 
-  /// Error interceptor - Handles token refresh on 401 errors
+  /// Error interceptor - Handles token refresh on 401 errors and network issues
   Future<void> _onError(
     DioException error,
     ErrorInterceptorHandler handler,
   ) async {
+    // Handle network connectivity issues
+    if (ApiErrorHandler.isNoInternetError(error)) {
+      try {
+        final networkController = Get.find<NetworkController>();
+        networkController.isConnectedObs.value = false;
+      } catch (e) {
+        // NetworkController not found, ignore
+      }
+    }
+
     // Handle 401 Unauthorized - Token expired
     if (error.response?.statusCode == 401) {
       try {

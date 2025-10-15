@@ -11,12 +11,14 @@ class BookingServiceCard extends StatelessWidget {
   final BookingServiceModel service;
   final VoidCallback onTap;
   final VoidCallback onBookNow;
+  final bool isBooked; // Whether this service has been booked
 
   const BookingServiceCard({
     super.key,
     required this.service,
     required this.onTap,
     required this.onBookNow,
+    this.isBooked = false,
   });
 
   @override
@@ -68,25 +70,32 @@ class BookingServiceCard extends StatelessWidget {
                 color: AppColors.lightGrey,
               ),
 
-              // Price and Book Now Button
+              // Price and Book Now Button (only show button if not booked)
               Row(
                 children: [
                   Text(
                     '₹${service.price.toStringAsFixed(2)}',
                     style: AppTextStyles.priceText
                   ),
-                  const Spacer(),
+                 /* const Spacer(),
                   SizedBox(
                     height: AppSizes.spacing22,
                     child: AppButton(
-                      text: AppStrings.bookNow,
+                      text: isBooked ? AppStrings.booked : AppStrings.bookNow,
                       padding: EdgeInsets.symmetric(horizontal: AppSizes.spacing4),
-                      onPressed: onBookNow,
-                      isPrimary: true,
+                      onPressed: isBooked ? null : onBookNow,
+                      isPrimary: !isBooked,
+                      backgroundColor: isBooked ? AppColors.lightPink : null,
                       borderRadius: AppSizes.spacing4,
-                      textStyle: AppTextStyles.whiteTinyText
-                    )
-                  )
+                      textStyle: isBooked 
+                        ? AppTextStyles.whiteTinyText.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w600,
+                          )
+                        : AppTextStyles.whiteTinyText,
+                    ),
+                  ),*/
+
                 ],
               ),
             ],

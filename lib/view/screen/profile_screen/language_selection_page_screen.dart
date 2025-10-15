@@ -20,10 +20,12 @@ class LanguageSelectionPageView extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: _buildAppBar(),
-      body: LayoutBuilder(
-        builder: (context, constraints) {
-          return _buildBody(constraints);
-        },
+      body: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return _buildBody(constraints);
+          },
+        ),
       ),
     );
   }

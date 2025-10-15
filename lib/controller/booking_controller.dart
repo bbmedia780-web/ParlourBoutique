@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../constants/app_assets.dart';
 import '../constants/app_strings.dart';
 import '../model/booking_service_model.dart';
-import '../routes/app_routes.dart';
 import '../utility/navigation_helper.dart';
 
 class BookingController extends GetxController with GetSingleTickerProviderStateMixin {
@@ -11,9 +11,13 @@ class BookingController extends GetxController with GetSingleTickerProviderState
   final RxInt selectedServiceIndex = 0.obs;
   late TabController tabController;
   
+  // Track booked service IDs
+  final RxList<String> bookedServiceIds = <String>[].obs;
+  
   // Booking services data
   final RxList<BookingServiceModel> bookingServices = <BookingServiceModel>[
     BookingServiceModel(
+      id: 'parlour_1',
       image: AppAssets.parlour1,
       title: AppStrings.kanyaKaya,
       subtitle: AppStrings.hairCuttingHomeService,
@@ -22,6 +26,7 @@ class BookingController extends GetxController with GetSingleTickerProviderState
       type: AppStrings.parlourType,
     ),
     BookingServiceModel(
+      id: 'parlour_2',
       image: AppAssets.parlour2,
       title: AppStrings.auraShineBeauty,
       subtitle: AppStrings.engagementMakeup,
@@ -46,6 +51,7 @@ class BookingController extends GetxController with GetSingleTickerProviderState
       type: AppStrings.boutiqueType,
     ),*/
     BookingServiceModel(
+      id: 'rent_1',
       image: AppAssets.rent1,
       title: AppStrings.fashionRentals,
       subtitle: AppStrings.lehengaRental,
@@ -54,6 +60,7 @@ class BookingController extends GetxController with GetSingleTickerProviderState
       type: AppStrings.rentType,
     ),
     BookingServiceModel(
+      id: 'rent_2',
       image: AppAssets.rent2,
       title: AppStrings.bridalRentals,
       subtitle: AppStrings.sareeRental,
@@ -68,6 +75,28 @@ class BookingController extends GetxController with GetSingleTickerProviderState
     super.onInit();
     // Disabled Boutique for Phase 1 -> reduce tabs to 3 (All, Parlour, Rent)
     tabController = TabController(length: 3, vsync: this);
+    _loadBookedServices();
+  }
+  
+  /// Load booked services from shared preferences
+  Future<void> _loadBookedServices() async {
+    final prefs = await SharedPreferences.getInstance();
+    final bookedIds = prefs.getStringList('booked_service_ids') ?? [];
+    bookedServiceIds.addAll(bookedIds);
+  }
+  
+  /// Check if a service is booked
+  bool isServiceBooked(String serviceId) {
+    return bookedServiceIds.contains(serviceId);
+  }
+  
+  /// Mark a service as booked
+  Future<void> markServiceAsBooked(String serviceId) async {
+    if (!bookedServiceIds.contains(serviceId)) {
+      bookedServiceIds.add(serviceId);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setStringList('booked_service_ids', bookedServiceIds);
+    }
   }
 
   void onBackTap() {

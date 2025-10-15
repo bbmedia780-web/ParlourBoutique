@@ -2,6 +2,7 @@
 ///
 /// Represents a booked service with image, title, subtitle, address, price, and type
 class BookingServiceModel {
+  final String id; // Unique identifier for the service
   final String image;
   final String title;
   final String subtitle;
@@ -10,6 +11,7 @@ class BookingServiceModel {
   final String type; // 'parlour', 'boutique', or 'rent'
 
   BookingServiceModel({
+    required this.id,
     required this.image,
     required this.title,
     required this.subtitle,
@@ -21,6 +23,7 @@ class BookingServiceModel {
   /// Creates BookingServiceModel from JSON
   factory BookingServiceModel.fromJson(Map<String, dynamic> json) {
     return BookingServiceModel(
+      id: json['id']?.toString() ?? '',
       image: json['image']?.toString() ?? '',
       title: json['title']?.toString() ?? '',
       subtitle: json['subtitle']?.toString() ?? '',
@@ -41,6 +44,7 @@ class BookingServiceModel {
   /// Converts BookingServiceModel to JSON
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'image': image,
       'title': title,
       'subtitle': subtitle,
@@ -52,6 +56,7 @@ class BookingServiceModel {
 
   /// Creates a copy of BookingServiceModel with updated fields
   BookingServiceModel copyWith({
+    String? id,
     String? image,
     String? title,
     String? subtitle,
@@ -60,6 +65,7 @@ class BookingServiceModel {
     String? type,
   }) {
     return BookingServiceModel(
+      id: id ?? this.id,
       image: image ?? this.image,
       title: title ?? this.title,
       subtitle: subtitle ?? this.subtitle,
@@ -70,6 +76,6 @@ class BookingServiceModel {
   }
 
   @override
-  String toString() => 'BookingServiceModel(title: $title, type: $type, price: $price)';
+  String toString() => 'BookingServiceModel(id: $id, title: $title, type: $type, price: $price)';
 }
 

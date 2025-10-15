@@ -852,6 +852,7 @@ class DetailsController extends GetxController {
     final double price = rentCurrentPrice.value;
 
     final BookingServiceModel bookingService = BookingServiceModel(
+      id: 'rent_${details.id}',
       image: details.image,
       title: details.title,
       subtitle: rentDescription.value ?? details.description,
@@ -958,6 +959,7 @@ favoriteIds.add(currentItemId!);
     final double price = double.tryParse(sanitized) ?? 0.0;
 
     final BookingServiceModel bookingService = BookingServiceModel(
+      id: '${type}_${service.name.toLowerCase().replaceAll(' ', '_')}',
       image: service.image,
       title: service.name,
       subtitle: details?.description ?? AppStrings.getProfessionalServiceDescription(service.name.toLowerCase()),

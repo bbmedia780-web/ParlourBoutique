@@ -537,7 +537,7 @@ class _BusinessDetailsLayout extends StatelessWidget {
                 const SizedBox(height: AppSizes.spacing12),
                 if (controller.isBoutique.value) ...[
                   _CategorySection(
-                    title: "Gender",
+                    title: AppStrings.genderLabel,
                     widget: CategoryTabWidget(
                       categories: controller.boutiqueGenderCategories,
                       selectedIndex: controller.selectedGenderIndex.value,
@@ -547,7 +547,7 @@ class _BusinessDetailsLayout extends StatelessWidget {
                   const SizedBox(height: AppSizes.spacing24),
                 ],
                 Obx(() => _CategorySection(
-                  title: "Category",
+                  title: AppStrings.categoryLabel,
                   widget: CategoryTabWidget(
                     categories: controller.getCurrentCategories(),
                     selectedIndex: controller.selectedCategoryIndex.value,

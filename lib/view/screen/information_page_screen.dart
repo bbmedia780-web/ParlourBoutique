@@ -8,6 +8,7 @@ import '../../constants/app_strings.dart';
 import '../../common/common_button.dart';
 import '../../constants/app_text_style.dart';
 import '../../controller/auth_controller/information_controller.dart';
+import '../../routes/app_routes.dart';
 
 class InformationScreen extends StatelessWidget {
   InformationScreen({super.key});
@@ -17,27 +18,27 @@ class InformationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: AppColors.white,
         appBar: AppBar(
           backgroundColor: AppColors.white,
           elevation: 0,
-          leading: IconButton(
+        /*  leading: IconButton(
             icon: const Icon(
               Icons.arrow_back_ios,
               color: AppColors.black,
               size: AppSizes.spacing20,
             ),
-            onPressed: () => Get.back(),
-          ),
+            onPressed: () => Get.offAllNamed(AppRoutes.home),
+          ),*/
           title:
           Text(AppStrings.information.tr, style: AppTextStyles.appBarText),
           centerTitle: true,
         ),
 
         // ✅ Main Content
-        body: SingleChildScrollView(
+        body: SafeArea(
+          child: SingleChildScrollView(
           controller: scrollController,
           padding: const EdgeInsets.all(AppSizes.spacing20),
           child: Column(
@@ -135,6 +136,7 @@ class InformationScreen extends StatelessWidget {
               )).paddingOnly(bottom: AppSizes.spacing24),
             ],
           ),
+          ),
         ),
 
         // ✅ Bottom Button with Safe Padding
@@ -156,7 +158,6 @@ class InformationScreen extends StatelessWidget {
             );
           }),
         ),
-      ),
     );
   }
 }

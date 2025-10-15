@@ -193,6 +193,12 @@ class AppStrings {
   static const logoutFailed = "Failed to logout";
   static const cancel = "Cancel";
   static const logoutText = "Are you sure you want to logout?";
+  
+  // Delete Account
+  static const deleteAccount = "Delete Account";
+  static const deleteAccountText = "Are you sure you want to delete your account? This action cannot be undone.";
+  static const delete = "Delete";
+  static const deleteAccountUrl = "https://brightbrewmedia.in/request_delete_account.php";
 
   // FAQ Questions
   static const faqQuestionServices = "What services do you offer at your parlour?";
@@ -223,7 +229,6 @@ class AppStrings {
   static const faqAnswerPaymentMethods = "We accept cash, credit/debit cards, UPI, and digital wallets. You can also pay through our app for added convenience.";
 
   // Reels Screen
-  static const music = "Music";
   static const text = "Text";
   static const effect = "Effect";
   static const sticker = "Sticker";
@@ -766,6 +771,62 @@ class AppStrings {
   static const discount30Off = "30%";
   static const discount35Off = "35%";
   
+  // Account Information Screen Hints
+  static const enterYourFullName = "Enter your full name";
+  static const enterYourEmail = "Enter your email";
+
+  // Upload Creation Screen
+  static const uploading = "Uploading...";
+  static const music = "Music";
+  static const selectMusic = "Select Music";
+  static const addText = "Add Text";
+  static const enterTextToAddToVideo = "Enter text to add to video";
+  static const selectStickers = "Select Stickers";
+  static const selectEffect = "Select Effect";
+  static const selectLocation = "Select Location";
+  static const selectHashtags = "Select Hashtags";
+  
+  // Reels Screen
+  static const retry = "Retry";
+  static const errorLoadingReels = "Error Loading Reels";
+  static const report = "Report";
+  static const blockUser = "Block User";
+  static const copyLink = "Copy Link";
+  
+  // Gender Selection
+  static const selectGenderText = "Select Gender";
+  
+  // Modal Components
+  static const add = "Add";
+  
+  // Support Ticket Form
+  static const enterSubject = "Enter subject";
+  static const enterDescription = "Enter Description";
+  
+  // Help Chat
+  static const askQuestion = "ask_question";
+  
+  // No Internet Screen
+  static const noInternetConnection = "No internet connection!";
+  static const noInternetMessage = "Your internet connection is down. Please fix it and then you can continue using Varnika!";
+  
+  // Details Screen
+  static const genderLabel = "Gender";
+  static const categoryLabel = "Category";
+  
+  // Settings
+  static const darkMode = "Dark Mode";
+  static const darkModeEnabled = "Dark mode enabled";
+  static const lightModeEnabled = "Light mode enabled";
+  
+  // Reels Content Titles
+  static const bridalHairDesignCut = "Bridal Hair Design Cut";
+  static const glamorousMakeupLook = "Glamorous Makeup Look";
+  static const spaRelaxationTherapy = "Spa Relaxation Therapy";
+  static const nailArtMasterpiece = "Nail Art Masterpiece";
+  static const hairColorTransformation = "Hair Color Transformation";
+  static const facialTreatmentDemo = "Facial Treatment Demo";
+  
 
 
   // API Error Messages
@@ -842,6 +903,7 @@ class AppStrings {
   static const menuItemHelpSupport = "help_support";
   static const menuItemFaqs = "faqs";
   static const menuItemLogout = "logout";
+  static const menuItemDeleteAccount = "delete_account";
   static const menuItemBooking = "booking";
   static const favourite = "Favourite";
 
@@ -979,6 +1041,7 @@ class AppStrings {
 
   // booking
   static const booking = "Booking";
+  static const booked = "Booked";
   static const selectedService = "Selected Service";
   static const paymentInCash = "Payment In Cash";
 

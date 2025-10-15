@@ -71,6 +71,7 @@ class AppAssets {
   static const settings = 'assets/profile/settings.png';
   static const faq = 'assets/profile/faq.png';
   static const logout = 'assets/profile/logout.png';
+  static const delete = 'assets/profile/delete.png';
   static const send = 'assets/profile/send.png';
 
 
@@ -84,6 +85,7 @@ class AppAssets {
   static const logo = 'assets/home/logo.jpg';
   static const parlour = 'assets/home/parlour.png';
   static const rentIcon = 'assets/home/rent.png';
+  static const internet = 'assets/home/internet.png';
 
 
   ///  Services

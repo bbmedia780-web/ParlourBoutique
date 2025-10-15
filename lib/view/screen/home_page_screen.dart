@@ -695,11 +695,12 @@ class HomeScreen extends StatelessWidget {
       child: Scaffold(
         backgroundColor: AppColors.white,
         resizeToAvoidBottomInset: false, // Prevent keyboard from resizing the scaffold
-        body: LayoutBuilder(
-          builder: (context, constraints) {
-            return Stack(
-              children: [
-                CustomScrollView(
+        body: SafeArea(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Stack(
+                children: [
+                  CustomScrollView(
                   controller: controller.scrollController,
                   physics: const ClampingScrollPhysics(), // Better keyboard handling
                   slivers: [
@@ -765,11 +766,13 @@ class HomeScreen extends StatelessWidget {
                         )
                       : const SizedBox.shrink(),
                 ),
-              ],
-            );
-          },
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
   }
 }
+

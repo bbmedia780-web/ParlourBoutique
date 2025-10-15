@@ -36,6 +36,7 @@ import '../controller/write_review_controller.dart';
 // Content Creation Controllers
 import '../controller/effect_controller.dart';
 import '../controller/media_selection_controller.dart';
+import '../controller/network_controller.dart';
 import '../controller/overlay_controller.dart';
 import '../controller/upload_creation_controller.dart';
 import '../controller/video_editor_controller.dart';
@@ -45,6 +46,7 @@ class AppBinding extends Bindings {
   void dependencies() {
     // ==================== Core Controllers ====================
     // Must be initialized first as other controllers depend on them
+    Get.put(NetworkController(), permanent: true);
     Get.put(AuthController(), permanent: true);
     Get.put(GuestModeController(), permanent: true);
     Get.put(UnifiedServiceDataController(), permanent: true);

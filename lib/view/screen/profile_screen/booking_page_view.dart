@@ -30,7 +30,8 @@ class BookingPageView extends StatelessWidget {
         title: Text(AppStrings.booking, style: AppTextStyles.appBarText),
         centerTitle: true,
       ),
-      body: Column(
+      body: SafeArea(
+        child: Column(
         children: [
           _buildTabBar(),
           Expanded(
@@ -46,6 +47,7 @@ class BookingPageView extends StatelessWidget {
             ),
           ),
         ],
+        ),
       ),
     );
   }
@@ -72,30 +74,6 @@ class BookingPageView extends StatelessWidget {
     );
   }
 
-/*
-  Widget _buildServicesGrid(List services) {
-    return Padding(
-      padding: const EdgeInsets.only(left: AppSizes.spacing12, right: AppSizes.spacing12, top: AppSizes.spacing16),
-      child: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 0.85,
-          mainAxisSpacing: AppSizes.spacing8,
-          crossAxisSpacing: AppSizes.spacing8,
-        ),
-        itemCount: services.length,
-        itemBuilder: (context, index) {
-          final service = services[index];
-          return BookingServiceCard(
-            service: service,
-            onTap: () => controller.onServiceTap(service),
-            onBookNow: () => controller.onBookNowTap(service),
-          );
-        },
-      ),
-    );
-  }
-*/
   Widget _buildServicesGrid(List services) {
     return Padding(
       padding: const EdgeInsets.only(
@@ -115,11 +93,15 @@ class BookingPageView extends StatelessWidget {
         itemCount: services.length,
         itemBuilder: (context, index) {
           final service = services[index];
-          return BookingServiceCard(
-            service: service,
-            onTap: () => controller.onServiceTap(service),
-            onBookNow: () => controller.onBookNowTap(service),
-          );
+          return Obx(() {
+            final isBooked = controller.bookedServiceIds.contains(service.id);
+            return BookingServiceCard(
+              service: service,
+              onTap: () => controller.onServiceTap(service),
+              onBookNow: () => controller.onBookNowTap(service),
+              isBooked: isBooked,
+            );
+          });
         },
       ),
     );

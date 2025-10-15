@@ -106,32 +106,32 @@ class UploadCreationScreen extends StatelessWidget {
   Widget _buildToolButtons(BuildContext context) {
     final tools = [
       ToolButtonData(
-        label: 'Music',
+        label: AppStrings.music,
         icon: Icons.music_note,
         onTap: () => _openMusicPicker(context),
       ),
       ToolButtonData(
-        label: 'Text',
+        label: AppStrings.text,
         icon: Icons.text_fields,
         onTap: () => _openTextAdder(context),
       ),
       ToolButtonData(
-        label: 'Effect',
+        label: AppStrings.effect,
         icon: Icons.auto_fix_high,
         onTap: () => _openEffectPicker(context),
       ),
       ToolButtonData(
-        label: 'Sticker',
+        label: AppStrings.sticker,
         icon: Icons.emoji_emotions_outlined,
         onTap: () => _openStickerPicker(context),
       ),
       ToolButtonData(
-        label: 'Location',
+        label: AppStrings.location,
         icon: Icons.location_on_outlined,
         onTap: () => _openLocationPicker(context),
       ),
       ToolButtonData(
-        label: 'Hashtag',
+        label: AppStrings.hashtag,
         icon: Icons.tag,
         onTap: () => _openHashtagPicker(context),
       ),
@@ -145,7 +145,7 @@ class UploadCreationScreen extends StatelessWidget {
     return Obx(() {
       final isUploading = controller.isUploading.value;
       return AppButton(
-        text: isUploading ? 'Uploading...' : AppStrings.upload,
+        text: isUploading ? AppStrings.uploading : AppStrings.upload,
         onPressed: isUploading ? null : () => controller.upload(),
         width: double.infinity,
         height: AppSizes.spacing45,
@@ -158,7 +158,7 @@ class UploadCreationScreen extends StatelessWidget {
     final mediaController = controller.mediaController;
     ModalComponents.showListPicker(
       context: context,
-      title: 'Select Music',
+      title: AppStrings.selectMusic,
       items: MediaSelectionController.availableMusic,
       selectedItem: mediaController.selectedMusic.value,
       onItemSelected: controller.chooseMusic,
@@ -168,8 +168,8 @@ class UploadCreationScreen extends StatelessWidget {
   void _openTextAdder(BuildContext context) {
     ModalComponents.showTextInputDialog(
       context: context,
-      title: 'Add Text',
-      hintText: 'Enter text to add to video',
+      title: AppStrings.addText,
+      hintText: AppStrings.enterTextToAddToVideo,
       onConfirm: controller.addText,
     );
   }
@@ -178,7 +178,7 @@ class UploadCreationScreen extends StatelessWidget {
     final mediaController = controller.mediaController;
     ModalComponents.showChipPicker(
       context: context,
-      title: 'Select Stickers',
+      title: AppStrings.selectStickers,
       items: MediaSelectionController.availableStickers,
       selectedItems: mediaController.selectedStickers,
       onItemToggled: controller.toggleSticker,
@@ -189,7 +189,7 @@ class UploadCreationScreen extends StatelessWidget {
     final effectController = controller.effectController;
     ModalComponents.showListPicker(
       context: context,
-      title: 'Select Effect',
+      title: AppStrings.selectEffect,
       items: EffectController.availableEffects,
       selectedItem: effectController.selectedEffect.value,
       onItemSelected: controller.chooseEffect,
@@ -200,7 +200,7 @@ class UploadCreationScreen extends StatelessWidget {
     final mediaController = controller.mediaController;
     ModalComponents.showRadioPicker(
       context: context,
-      title: 'Select Location',
+      title: AppStrings.selectLocation,
       items: MediaSelectionController.availableLocations,
       selectedItem: mediaController.selectedLocation.value,
       onItemSelected: controller.chooseLocation,
@@ -211,7 +211,7 @@ class UploadCreationScreen extends StatelessWidget {
     final mediaController = controller.mediaController;
     ModalComponents.showChipPicker(
       context: context,
-      title: 'Select Hashtags',
+      title: AppStrings.selectHashtags,
       items: MediaSelectionController.popularHashtags,
       selectedItems: mediaController.selectedHashtags,
       onItemToggled: controller.toggleHashtag,

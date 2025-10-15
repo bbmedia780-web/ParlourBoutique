@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import '../../constants/app_strings.dart';
 import '../../model/reels_model.dart';
 import '../../services/reels_api.dart';
 
@@ -292,6 +293,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import '../../constants/app_strings.dart';
 import '../../model/reels_model.dart';
 import '../../services/reels_api.dart';
 
@@ -704,7 +706,7 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
         id: '1',
         videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
         thumbnailUrl: 'https://picsum.photos/400/700?random=1',
-        title: 'Bridal Hair Design Cut',
+        title: AppStrings.bridalHairDesignCut,
         description: 'Our expert stylists craft haircuts tailored to your face shape and wedding theme. From classic bobs to elegant updos, we create the perfect look for your special day.',
         authorName: 'Beauty Studio Pro',
         authorProfileImage: 'https://picsum.photos/100/100?random=1',
@@ -722,7 +724,7 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
         id: '2',
         videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
         thumbnailUrl: 'https://picsum.photos/400/700?random=2',
-        title: 'Glamorous Makeup Look',
+        title: AppStrings.glamorousMakeupLook,
         description: 'Transform your look with our professional makeup services. From natural beauty to bold glam, we bring out your best features.',
         authorName: 'Glamour Hub',
         authorProfileImage: 'https://picsum.photos/100/100?random=2',
@@ -740,7 +742,7 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
         id: '3',
         videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
         thumbnailUrl: 'https://picsum.photos/400/700?random=3',
-        title: 'Spa Relaxation Therapy',
+        title: AppStrings.spaRelaxationTherapy,
         description: 'Indulge in our premium spa treatments designed to rejuvenate your mind, body, and soul. Experience ultimate relaxation.',
         authorName: 'Serenity Spa',
         authorProfileImage: 'https://picsum.photos/100/100?random=3',
@@ -758,7 +760,7 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
         id: '4',
         videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
         thumbnailUrl: 'https://picsum.photos/400/700?random=4',
-        title: 'Nail Art Masterpiece',
+        title: AppStrings.nailArtMasterpiece,
         description: 'Discover stunning nail art designs that express your personality. From elegant French tips to bold geometric patterns.',
         authorName: 'Nail Art Studio',
         authorProfileImage: 'https://picsum.photos/100/100?random=4',
@@ -776,7 +778,7 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
         id: '5',
         videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4',
         thumbnailUrl: 'https://picsum.photos/400/700?random=5',
-        title: 'Hair Color Transformation',
+        title: AppStrings.hairColorTransformation,
         description: 'Watch amazing hair color transformations that will inspire your next salon visit. From subtle highlights to bold colors.',
         authorName: 'Color Magic Salon',
         authorProfileImage: 'https://picsum.photos/100/100?random=5',
@@ -794,7 +796,7 @@ class ReelsController extends GetxController with WidgetsBindingObserver {
         id: '6',
         videoUrl: 'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4',
         thumbnailUrl: 'https://picsum.photos/400/700?random=6',
-        title: 'Facial Treatment Demo',
+        title: AppStrings.facialTreatmentDemo,
         description: 'Experience our signature facial treatments that leave your skin glowing and refreshed. Professional skincare at its best.',
         authorName: 'Skin Care Experts',
         authorProfileImage: 'https://picsum.photos/100/100?random=6',

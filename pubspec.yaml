@@ -33,6 +33,8 @@ dependencies:
   path_provider: ^2.1.5
   responsive_framework: ^1.5.1
   fluttertoast: ^8.2.8
+  connectivity_plus: ^6.0.5
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

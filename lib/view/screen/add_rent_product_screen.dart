@@ -33,7 +33,8 @@ class AddRentProductScreen extends StatelessWidget {
         centerTitle: true,
       ),
       backgroundColor: AppColors.white,
-      body: SingleChildScrollView(
+      body: SafeArea(
+        child: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSizes.spacing16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,8 +118,10 @@ class AddRentProductScreen extends StatelessWidget {
             const SizedBox(height: AppSizes.size100),
           ],
         ),
+        ),
       ),
-      bottomNavigationBar: Padding(
+      bottomNavigationBar: SafeArea(
+        child: Padding(
         padding: const EdgeInsets.only(
           left: AppSizes.spacing20,
           right: AppSizes.spacing20,
@@ -133,6 +136,7 @@ class AddRentProductScreen extends StatelessWidget {
             textStyle: AppTextStyles.buttonText,
             onPressed: controller.save,
           ),
+        ),
         ),
       ),
     );

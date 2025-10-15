@@ -33,7 +33,7 @@ import '../../model/settings_model.dart';
     settings.value = [
       SettingsModel(
         id: 'dark_mode',
-        title: 'Dark Mode',
+        title: AppStrings.darkMode,
         icon: 'dark_mode',
         type: SettingsType.toggle,
         isEnabled: isDarkModeEnabled.value,
@@ -63,7 +63,7 @@ import '../../model/settings_model.dart';
     // ThemeController removed; no-op for theme change
 
     // Show feedback
-    ShowToast.info(value ? 'Dark mode enabled' : 'Light mode enabled');
+    ShowToast.info(value ? AppStrings.darkModeEnabled : AppStrings.lightModeEnabled);
   }
 
   /// Toggle notification setting

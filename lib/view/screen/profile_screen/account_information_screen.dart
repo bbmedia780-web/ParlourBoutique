@@ -343,6 +343,7 @@ class AccountInformationPageView extends StatelessWidget {
             controller: controller.fullNameController,
             keyboardType: TextInputType.name,
             textStyle: AppTextStyles.hintText,
+            hintText: AppStrings.enterYourFullName,
           ).paddingOnly(bottom: AppSizes.spacing24),
 
           // email
@@ -351,6 +352,7 @@ class AccountInformationPageView extends StatelessWidget {
             controller: controller.emailController,
             textStyle: AppTextStyles.hintText,
             keyboardType: TextInputType.emailAddress,
+            hintText: AppStrings.enterYourEmail,
           ).paddingOnly(bottom: AppSizes.spacing24),
 
           // dob
@@ -360,6 +362,7 @@ class AccountInformationPageView extends StatelessWidget {
             textStyle: AppTextStyles.hintText,
             keyboardType: TextInputType.none,
             readOnly: true,
+            hintText: AppStrings.selectDateOfBirth,
             onTap: () => controller.selectDate(context),
             suffixIcon: InkWell(
               onTap: () => controller.selectDate(context),
@@ -391,20 +394,26 @@ class AccountInformationPageView extends StatelessWidget {
   // ------------------ SAVE BUTTON (BOTTOM) ------------------
   Widget _buildBottomButton() {
     return SafeArea(
-      minimum: const EdgeInsets.symmetric(
+     /* minimum: const EdgeInsets.symmetric(
         horizontal: AppSizes.spacing20,
         vertical: AppSizes.spacing20,
-      ),
+      ),*/
       child: Obx(() {
-        return AppButton(
-          width: double.infinity,
-          height: AppSizes.spacing45,
-          textStyle: AppTextStyles.buttonText,
-          text: AppStrings.save.tr,
-          isLoading: controller.isSubmitting.value,
-          onPressed: controller.isSubmitting.value
-              ? null
-              : controller.saveInformation,
+        return Padding(
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSizes.spacing20,
+            vertical: AppSizes.spacing20,
+          ),
+          child: AppButton(
+            width: double.infinity,
+            height: AppSizes.spacing45,
+            textStyle: AppTextStyles.buttonText,
+            text: AppStrings.save.tr,
+            isLoading: controller.isSubmitting.value,
+            onPressed: controller.isSubmitting.value
+                ? null
+                : controller.saveInformation,
+          ),
         );
       }),
     );

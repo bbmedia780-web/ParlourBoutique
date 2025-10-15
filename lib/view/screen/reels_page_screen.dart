@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 import '../../constants/app_colors.dart';
+import '../../constants/app_strings.dart';
 import '../../constants/app_text_style.dart';
 import '../../constants/app_sizes.dart';
 import '../../controller/home_controller/reels_controller.dart';
@@ -39,7 +40,7 @@ class ReelsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    'Error Loading Reels',
+                    AppStrings.errorLoadingReels,
                     style: AppTextStyles.appBarText.copyWith(
                       color: AppColors.white,
                     ),
@@ -55,7 +56,7 @@ class ReelsScreen extends StatelessWidget {
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () => controller.loadDummyData(),
-                    child: const Text('Retry'),
+                    child: Text(AppStrings.retry),
                   ),
                 ],
               ),
@@ -386,7 +387,7 @@ class ReelsScreen extends StatelessWidget {
             const SizedBox(height: AppSizes.spacing20),
             _buildOptionItem(
               icon: Icons.report,
-              title: 'Report',
+              title: AppStrings.report,
               onTap: () {
                 Navigator.pop(context);
                 // TODO: Implement report functionality
@@ -394,7 +395,7 @@ class ReelsScreen extends StatelessWidget {
             ),
             _buildOptionItem(
               icon: Icons.block,
-              title: 'Block User',
+              title: AppStrings.blockUser,
               onTap: () {
                 Navigator.pop(context);
                 // TODO: Implement block functionality
@@ -402,7 +403,7 @@ class ReelsScreen extends StatelessWidget {
             ),
             _buildOptionItem(
               icon: Icons.copy,
-              title: 'Copy Link',
+              title: AppStrings.copyLink,
               onTap: () {
                 Navigator.pop(context);
                 // TODO: Implement copy link functionality

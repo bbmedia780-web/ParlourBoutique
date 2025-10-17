@@ -5,6 +5,7 @@ import '../constants/app_colors.dart';
 import 'dart:io';
 import '../constants/app_strings.dart';
 import '../routes/app_routes.dart';
+import 'home_controller/home_controller.dart';
 
 class WriteReviewController extends GetxController {
   final Rx<File?> selectedMedia = Rx<File?>(null);
@@ -36,12 +37,20 @@ class WriteReviewController extends GetxController {
     validateReview();
     
     if (!isFormValid.value) {
-      ShowToast.error(reviewError.value.isNotEmpty ? reviewError.value : 'Please write a review');
+      ShowToast.error(reviewError.value.isNotEmpty ? reviewError.value : AppStrings.pleaseWriteReview);
       return;
     }
     
     // Add submission logic (API or local save)
-    ShowToast.success(AppStrings.submitReviewSuccessfully);
+    // Toast message removed - Success toasts are disabled per requirement
+    
+    // Reset home controller state before navigating back
+    try {
+      final homeController = Get.find<HomeController>();
+      homeController.resetHomeState();
+    } catch (e) {
+      print('HomeController not found: $e');
+    }
     
     // Navigate to home screen after successful submission
     Get.offAllNamed(AppRoutes.home);

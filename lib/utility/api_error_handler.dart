@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import '../controller/network_controller.dart';
+import '../constants/app_strings.dart';
 
 class ApiErrorHandler {
   ApiErrorHandler._();
@@ -19,15 +20,11 @@ class ApiErrorHandler {
   static void _updateNetworkStatus(DioException error) {
     try {
       final networkController = Get.find<NetworkController>();
-      
-      // Check if it's a network connectivity issue
+
       if (isNoInternetError(error)) {
-        // Force update network status to disconnected
         networkController.isConnectedObs.value = false;
       }
-    } catch (e) {
-      // NetworkController not found, ignore
-    }
+    } catch (e) {}
   }
 
   /// Handles different types of DioException
@@ -36,26 +33,26 @@ class ApiErrorHandler {
       case DioExceptionType.connectionTimeout:
       case DioExceptionType.sendTimeout:
       case DioExceptionType.receiveTimeout:
-        return 'Connection timeout. Please check your internet connection and try again.';
+        return AppStrings.connectionTimeout;
 
       case DioExceptionType.connectionError:
-        return 'No internet connection. Please check your network settings.';
+        return AppStrings.noInternetConnection2;
 
       case DioExceptionType.badResponse:
         return _handleResponseError(error);
 
       case DioExceptionType.cancel:
-        return 'Request was cancelled.';
+        return AppStrings.requestCancelled;
 
       case DioExceptionType.badCertificate:
-        return 'Security certificate error. Please contact support.';
+        return AppStrings.certificateError;
 
       case DioExceptionType.unknown:
       default:
         if (error.message?.contains('SocketException') == true) {
-          return 'No internet connection. Please check your network.';
+          return AppStrings.noInternetNetwork;
         }
-        return 'Something went wrong. Please try again later.';
+        return AppStrings.somethingWentWrongTryLater;
     }
   }
 
@@ -75,25 +72,25 @@ class ApiErrorHandler {
     // Default messages based on status code
     switch (statusCode) {
       case 400:
-        return 'Bad request. Please check your input.';
+        return AppStrings.badRequest;
       case 401:
-        return 'Unauthorized. Please login again.';
+        return AppStrings.unauthorized;
       case 403:
-        return 'Access forbidden. You don\'t have permission.';
+        return AppStrings.accessForbidden;
       case 404:
-        return 'Resource not found.';
+        return AppStrings.resourceNotFound;
       case 408:
-        return 'Request timeout. Please try again.';
+        return AppStrings.requestTimeout;
       case 429:
-        return 'Too many requests. Please try again later.';
+        return AppStrings.tooManyRequests;
       case 500:
-        return 'Server error. Please try again later.';
+        return AppStrings.serverError;
       case 502:
-        return 'Bad gateway. Please try again later.';
+        return AppStrings.badGateway;
       case 503:
-        return 'Service unavailable. Please try again later.';
+        return AppStrings.serviceUnavailable;
       default:
-        return 'Something went wrong. Please try again.';
+        return AppStrings.somethingWentWrongTryAgain;
     }
   }
 
@@ -106,12 +103,6 @@ class ApiErrorHandler {
     return false;
   }
 
-  /// Checks if error is due to authentication failure
-  static bool isAuthError(Object error) {
-    if (error is DioException) {
-      return error.response?.statusCode == 401;
-    }
-    return false;
-  }
+
 }
 

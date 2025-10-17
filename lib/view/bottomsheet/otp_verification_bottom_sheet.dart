@@ -66,7 +66,7 @@ class OtpVerificationBottomSheet extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.red, width: 1.5),
+                      border: Border.all(color: AppColors.red, width: AppSizes.borderWidth1_5),
                     ),
                     child: const Icon(
                       Icons.close,
@@ -102,7 +102,7 @@ class OtpVerificationBottomSheet extends StatelessWidget {
                       color: controller.showError.value
                           ? AppColors.red
                           : AppColors.mediumLightGray,
-                      width: 1.5,
+                      width: AppSizes.borderWidth1_5,
                     ),
                     borderRadius: BorderRadius.circular(AppSizes.spacing8),
                   ),

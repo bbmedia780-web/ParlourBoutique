@@ -4,11 +4,13 @@ import '../../constants/app_text_style.dart';
 import '../../services/auth_services.dart';
 import '../../constants/app_strings.dart';
 import '../../constants/app_colors.dart';
-import '../../constants/app_sizes.dart';
 import '../../routes/app_routes.dart';
 import '../../utility/global.dart';
 import '../../utility/validation_helper.dart';
 import '../../utility/form_focus_helper.dart';
+import '../../utility/date_helper.dart';
+import '../../view/bottomsheet/gender_bottom_sheet.dart';
+import '../home_controller/home_controller.dart';
 import 'auth_controller.dart';
 
 class InformationController extends GetxController {
@@ -185,36 +187,28 @@ class InformationController extends GetxController {
   }
 
   // ---------------- Helpers ----------------
+  
+  /// Formats date to DD-MM-YYYY format
   String formatDate(DateTime date) {
-    return "${date.day.toString().padLeft(2, '0')}-"
-        "${date.month.toString().padLeft(2, '0')}-"
-        "${date.year}";
+    return DateHelper.formatDate(date);
   }
 
   // ---------------- Age Validation ----------------
+  
+  /// Calculates age from birth date
   int calculateAge(DateTime birthDate) {
-    final now = DateTime.now();
-    int age = now.year - birthDate.year;
-    
-    // Check if birthday hasn't occurred this year
-    if (now.month < birthDate.month || 
-        (now.month == birthDate.month && now.day < birthDate.day)) {
-      age--;
-    }
-    
-    return age;
+    return DateHelper.calculateAge(birthDate);
   }
 
+  /// Validates if age meets minimum requirement (12 years)
   bool isAgeValid(DateTime birthDate) {
-    return calculateAge(birthDate) >= 12;
+    return DateHelper.isAgeValid(birthDate);
   }
 
   // ---------------- UI Actions ----------------
   Future<void> selectDate(BuildContext context) async {
     final now = DateTime.now();
-    final initialDate = selectedDate.value != null && selectedDate.value!.isBefore(now) 
-        ? selectedDate.value! 
-        : now.subtract(const Duration(days: 365 * 18)); // Default to 18 years ago
+    final initialDate = DateHelper.getSmartInitialDate(selectedDate.value);
     
     final picked = await showDatePicker(
       context: context,
@@ -243,50 +237,23 @@ class InformationController extends GetxController {
       validateDateOfBirth();
       
       // Validate age after date selection
-      if (isAgeValid(picked)) {
-        ShowToast.success(AppStrings.ageValidationSuccess);
-      } else {
+      if (!isAgeValid(picked)) {
+        // Only show error toast, success toast removed per requirement
         ShowToast.error(AppStrings.ageValidationError);
       }
     }
   }
 
+  /// Shows gender selection bottom sheet
   void selectGender() {
     Get.bottomSheet(
-      Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              margin: const EdgeInsets.symmetric(vertical: AppSizes.spacing12),
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-            Text(AppStrings.selectGender, style: AppTextStyles.titleText),
-            const SizedBox(height: AppSizes.spacing20),
-            ...genderOptions.map((gender) => ListTile(
-              title: Text(gender),
-              trailing: selectedGender.value == gender
-                  ? const Icon(Icons.check, color: AppColors.primary)
-                  : null,
-              onTap: () {
-                selectedGender.value = gender;
-                genderController.text = gender;
-                validateGender(); // Validate after selection
-                Get.back();
-              },
-            )),
-            const SizedBox(height: AppSizes.spacing20),
-          ],
-        ),
+      GenderBottomSheet(
+        selectedGender: selectedGender,
+        genderOptions: genderOptions,
+        onGenderSelected: (String gender) {
+          genderController.text = gender;
+          validateGender(); // Validate after selection
+        },
       ),
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
@@ -327,10 +294,7 @@ class InformationController extends GetxController {
       final auth = Get.find<AuthController>();
 
       final apiGender = selectedGender.value.toLowerCase();
-      final apiDob =
-          "${selectedDate.value!.year.toString().padLeft(4, '0')}-"
-          "${selectedDate.value!.month.toString().padLeft(2, '0')}-"
-          "${selectedDate.value!.day.toString().padLeft(2, '0')}";
+      final apiDob = DateHelper.formatDateForApi(selectedDate.value!);
 
       final response = await _authServices.updateProfile(
         fullName: fullNameController.text.trim(),
@@ -354,7 +318,17 @@ class InformationController extends GetxController {
         dob: dateOfBirthController.text.trim(),
       );
 
-      ShowToast.success(AppStrings.informationSavedSuccessfully);
+      // Toast message removed - Success toasts are disabled per requirement
+
+      // Reset home state before navigating to home after profile completion
+      if (Get.isRegistered<HomeController>()) {
+        try {
+          final homeController = Get.find<HomeController>();
+          homeController.resetHomeState();
+        } catch (e) {
+          print('HomeController not found: $e');
+        }
+      }
 
       Get.offAllNamed(AppRoutes.home);
     } catch (e) {

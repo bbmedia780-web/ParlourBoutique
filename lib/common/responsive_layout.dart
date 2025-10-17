@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../utility/responsive_helper.dart';
 import '../constants/responsive_sizes.dart';
+import '../constants/app_sizes.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   final Widget child;
@@ -240,8 +241,8 @@ class ResponsiveButton extends StatelessWidget {
         ),
         child: isLoading
             ? SizedBox(
-                width: 24,
-                height: 24,
+                width: AppSizes.size24,
+                height: AppSizes.size24,
                 child: CircularProgressIndicator(
                   color: textColor ?? Colors.white,
                   strokeWidth: 2.5,

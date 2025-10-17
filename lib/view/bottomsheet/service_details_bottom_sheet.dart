@@ -72,7 +72,7 @@ class ServiceDetailsBottomSheet extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.white,
               shape: BoxShape.circle,
-              border: Border.all(color: AppColors.red, width: 2),
+              border: Border.all(color: AppColors.red, width: AppSizes.borderWidth2),
             ),
             child: const Icon(
               Icons.close_outlined,
@@ -255,7 +255,7 @@ class ServiceDetailsBottomSheet extends StatelessWidget {
                     : service.description!,
                 style: AppTextStyles.captionText.copyWith(
                   color: AppColors.grey,
-                  height: 1.4,
+                  height: AppSizes.lineHeight1_4,
                 ),
               ),
             ],

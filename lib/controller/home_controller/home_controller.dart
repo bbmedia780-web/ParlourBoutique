@@ -3,17 +3,6 @@ import 'package:get/get.dart';
 
 import '../../routes/app_routes.dart';
 
-/// HomeController - Manages home screen state and business logic
-///
-/// This controller handles the home screen functionality including:
-/// - Tab switching between Parlour, Boutique, and Rent categories
-/// - Search functionality
-/// - Scroll behavior (floating search bar)
-/// - Navigation to other screens
-/// - Popular services data management
-///
-/// The controller follows MVVM pattern where all business logic
-/// is separated from the UI layer.
 class HomeController extends GetxController {
   // ==================== Controllers ====================
   
@@ -46,6 +35,27 @@ class HomeController extends GetxController {
     // Setup scroll controller and listener
     scrollController = ScrollController();
     scrollController.addListener(_onScroll);
+    
+    // Reset floating search bar state when controller initializes
+    showFloatingSearchBar.value = false;
+  }
+  
+  /// Called when controller is ready (after build)
+  /// Used to reset scroll position when returning from other screens
+  @override
+  void onReady() {
+    super.onReady();
+    
+    // Reset floating search bar first
+    showFloatingSearchBar.value = false;
+    
+    // Reset scroll position to top when page is ready
+    // This ensures floating search bar doesn't show unexpectedly when returning to home
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollController.hasClients) {
+        scrollController.jumpTo(0);
+      }
+    });
   }
 
   /// Cleanup resources when controller is disposed
@@ -60,11 +70,10 @@ class HomeController extends GetxController {
   // ==================== Private Methods ====================
   
   /// Handles scroll events to show/hide floating search bar
-  ///
   /// Shows the floating search bar when user scrolls more than 320px down
   /// (after the SliverAppBar header is mostly collapsed)
   void _onScroll() {
-    final shouldShow = scrollController.offset > 320;
+    final shouldShow = scrollController.offset > 200;
     if (shouldShow != showFloatingSearchBar.value) {
       showFloatingSearchBar.value = shouldShow;
     }
@@ -93,22 +102,27 @@ class HomeController extends GetxController {
 
   // ==================== Public Methods ====================
   
+  /// Resets home screen state - useful when returning from other screens
+  /// Resets scroll position and floating search bar visibility
+  void resetHomeState() {
+    showFloatingSearchBar.value = false;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (scrollController.hasClients) {
+        scrollController.jumpTo(0);
+      }
+    });
+  }
+  
   /// Handles microphone button tap for voice search
-  ///
-  /// TODO: Implement voice search functionality
   void onMicrophoneTap() {
     // Implement voice search
   }
 
   /// Fetches popular services from API
-  ///
-  /// TODO: Implement API call to fetch services based on category
   void fetchPopularServices() {
     // API call will be implemented here
   }
 
-  /// Navigates to "See All" screen for popular items
-  ///
   /// Passes the current category as argument
   void onSeeAllPopularTap() {
     Get.toNamed(AppRoutes.popularSeeAll, arguments: _currentCategoryKey);

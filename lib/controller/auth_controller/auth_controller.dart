@@ -278,10 +278,37 @@ class AuthController extends GetxController {
         } catch (_) {}
       }
 
+      // Reset home controller state before logout
+      if (Get.isRegistered<HomeController>()) {
+        try {
+          final homeController = Get.find<HomeController>();
+          homeController.resetHomeState();
+          print('[AuthController] 🏠 Reset home state');
+        } catch (_) {}
+      }
+
+      // Reset main navigation to home tab
+      if (Get.isRegistered<MainNavigationController>()) {
+        try {
+          final mainNavController = Get.find<MainNavigationController>();
+          mainNavController.resetToHome();
+          print('[AuthController] 🧭 Reset navigation to home');
+        } catch (_) {}
+      }
+
+      // Enter guest mode
+      if (Get.isRegistered<GuestModeController>()) {
+        try {
+          final guestController = Get.find<GuestModeController>();
+          guestController.enterGuestMode();
+          print('[AuthController] 👤 Entered guest mode');
+        } catch (_) {}
+      }
+
       // Navigate to Welcome screen so next launch starts fresh
       print('[AuthController] 🧭 Navigating to Welcome screen');
       Get.offAllNamed(AppRoutes.welcome);
-      ShowToast.success(AppStrings.logoutSuccess);
+      // Toast message removed - Success toasts are disabled per requirement
     } finally {
       isLoading.value = false;
     }
@@ -336,6 +363,7 @@ import '../../constants/app_colors.dart';
 import '../../utility/global.dart';
 import '../../controller/guest_mode_controller.dart';
 import '../home_controller/main_navigation_controller.dart';
+import '../home_controller/home_controller.dart';
 import 'sign_in_controller.dart';
 
 class AuthController extends GetxController {
@@ -558,6 +586,14 @@ class AuthController extends GetxController {
         Get.find<SignInController>().phoneController.clear();
       }
 
+      // Reset home controller state before logout
+      if (Get.isRegistered<HomeController>()) {
+        try {
+          final homeController = Get.find<HomeController>();
+          homeController.resetHomeState();
+        } catch (_) {}
+      }
+
       // Navigate to home as guest instead of welcome screen
       Get.offAllNamed(AppRoutes.home);
       
@@ -568,7 +604,7 @@ class AuthController extends GetxController {
         }
       });
       
-      ShowToast.success(AppStrings.logoutSuccess);
+      // Toast message removed - Success toasts are disabled per requirement
     } finally {
       isLoading.value = false;
     }

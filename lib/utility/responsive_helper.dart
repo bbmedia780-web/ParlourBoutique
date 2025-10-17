@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants/app_sizes.dart';
 
 class ResponsiveHelper {
   // Screen size breakpoints
@@ -38,11 +39,11 @@ class ResponsiveHelper {
     final screenType = getScreenType(context);
     switch (screenType) {
       case ScreenType.mobile:
-        return const EdgeInsets.symmetric(horizontal: 16, vertical: 8);
+        return const EdgeInsets.symmetric(horizontal: AppSizes.spacing16, vertical: AppSizes.spacing8);
       case ScreenType.tablet:
-        return const EdgeInsets.symmetric(horizontal: 32, vertical: 16);
+        return const EdgeInsets.symmetric(horizontal: AppSizes.spacing32, vertical: AppSizes.spacing16);
       case ScreenType.desktop:
-        return const EdgeInsets.symmetric(horizontal: 48, vertical: 24);
+        return const EdgeInsets.symmetric(horizontal: AppSizes.spacing48, vertical: AppSizes.spacing24);
     }
   }
 

@@ -68,7 +68,7 @@ class ReviewBottomSheet extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: AppColors.white,
                           shape: BoxShape.circle,
-                          border: Border.all(color: AppColors.red, width: 1.5),
+                          border: Border.all(color: AppColors.red, width: AppSizes.borderWidth1_5),
                         ),
                         child: const Icon(
                           Icons.close,
@@ -154,7 +154,7 @@ class ReviewBottomSheet extends StatelessWidget {
                         ),
                         decoration: BoxDecoration(
                           color: AppColors.white,
-                          border: Border.all(color: AppColors.primary, width: 2.0),
+                          border: Border.all(color: AppColors.primary, width: AppSizes.borderWidth2),
                           borderRadius: BorderRadius.circular(AppSizes.buttonRadius),
                         ),
                         child: Center(

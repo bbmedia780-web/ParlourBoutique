@@ -73,6 +73,7 @@ class AppAssets {
   static const logout = 'assets/profile/logout.png';
   static const delete = 'assets/profile/delete.png';
   static const send = 'assets/profile/send.png';
+  static const booktab = 'assets/profile/booktab.png';
 
 
   // Home images

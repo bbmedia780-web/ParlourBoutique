@@ -69,7 +69,7 @@ class FilterBottomSheet extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: AppColors.white,
                           shape: BoxShape.circle,
-                          border: Border.all(color: AppColors.red, width: 1.5),
+                          border: Border.all(color: AppColors.red, width: AppSizes.borderWidth1_5),
                         ),
                         child: const Icon(
                           Icons.close,
@@ -234,21 +234,21 @@ class FilterBottomSheet extends StatelessWidget {
                             borderRadius: BorderRadius.circular(AppSizes.spacing8),
                             borderSide: BorderSide(
                               color: selected != null ? AppColors.primary : Colors.grey, // change based on selection
-                              width: 1.5,
+                              width: AppSizes.borderWidth1_5,
                             ),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppSizes.spacing8),
                             borderSide: BorderSide(
                               color: selected != null ? AppColors.primary : Colors.grey, // change based on selection
-                              width: 1.5,
+                              width: AppSizes.borderWidth1_5,
                             ),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(AppSizes.spacing8),
                             borderSide: const BorderSide(
                               color: AppColors.primary,
-                              width: 1.5,
+                              width: AppSizes.borderWidth1_5,
                             ),
                           ),
                         ),

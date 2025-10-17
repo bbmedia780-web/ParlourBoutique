@@ -245,14 +245,14 @@ class WriteReviewScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(ResponsiveSizes.getSpacing12(context)),
                       borderSide: BorderSide(
                         color: AppColors.red,
-                        width: 1.5,
+                        width: AppSizes.borderWidth1_5,
                       ),
                     ) : null,
                     focusedErrorBorder: controller.reviewError.value.isNotEmpty ? OutlineInputBorder(
                       borderRadius: BorderRadius.circular(ResponsiveSizes.getSpacing12(context)),
                       borderSide: BorderSide(
                         color: AppColors.red,
-                        width: 1.5,
+                        width: AppSizes.borderWidth1_5,
                       ),
                     ) : null,
                   ),
@@ -260,12 +260,12 @@ class WriteReviewScreen extends StatelessWidget {
                 ),
                 if (controller.reviewError.value.isNotEmpty)
                   Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
+                    padding: const EdgeInsets.only(top: AppSizes.spacing8),
                     child: Text(
                       controller.reviewError.value,
                       style: AppTextStyles.hintText.copyWith(
                         color: AppColors.red,
-                        fontSize: 12,
+                        fontSize: AppSizes.small,
                       ),
                     ),
                   ),

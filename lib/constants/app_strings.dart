@@ -296,6 +296,10 @@ class AppStrings {
   static const ageValidationSuccess = "Age validation successful";
   static const informationSavedSuccessfully = "Information saved successfully";
   static const informationUpToDate = "Information is already saved and up to date";
+  static const failedToSaveInformation = "Failed to save information";
+  static const failedToPickImage = "Failed to pick image";
+  static const selectPhoto = "Select Photo";
+  static const selectGenderText = "Select Gender";
   static const otpResent = "OTP Resent";
   static const newOtpSent = "New OTP has been sent to your phone";
   static const otpVerifiedSuccessfully = "OTP verified successfully";
@@ -315,6 +319,67 @@ class AppStrings {
   static const mobileNumberLength = "Mobile number must be 10 digits";
   static const mobileNumberFormat = "Mobile number should start with 6, 7, 8, or 9";
   static const mobileNumberMaxLength = "Mobile number cannot exceed 10 digits";
+  
+  // Name Validation Messages
+  static const pleaseEnterName = "Please enter your name";
+  static const nameMinLength = "Name must be at least 2 characters long";
+  static const nameMaxLength = "Name cannot exceed 50 characters";
+  static const nameInvalidFormat = "Name can only contain letters, spaces, dots, hyphens, and apostrophes";
+  
+  // Email Validation Messages
+  static const pleaseEnterEmailAddress = "Please enter your email address";
+  static const pleaseEnterValidEmail = "Please enter a valid email address";
+  static const emailMaxLength = "Email cannot exceed 100 characters";
+  
+  // Password Validation Messages
+  static const pleaseEnterPassword = "Please enter a password";
+  static const passwordMinLength = "Password must be at least 8 characters long";
+  static const passwordMaxLength = "Password cannot exceed 50 characters";
+  static const passwordNeedsUppercase = "Password must contain at least one uppercase letter";
+  static const passwordNeedsLowercase = "Password must contain at least one lowercase letter";
+  static const passwordNeedsNumber = "Password must contain at least one number";
+  static const passwordNeedsSpecialChar = "Password must contain at least one special character";
+  static const pleaseConfirmPassword = "Please confirm your password";
+  static const passwordsDoNotMatch = "Passwords do not match";
+  
+  // Generic Field Validation Messages
+  static const fieldRequired = "This field is required";
+  static const pleaseSelectDate = "Please select a date";
+  static const dateFormatInvalid = "Please enter date in DD-MM-YYYY format";
+  static const pleaseEnterValidDate = "Please enter a valid date";
+  static const dateFutureNotAllowed = "Date cannot be in the future";
+  static String minAgeRequired(int age) => "You must be at least $age years old";
+  static String maxAgeExceeded(int age) => "Age cannot exceed $age years";
+  static const pleaseEnterValidDateFormat = "Please enter a valid date in DD-MM-YYYY format";
+  static const pleaseMakeSelection = "Please make a selection";
+  
+  // OTP Validation Messages
+  static const pleaseEnterOTP = "Please enter the OTP";
+  static String otpMustBeDigits(int length) => "OTP must be $length digits";
+  
+  // Amount Validation Messages
+  static const pleaseEnterAmount = "Please enter an amount";
+  static String amountMinRequired(double amount) => "Amount must be at least ₹$amount";
+  static String amountMaxExceeded(double amount) => "Amount cannot exceed ₹$amount";
+  static const pleaseEnterValidAmount = "Please enter a valid amount";
+  
+  // Address Validation Messages
+  static const pleaseEnterAddress = "Please enter your address";
+  static const addressMinLength = "Address must be at least 10 characters long";
+  static const addressMaxLength = "Address cannot exceed 200 characters";
+  
+  // Pincode Validation Messages
+  static const pleaseEnterPincode = "Please enter pincode";
+  static const pincodeLength = "Pincode must be 6 digits";
+  
+  // Review Validation Messages
+  static const reviewMinLength = "Review must be at least 10 characters long";
+  static const reviewMaxLength = "Review cannot exceed 500 characters";
+  
+  // Search Validation Messages
+  static const pleaseEnterSearchTerm = "Please enter search term";
+  static const searchMinLength = "Search term must be at least 2 characters";
+  static const searchMaxLength = "Search term cannot exceed 50 characters";
 
   // Action Messages
   static const facebookLoginTapped = "Facebook login tapped";
@@ -774,6 +839,7 @@ class AppStrings {
   // Account Information Screen Hints
   static const enterYourFullName = "Enter your full name";
   static const enterYourEmail = "Enter your email";
+  static const selectDateOfBirthHint = "Select date of birth";
 
   // Upload Creation Screen
   static const uploading = "Uploading...";
@@ -793,9 +859,7 @@ class AppStrings {
   static const blockUser = "Block User";
   static const copyLink = "Copy Link";
   
-  // Gender Selection
-  static const selectGenderText = "Select Gender";
-  
+
   // Modal Components
   static const add = "Add";
   
@@ -832,6 +896,22 @@ class AppStrings {
   // API Error Messages
   static const apiError = "API Error";
   static const errorFetchingData = "Error fetching data";
+  static const connectionTimeout = "Connection timeout. Please check your internet connection and try again.";
+  static const noInternetConnection2 = "No internet connection. Please check your network settings.";
+  static const requestCancelled = "Request was cancelled.";
+  static const certificateError = "Security certificate error. Please contact support.";
+  static const noInternetNetwork = "No internet connection. Please check your network.";
+  static const somethingWentWrongTryLater = "Something went wrong. Please try again later.";
+  static const badRequest = "Bad request. Please check your input.";
+  static const unauthorized = "Unauthorized. Please login again.";
+  static const accessForbidden = "Access forbidden. You don't have permission.";
+  static const resourceNotFound = "Resource not found.";
+  static const requestTimeout = "Request timeout. Please try again.";
+  static const tooManyRequests = "Too many requests. Please try again later.";
+  static const serverError = "Server error. Please try again later.";
+  static const badGateway = "Bad gateway. Please try again later.";
+  static const serviceUnavailable = "Service unavailable. Please try again later.";
+  static const somethingWentWrongTryAgain = "Something went wrong. Please try again.";
   
   // API Base URL (for configuration)
   static const apiBaseUrl = "https://yourapi.com/api";
@@ -1118,6 +1198,23 @@ class AppStrings {
   static const locationService = "Location services are disabled";
   static const somethingWentWrong = "Something went wrong";
   static const polishAndPoise = 'Polish & Poise';
+  
+  // Delete Account Error Messages
+  static const couldNotOpenDeletePage = "Could not open the delete account page. Please try again.";
+  
+  // Review Messages
+  static const pleaseWriteReview = "Please write a review";
+  
+  // Upload Video Messages
+  static const pleaseSelectOrRecordVideo = "Please select or record a video first";
+  static const videoUploadedSuccessfully = "Video uploaded successfully";
+  static const failedToUploadVideo = "Failed to upload video";
+  
+  // Welcome Back Message
+  static const welcomeBackPaymentMessage = "Welcome Back! You can now confirm your payment";
+  
+  // Language Update Message
+  static const languageUpdated = "Language updated successfully";
 
   // Notification details
   static const notificationDateTime = '26 Jun, 2025 | 10:00 am';

@@ -111,7 +111,7 @@ class SupportTicketFormPageView extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.white,
               borderRadius: BorderRadius.circular(AppSizes.spacing8),
-              border: Border.all(color: AppColors.lightGrey, width: 1),
+              border: Border.all(color: AppColors.lightGrey, width: AppSizes.borderWidth1),
             ),
             child: Row(
               children: [
@@ -138,7 +138,7 @@ class SupportTicketFormPageView extends StatelessWidget {
             decoration: BoxDecoration(
               color: AppColors.white,
               borderRadius: BorderRadius.circular(AppSizes.spacing8),
-              border: Border.all(color: AppColors.lightGrey, width: 1),
+              border: Border.all(color: AppColors.lightGrey, width: AppSizes.borderWidth1),
               boxShadow: [
                 BoxShadow(
                   color: Colors.black.withOpacity(0.1),

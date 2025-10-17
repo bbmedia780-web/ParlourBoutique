@@ -308,6 +308,7 @@ import '../constants/app_assets.dart';
 import '../controller/auth_controller/auth_controller.dart';
 import '../controller/booking_controller.dart';
 import '../controller/guest_mode_controller.dart';
+import '../controller/home_controller/home_controller.dart';
 import '../model/booking_service_model.dart';
 import '../model/payment_method_model.dart';
 import '../model/details_model.dart';
@@ -656,6 +657,14 @@ class UnifiedBookingController extends GetxController {
       await bookingController.markServiceAsBooked(service.id);
     } catch (e) {
       print('Error marking service as booked: $e');
+    }
+    
+    // Reset home controller state before navigating back
+    try {
+      final homeController = Get.find<HomeController>();
+      homeController.resetHomeState();
+    } catch (e) {
+      print('HomeController not found: $e');
     }
     
     // Navigate to home screen after successful booking

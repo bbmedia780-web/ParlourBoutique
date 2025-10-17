@@ -70,7 +70,7 @@ class LoginBottomSheet extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       shape: BoxShape.circle,
-                      border: Border.all(color: AppColors.red, width: 1.5),
+                      border: Border.all(color: AppColors.red, width: AppSizes.borderWidth1_5),
                     ),
                     child: const Icon(
                       Icons.close,
@@ -124,7 +124,7 @@ class LoginBottomSheet extends StatelessWidget {
                     horizontal: AppSizes.spacing12,
                   ),
                   decoration: const BoxDecoration(
-                    border: Border(right: BorderSide(width: 1.0)),
+                    border: Border(right: BorderSide(width: AppSizes.borderWidth1)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -197,7 +197,7 @@ class LoginBottomSheet extends StatelessWidget {
       final response = await signInController.authServices.sendOtp(mobile);
 
       if (response.success && response.data?.otpSent == true) {
-        ShowToast.success(response.message);
+        // Toast message removed - Success toasts are disabled per requirement
 
         // Clear OTP fields and close login bottom sheet
         Get.find<OtpVerificationController>().clearOtpFields();

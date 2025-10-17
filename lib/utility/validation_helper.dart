@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants/app_strings.dart';
 
 /// A comprehensive validation helper class for form field validation
 /// Provides reusable validation methods for various input types
@@ -11,21 +12,21 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validateName(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Please enter your name';
+      return AppStrings.pleaseEnterName;
     }
     
     if (value.trim().length < 2) {
-      return 'Name must be at least 2 characters long';
+      return AppStrings.nameMinLength;
     }
     
     if (value.trim().length > 50) {
-      return 'Name cannot exceed 50 characters';
+      return AppStrings.nameMaxLength;
     }
     
     // Check for valid name format (letters, spaces, and common name characters)
     final nameRegex = RegExp(r"^[a-zA-Z\s\.\-']+$");
     if (!nameRegex.hasMatch(value.trim())) {
-      return 'Name can only contain letters, spaces, dots, hyphens, and apostrophes';
+      return AppStrings.nameInvalidFormat;
     }
     
     return null;
@@ -36,16 +37,16 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validateEmail(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Please enter your email address';
+      return AppStrings.pleaseEnterEmailAddress;
     }
     
     final emailRegex = RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
     if (!emailRegex.hasMatch(value.trim())) {
-      return 'Please enter a valid email address';
+      return AppStrings.pleaseEnterValidEmail;
     }
     
     if (value.trim().length > 100) {
-      return 'Email cannot exceed 100 characters';
+      return AppStrings.emailMaxLength;
     }
     
     return null;
@@ -56,19 +57,19 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validatePhone(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Please enter your mobile number';
+      return AppStrings.mobileNumberRequired;
     }
     
     // Remove any non-digit characters
     final cleanPhone = value.replaceAll(RegExp(r'[^\d]'), '');
     
     if (cleanPhone.length != 10) {
-      return 'Mobile number must be 10 digits';
+      return AppStrings.mobileNumberLength;
     }
     
     // Check if phone number starts with valid digits (6, 7, 8, 9)
     if (!RegExp(r'^[6-9]').hasMatch(cleanPhone)) {
-      return 'Mobile number should start with 6, 7, 8, or 9';
+      return AppStrings.mobileNumberFormat;
     }
     
     return null;
@@ -79,35 +80,35 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Please enter a password';
+      return AppStrings.pleaseEnterPassword;
     }
     
     if (value.length < 8) {
-      return 'Password must be at least 8 characters long';
+      return AppStrings.passwordMinLength;
     }
     
     if (value.length > 50) {
-      return 'Password cannot exceed 50 characters';
+      return AppStrings.passwordMaxLength;
     }
     
     // Check for at least one uppercase letter
     if (!RegExp(r'[A-Z]').hasMatch(value)) {
-      return 'Password must contain at least one uppercase letter';
+      return AppStrings.passwordNeedsUppercase;
     }
     
     // Check for at least one lowercase letter
     if (!RegExp(r'[a-z]').hasMatch(value)) {
-      return 'Password must contain at least one lowercase letter';
+      return AppStrings.passwordNeedsLowercase;
     }
     
     // Check for at least one digit
     if (!RegExp(r'[0-9]').hasMatch(value)) {
-      return 'Password must contain at least one number';
+      return AppStrings.passwordNeedsNumber;
     }
     
     // Check for at least one special character
     if (!RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value)) {
-      return 'Password must contain at least one special character';
+      return AppStrings.passwordNeedsSpecialChar;
     }
     
     return null;
@@ -119,11 +120,11 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validateConfirmPassword(String? password, String? confirmPassword) {
     if (confirmPassword == null || confirmPassword.isEmpty) {
-      return 'Please confirm your password';
+      return AppStrings.pleaseConfirmPassword;
     }
     
     if (password != confirmPassword) {
-      return 'Passwords do not match';
+      return AppStrings.passwordsDoNotMatch;
     }
     
     return null;
@@ -135,7 +136,7 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validateNotEmpty(String? value, [String? fieldName]) {
     if (value == null || value.trim().isEmpty) {
-      return fieldName != null ? 'Please enter $fieldName' : 'This field is required';
+      return fieldName != null ? 'Please enter $fieldName' : AppStrings.fieldRequired;
     }
     return null;
   }
@@ -147,14 +148,14 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validateDate(String? value, {int minAge = 12, int maxAge = 100}) {
     if (value == null || value.trim().isEmpty) {
-      return 'Please select a date';
+      return AppStrings.pleaseSelectDate;
     }
     
     try {
       // Parse date in DD-MM-YYYY format
       final parts = value.trim().split('-');
       if (parts.length != 3) {
-        return 'Please enter date in DD-MM-YYYY format';
+        return AppStrings.dateFormatInvalid;
       }
       
       final day = int.parse(parts[0]);
@@ -166,27 +167,27 @@ class ValidationHelper {
       
       // Check if date is valid
       if (date.day != day || date.month != month || date.year != year) {
-        return 'Please enter a valid date';
+        return AppStrings.pleaseEnterValidDate;
       }
       
       // Check if date is not in the future
       if (date.isAfter(now)) {
-        return 'Date cannot be in the future';
+        return AppStrings.dateFutureNotAllowed;
       }
       
       // Check age constraints
       final age = now.year - date.year;
       if (age < minAge) {
-        return 'You must be at least $minAge years old';
+        return AppStrings.minAgeRequired(minAge);
       }
       
       if (age > maxAge) {
-        return 'Age cannot exceed $maxAge years';
+        return AppStrings.maxAgeExceeded(maxAge);
       }
       
       return null;
     } catch (e) {
-      return 'Please enter a valid date in DD-MM-YYYY format';
+      return AppStrings.pleaseEnterValidDateFormat;
     }
   }
   
@@ -196,7 +197,7 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validateDropdown(String? value, [String? fieldName]) {
     if (value == null || value.trim().isEmpty) {
-      return fieldName != null ? 'Please select $fieldName' : 'Please make a selection';
+      return fieldName != null ? 'Please select $fieldName' : AppStrings.pleaseMakeSelection;
     }
     return null;
   }
@@ -207,13 +208,13 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validateOTP(String? value, {int length = 6}) {
     if (value == null || value.trim().isEmpty) {
-      return 'Please enter the OTP';
+      return AppStrings.pleaseEnterOTP;
     }
     
     final cleanOTP = value.replaceAll(RegExp(r'[^\d]'), '');
     
     if (cleanOTP.length != length) {
-      return 'OTP must be $length digits';
+      return AppStrings.otpMustBeDigits(length);
     }
     
     return null;
@@ -226,23 +227,23 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validateAmount(String? value, {double minAmount = 0, double maxAmount = 999999}) {
     if (value == null || value.trim().isEmpty) {
-      return 'Please enter an amount';
+      return AppStrings.pleaseEnterAmount;
     }
     
     try {
       final amount = double.parse(value.trim());
       
       if (amount < minAmount) {
-        return 'Amount must be at least ₹$minAmount';
+        return AppStrings.amountMinRequired(minAmount);
       }
       
       if (amount > maxAmount) {
-        return 'Amount cannot exceed ₹$maxAmount';
+        return AppStrings.amountMaxExceeded(maxAmount);
       }
       
       return null;
     } catch (e) {
-      return 'Please enter a valid amount';
+      return AppStrings.pleaseEnterValidAmount;
     }
   }
   
@@ -251,15 +252,15 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validateAddress(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Please enter your address';
+      return AppStrings.pleaseEnterAddress;
     }
     
     if (value.trim().length < 10) {
-      return 'Address must be at least 10 characters long';
+      return AppStrings.addressMinLength;
     }
     
     if (value.trim().length > 200) {
-      return 'Address cannot exceed 200 characters';
+      return AppStrings.addressMaxLength;
     }
     
     return null;
@@ -270,13 +271,13 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validatePincode(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Please enter pincode';
+      return AppStrings.pleaseEnterPincode;
     }
     
     final cleanPincode = value.replaceAll(RegExp(r'[^\d]'), '');
     
     if (cleanPincode.length != 6) {
-      return 'Pincode must be 6 digits';
+      return AppStrings.pincodeLength;
     }
     
     return null;
@@ -287,15 +288,15 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validateReview(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Please write a review';
+      return AppStrings.pleaseWriteReview;
     }
     
     if (value.trim().length < 10) {
-      return 'Review must be at least 10 characters long';
+      return AppStrings.reviewMinLength;
     }
     
     if (value.trim().length > 500) {
-      return 'Review cannot exceed 500 characters';
+      return AppStrings.reviewMaxLength;
     }
     
     return null;
@@ -306,15 +307,15 @@ class ValidationHelper {
   /// @returns null if valid, error message if invalid
   static String? validateSearch(String? value) {
     if (value == null || value.trim().isEmpty) {
-      return 'Please enter search term';
+      return AppStrings.pleaseEnterSearchTerm;
     }
     
     if (value.trim().length < 2) {
-      return 'Search term must be at least 2 characters';
+      return AppStrings.searchMinLength;
     }
     
     if (value.trim().length > 50) {
-      return 'Search term cannot exceed 50 characters';
+      return AppStrings.searchMaxLength;
     }
     
     return null;

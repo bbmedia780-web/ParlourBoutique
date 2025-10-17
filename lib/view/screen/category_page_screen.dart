@@ -132,6 +132,7 @@ class CategoryScreen extends StatelessWidget {
       body: ResponsiveLayout(
         useSafeArea: true,
         useScrollView: false,
+        padding: EdgeInsets.zero, // Remove default padding to prevent overflow
         child: _CategoryGrid(controller: controller),
       ),
     );
@@ -190,8 +191,34 @@ class _CategoryGrid extends StatelessWidget {
         return Center(child: Text(AppStrings.noCategory));
       }
 
-      // Use responsive grid
+      // Get screen dimensions for responsive layout
+      final screenHeight = MediaQuery.of(context).size.height;
+
+      
+      // Calculate responsive aspect ratio based on screen size to prevent overflow
+      double aspectRatio;
+      if (screenHeight < 700) {
+        // Small screens - wider cards to reduce height and prevent overflow
+        aspectRatio = 0.75;
+      } else if (screenHeight < 800) {
+        // Medium screens
+        aspectRatio = 0.72;
+      } else {
+        // Large screens
+        aspectRatio = 0.70;
+      }
+
+      // Use responsive grid with proper spacing
       return ResponsiveGrid(
+        childAspectRatio: aspectRatio,
+        crossAxisSpacing: ResponsiveSizes.getSpacing4(context),
+        //mainAxisSpacing: ResponsiveSizes.getSpacing4(context),
+        padding: EdgeInsets.only(
+          left: AppSizes.spacing10,
+          right: AppSizes.spacing10,
+          top: ResponsiveSizes.getSpacing8(context),
+          bottom: MediaQuery.of(context).padding.bottom + ResponsiveSizes.getSpacing20(context),
+        ),
         children: dataList.map((data) {
           return GestureDetector(
             onTap: () => Get.toNamed(AppRoutes.details, arguments: data),
@@ -201,12 +228,6 @@ class _CategoryGrid extends StatelessWidget {
             ),
           );
         }).toList(),
-        childAspectRatio: 0.70,
-        crossAxisSpacing: ResponsiveSizes.getSpacing8(context),
-        mainAxisSpacing: ResponsiveSizes.getSpacing8(context),
-        padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).padding.bottom + ResponsiveSizes.getSpacing20(context),
-        ),
       );
     });
   }

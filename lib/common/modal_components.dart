@@ -1,12 +1,134 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import '../common/common_button.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_sizes.dart';
 import '../constants/app_strings.dart';
 import '../constants/app_text_style.dart';
 
-/// Reusable modal components for the app
 class ModalComponents {
+
+  static void showConfirmationDialog({
+    required BuildContext context,
+    required IconData icon,
+    required String title,
+    required String description,
+    required String confirmButtonText,
+    required VoidCallback onConfirm,
+    String? cancelButtonText,
+    RxBool? isLoadingRx,
+    Color? iconColor,
+    Color? iconBackgroundColor,
+  }) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => Dialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSizes.spacing20),
+        ),
+        backgroundColor: AppColors.white,
+        child: Container(
+          padding: const EdgeInsets.all(AppSizes.spacing24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: AppSizes.size80,
+                height: AppSizes.size80,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.softPink,
+                ),
+                child: Icon(
+                  icon,
+                  color:AppColors.primary,
+                  size: AppSizes.spacing36,
+                ),
+              ),
+              
+              const SizedBox(height: AppSizes.spacing24),
+              
+              // Title
+              Text(
+                title,
+                style: AppTextStyles.bottomSheetHeading.copyWith(
+                  fontSize: AppSizes.largeHeading,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.black,
+                ),
+              ),
+              
+              const SizedBox(height: AppSizes.spacing12),
+              
+              // Description
+              Text(
+                description,
+                textAlign: TextAlign.center,
+                style: AppTextStyles.bodyText.copyWith(
+                  color: AppColors.grey,
+                  height: AppSizes.lineHeight1_5,
+                ),
+              ),
+              
+              const SizedBox(height: AppSizes.spacing32),
+              
+              // Action buttons
+              Row(
+                children: [
+                  // Cancel button
+                  Expanded(
+                    child: AppButton(
+                      text: cancelButtonText ?? AppStrings.cancel,
+                      isPrimary: false,
+                      onPressed: () => Get.back(),
+                      height: AppSizes.spacing45,
+                      borderRadius: AppSizes.buttonRadius,
+                      textStyle: AppTextStyles.buttonText,
+                    ),
+                  ),
+                  
+                  const SizedBox(width: AppSizes.spacing16),
+                  
+                  // Confirm button with optional reactive loading state
+                  Expanded(
+                    child: isLoadingRx != null
+                        ? Obx(() => AppButton(
+                              text: confirmButtonText,
+                              isPrimary: true,
+                              onPressed: isLoadingRx.value ? null : () {
+                                Get.back();
+                                onConfirm();
+                              },
+                              height: AppSizes.spacing45,
+                              borderRadius: AppSizes.buttonRadius,
+                              textStyle: AppTextStyles.buttonText.copyWith(
+                                color: AppColors.white,
+                              ),
+                              isLoading: isLoadingRx.value,
+                            ))
+                        : AppButton(
+                            text: confirmButtonText,
+                            isPrimary: true,
+                            onPressed: () {
+                              Get.back();
+                              onConfirm();
+                            },
+                            height: AppSizes.spacing45,
+                            borderRadius: AppSizes.buttonRadius,
+                            textStyle: AppTextStyles.buttonText.copyWith(
+                              color: AppColors.white,
+                            ),
+                          ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
   
   /// Shows a bottom sheet with a list of selectable items
   static void showListPicker({
@@ -191,7 +313,7 @@ class ModalComponents {
       padding: const EdgeInsets.all(AppSizes.spacing16),
       decoration: const BoxDecoration(
         border: Border(
-          bottom: BorderSide(color: AppColors.lightGrey, width: 1),
+          bottom: BorderSide(color: AppColors.lightGrey, width: AppSizes.borderWidth1),
         ),
       ),
       child: Row(

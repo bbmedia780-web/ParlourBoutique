@@ -73,7 +73,7 @@ class SignInScreen extends StatelessWidget {
                       horizontal: AppSizes.spacing12,
                     ),
                     decoration: const BoxDecoration(
-                      border: Border(right: BorderSide(width: 1.0)),
+                      border: Border(right: BorderSide(width: AppSizes.borderWidth1)),
                     ),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,

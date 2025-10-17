@@ -82,8 +82,7 @@ class SupportTicketFormController extends GetxController {
       return;
     }
 
-    // Show success message
-    ShowToast.success(AppStrings.successTicketSubmitted.tr);
+    // Toast message removed - Success toasts are disabled per requirement
 
     // Navigate back to help & support screen
     Get.back();

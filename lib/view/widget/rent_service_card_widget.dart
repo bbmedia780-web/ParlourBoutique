@@ -208,7 +208,7 @@ class RentServiceCardWidget extends StatelessWidget {
 
   Widget _verticalDivider() {
     return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 6),
+      padding: EdgeInsets.symmetric(horizontal: AppSizes.spacing6),
       child: SizedBox(
         height: AppSizes.spacing12,
         child: VerticalDivider(color: Colors.grey, thickness: 1),

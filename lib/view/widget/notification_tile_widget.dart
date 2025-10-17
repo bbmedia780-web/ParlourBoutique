@@ -27,7 +27,7 @@ class NotificationTile extends StatelessWidget {
           border: Border(
             bottom: BorderSide(
               color: AppColors.extraLightGrey,
-              width: 1,
+              width: AppSizes.borderWidth1,
             ),
           ),
         ),

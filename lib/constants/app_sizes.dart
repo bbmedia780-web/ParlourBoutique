@@ -52,6 +52,7 @@ class AppSizes {
 
   // Extra large
   static const double spacing48 = 48;
+  static const double spacing42 = 42;
   static const double spacing54 = 54;
   static const double spacing56 = 56;
   static const double spacing62 = 62;
@@ -65,11 +66,16 @@ class AppSizes {
   
   // Border widths
   static const double borderWidth1 = 1;
+  static const double borderWidth1_2 = 1.2;
   static const double borderWidth1_5 = 1.5;
   static const double borderWidth2 = 2;
 
+  // Line heights
+  static const double lineHeight1_4 = 1.4;
+  static const double lineHeight1_5 = 1.5;
 
   // height and width
+  static const double size24 = 24;
   static const double size25 = 25;
   static const double size35 = 35;
   static const double size50 = 50;
@@ -87,9 +93,9 @@ class AppSizes {
   static const double size170 = 170;
   static const double size180 = 180;
   static const double size200 = 200;
+  static const double size220 = 220;
   static const double size230 = 230;
   static const double size250 = 250;
-  static const double size220 = 220;
   static const double size270 = 270;
   static const double size300 = 300;
   static const double size350 = 350;

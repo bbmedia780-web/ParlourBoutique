@@ -31,7 +31,7 @@ class PaymentMethodTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppSizes.spacing12),
           border: Border.all(
             color: isSelected ? AppColors.primary : AppColors.extraLightGrey,
-            width: 1.5,
+            width: AppSizes.borderWidth1_5,
           ),
         ),
         child: Row(
@@ -121,7 +121,7 @@ class PaymentMethodTile extends StatelessWidget {
         color: AppColors.primary,
         border: Border.all(
           color: AppColors.primary,
-          width: 2,
+          width: AppSizes.borderWidth2,
         ),
       ),
       child: const Icon(

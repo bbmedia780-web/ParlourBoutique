@@ -30,8 +30,8 @@ class NoInternetScreen extends StatelessWidget {
                     // ✅ Single Image Instead of Illustration
                     Image.asset(
                       AppAssets.internet, // your image file here
-                      width: 250,
-                      height: 250,
+                      width: AppSizes.size250,
+                      height: AppSizes.size250,
                       fit: BoxFit.contain,
                     ),
                     const SizedBox(height: AppSizes.spacing40),
@@ -58,7 +58,7 @@ class NoInternetScreen extends StatelessWidget {
           AppStrings.noInternetConnection,
           style: AppTextStyles.appBarText.copyWith(
             color: Colors.grey.shade800,
-            fontSize: 24,
+            fontSize: AppSizes.heading,
             fontWeight: FontWeight.bold,
           ),
           textAlign: TextAlign.center,
@@ -68,8 +68,8 @@ class NoInternetScreen extends StatelessWidget {
           AppStrings.noInternetMessage,
           style: AppTextStyles.hintText.copyWith(
             color: Colors.grey.shade600,
-            fontSize: 16,
-            height: 1.4,
+            fontSize: AppSizes.body,
+            height: AppSizes.lineHeight1_4,
           ),
           textAlign: TextAlign.center,
         ),
@@ -86,11 +86,11 @@ class NoInternetScreen extends StatelessWidget {
           onPressed: () => networkController.retryConnection(),
           isPrimary: true,
           width: double.infinity,
-          height: 50,
+          height: AppSizes.size50,
           isLoading: networkController.isLoadingObs.value,
           textStyle: AppTextStyles.buttonText.copyWith(
             color: Colors.white,
-            fontSize: 16,
+            fontSize: AppSizes.body,
             fontWeight: FontWeight.w600,
           ),
         ),

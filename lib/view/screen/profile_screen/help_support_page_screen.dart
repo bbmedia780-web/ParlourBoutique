@@ -145,29 +145,45 @@ class HelpSupportPageView extends StatelessWidget {
   }
 
   Widget _buildViewButton(SupportTicketModel ticket) {
-    return Container(
-      height: AppSizes.spacing32,
-      width: AppSizes.size70,
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSizes.spacing16,
-        vertical: AppSizes.spacing6,
-      ),
-      decoration: BoxDecoration(
-        color: AppColors.lightPink,
-        borderRadius: BorderRadius.circular(AppSizes.spacing6),
-      ),
-      child: TextButton(
-        onPressed: () => controller.onViewTicketTapped(ticket),
-        style: TextButton.styleFrom(
-          padding: EdgeInsets.zero,
-          minimumSize: Size.zero,
-          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        ),
-        child: Text(
-          AppStrings.view.tr,
-          style: AppTextStyles.priceText
-        ),
-      ),
+    return Builder(
+      builder: (context) {
+        // Get screen width using MediaQuery
+        final screenWidth = MediaQuery.of(context).size.width;
+        
+        // Calculate responsive button dimensions
+        // For tablet (>= 600px) use larger size, for mobile use adjusted size
+        final isTablet = screenWidth >= 600;
+        final buttonHeight = isTablet ? 48.0 : 36.0;
+        final buttonWidth = isTablet ? 100.0 : 80.0;
+        final horizontalPadding = isTablet ? 20.0 : 12.0;
+        final verticalPadding = isTablet ? 8.0 : 4.0;
+        
+        return Container(
+          height: buttonHeight,
+          width: buttonWidth,
+          padding: EdgeInsets.symmetric(
+            horizontal: horizontalPadding,
+            vertical: verticalPadding,
+          ),
+          decoration: BoxDecoration(
+            color: AppColors.lightPink,
+            borderRadius: BorderRadius.circular(AppSizes.spacing6),
+          ),
+          child: TextButton(
+            onPressed: () => controller.onViewTicketTapped(ticket),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              minimumSize: Size.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+            child: Text(
+              AppStrings.view.tr,
+              style: AppTextStyles.priceText,
+              textAlign: TextAlign.center,
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../../routes/app_routes.dart';
 import '../../controller/guest_mode_controller.dart';
+import '../home_controller/home_controller.dart';
 import 'auth_controller.dart';
 
 class SplashController extends GetxController {
@@ -40,23 +41,23 @@ class SplashController extends GetxController {
         if (authController.hasValidToken()) {
           // User is logged in, exit guest mode and go to home
           guestController.exitGuestMode();
-          Get.offAllNamed(AppRoutes.home);
+          _resetHomeAndNavigate();
         } else {
           // try refresh tokens if available
           final refreshed = await authController.refreshTokens();
           if (refreshed) {
             guestController.exitGuestMode();
-            Get.offAllNamed(AppRoutes.home);
+            _resetHomeAndNavigate();
           } else {
             // Token refresh failed, go to home as guest
             guestController.enterGuestMode();
-            Get.offAllNamed(AppRoutes.home);
+            _resetHomeAndNavigate();
           }
         }
       } else {
         // No login data, go to home as guest (returning user who logged out)
         guestController.enterGuestMode();
-        Get.offAllNamed(AppRoutes.home);
+        _resetHomeAndNavigate();
       }
     } catch (e) {
       print('Error during auto-login check: $e');
@@ -65,5 +66,18 @@ class SplashController extends GetxController {
       guestController.enterGuestMode();
       Get.offAllNamed(AppRoutes.welcome);
     }
+  }
+  
+  /// Helper method to reset home state before navigating
+  void _resetHomeAndNavigate() {
+    try {
+      if (Get.isRegistered<HomeController>()) {
+        final homeController = Get.find<HomeController>();
+        homeController.resetHomeState();
+      }
+    } catch (e) {
+      print('HomeController not found: $e');
+    }
+    Get.offAllNamed(AppRoutes.home);
   }
 }

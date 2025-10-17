@@ -251,7 +251,7 @@ class HomeScreen extends StatelessWidget {
                             ),
                             Container(
                               height: AppSizes.spacing24,
-                              width: 1,
+                              width: AppSizes.borderWidth1,
                               color: AppColors.mediumGrey,
                               margin: const EdgeInsets.symmetric(
                                 horizontal: AppSizes.spacing8,
@@ -345,7 +345,7 @@ class HomeScreen extends StatelessWidget {
           color: selected ? null : Colors.white,
           border: selected
               ? null
-              : Border.all(color: AppColors.lightGrey, width: 1.2),
+              : Border.all(color: AppColors.lightGrey, width: AppSizes.borderWidth1_2),
           borderRadius: BorderRadius.circular(AppSizes.spacing15),
         ),
         child: Padding(
@@ -603,7 +603,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Container(
                   height: AppSizes.spacing24,
-                  width: 1,
+                  width: AppSizes.borderWidth1,
                   color: AppColors.mediumGrey,
                   margin: const EdgeInsets.symmetric(
                     horizontal: AppSizes.spacing8,

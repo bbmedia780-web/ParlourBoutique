@@ -186,4 +186,11 @@ class ResponsiveSizes {
         return 800;
     }
   }
+
+  static double getFontSize(BuildContext context, double baseSize) {
+    final width = MediaQuery.of(context).size.width;
+    if (width > 900) return baseSize * 1.4; // tablet
+    if (width > 600) return baseSize * 1.2; // large phones
+    return baseSize;
+  }
 }

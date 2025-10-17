@@ -25,6 +25,12 @@ class MainNavigationController extends GetxController {
   void resetToHome() {
     selectedBottomBarIndex.value = 0;
     _setReelsActive(false);
+    
+    // Reset home controller state when navigating to home
+    if (Get.isRegistered<HomeController>()) {
+      final homeController = Get.find<HomeController>();
+      homeController.resetHomeState();
+    }
   }
 
   // -------------------- Navigation --------------------
@@ -37,12 +43,19 @@ class MainNavigationController extends GetxController {
     }
     
     selectedBottomBarIndex.value = index;
-    _setReelsActive(index == 3); // Reels tab at index 3
+    // _setReelsActive(index == 3); // Commented out - Reels replaced with Booking
+    _setReelsActive(false); // Reels always inactive now
+    
+    // Reset home state when navigating to home tab (index 0)
+    if (index == 0 && Get.isRegistered<HomeController>()) {
+      final homeController = Get.find<HomeController>();
+      homeController.resetHomeState();
+    }
   }
 
   /// Check if a tab is restricted for guest users
   bool _isRestrictedTab(int index) {
-    // Category (1), Reels (3), and Profile (4) are restricted for guests
+    // Category (1), Booking (3), and Profile (4) are restricted for guests
     return index == 1 || index == 3 || index == 4;
   }
 
@@ -57,7 +70,8 @@ class MainNavigationController extends GetxController {
     } else {
       // User is logged in, allow access
       selectedBottomBarIndex.value = index;
-      _setReelsActive(index == 3);
+      // _setReelsActive(index == 3); // Commented out - Reels replaced with Booking
+      _setReelsActive(false); // Reels always inactive now
     }
   }
 

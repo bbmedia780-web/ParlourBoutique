@@ -34,7 +34,7 @@ class ServiceCard extends StatelessWidget {
                 border: isSelected
                     ? Border.all(
                         color: AppColors.primary,
-                        width: 1.5,
+                        width: AppSizes.borderWidth1_5,
                       )
                     : null,
               ),

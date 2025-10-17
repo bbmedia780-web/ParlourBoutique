@@ -7,6 +7,7 @@ import '../../routes/app_routes.dart';
 import '../../services/auth_services.dart';
 import '../../utility/global.dart';
 import '../../controller/guest_mode_controller.dart';
+import '../home_controller/home_controller.dart';
 import 'auth_controller.dart';
 import 'information_controller.dart';
 import 'sign_in_controller.dart';
@@ -99,7 +100,7 @@ class OtpVerificationController extends GetxController {
       final response = await _authServices.sendOtp(mobile);
 
       if (response.success) {
-        ShowToast.success(AppStrings.newOtpSent);
+        // Toast message removed - Success toasts are disabled per requirement
         _startResendTimer();
       } else {
         _showError(response.message.isNotEmpty
@@ -131,7 +132,7 @@ class OtpVerificationController extends GetxController {
       final response = await _authServices.verifyOtp(mobile, otp);
 
       if (response.success && response.data?.verified == true) {
-        ShowToast.success(AppStrings.otpVerifiedSuccessfully);
+        // Toast message removed - Success toasts are disabled per requirement
 
         final authController = Get.find<AuthController>();
         final guestController = Get.find<GuestModeController>();
@@ -156,6 +157,16 @@ class OtpVerificationController extends GetxController {
 
         /// Navigate based on profile completion
         if (response.data?.profileCompleted == true) {
+          // Reset home state before navigating to home after login
+          if (Get.isRegistered<HomeController>()) {
+            try {
+              final homeController = Get.find<HomeController>();
+              homeController.resetHomeState();
+            } catch (e) {
+              print('HomeController not found: $e');
+            }
+          }
+          
           // Existing user → Home
           Get.offAllNamed(AppRoutes.home);
         } else {
@@ -205,8 +216,7 @@ class OtpVerificationController extends GetxController {
         // Navigate back to unified booking with the stored data
         Get.offAllNamed(AppRoutes.unifiedBooking, arguments: bookingData);
         
-        // Show success message
-        ShowToast.success('Welcome Back! You can now confirm your payment');
+        // Toast message removed - Success toasts are disabled per requirement
         
         // Clean up the stored data
         Get.delete<Map<String, dynamic>>(tag: 'pending_booking');

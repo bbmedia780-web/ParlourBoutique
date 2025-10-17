@@ -157,7 +157,7 @@ class AccountInformationPageView extends StatelessWidget {
             controller: controller.fullNameController,
             keyboardType: TextInputType.name,
             textStyle: AppTextStyles.hintText,
-            hintText: 'Enter your full name',
+            hintText: AppStrings.enterYourFullName,
           ).paddingOnly(bottom: AppSizes.spacing20),
           Text(
             AppStrings.yourEmail,
@@ -167,7 +167,7 @@ class AccountInformationPageView extends StatelessWidget {
             controller: controller.emailController,
             textStyle: AppTextStyles.hintText,
             keyboardType: TextInputType.emailAddress,
-            hintText: 'Enter your email',
+            hintText: AppStrings.enterYourEmail,
           ).paddingOnly(bottom: AppSizes.spacing20),
           Text(
             AppStrings.dateOfBirth,
@@ -181,7 +181,7 @@ class AccountInformationPageView extends StatelessWidget {
                 textStyle: AppTextStyles.hintText,
                 keyboardType: TextInputType.none,
                 readOnly: true,
-                hintText: 'Select date of birth',
+                hintText: AppStrings.selectDateOfBirthHint,
                 suffixIcon: Container(
                   height: AppSizes.size100,
                   width: AppSizes.size50,

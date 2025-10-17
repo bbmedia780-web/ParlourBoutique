@@ -175,10 +175,10 @@ class AddRentProductScreen extends StatelessWidget {
                         color: AppColors.black.withOpacity(0.6),
                         shape: BoxShape.circle,
                       ),
-                      padding: const EdgeInsets.all(4),
+                      padding: const EdgeInsets.all(AppSizes.spacing4),
                       child: const Icon(
                         Icons.close,
-                        size: 14,
+                        size: AppSizes.caption,
                         color: AppColors.white,
                       ),
                     ),

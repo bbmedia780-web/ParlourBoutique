@@ -182,7 +182,7 @@ class HomeHeader extends StatelessWidget {
           color: selected ? null : Colors.white,
           border: selected
               ? null
-              : Border.all(color: AppColors.lightGrey, width: 1.2),
+              : Border.all(color: AppColors.lightGrey, width: AppSizes.borderWidth1_2),
           borderRadius: BorderRadius.circular(AppSizes.spacing15),
         ),
         child: Column(

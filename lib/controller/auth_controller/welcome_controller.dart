@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../routes/app_routes.dart';
 import '../../utility/shared_prefs_util.dart';
 import '../home_controller/main_navigation_controller.dart';
+import '../home_controller/home_controller.dart';
 
 class WelcomeController extends GetxController {
   var currentPage = 0.obs;
@@ -30,6 +31,16 @@ class WelcomeController extends GetxController {
   void onGetStarted() async {
     // Mark first-time experience as completed
     await SharedPrefsUtil.markFirstTimeCompleted();
+    
+    // Reset home controller state before navigating
+    try {
+      if (Get.isRegistered<HomeController>()) {
+        final homeController = Get.find<HomeController>();
+        homeController.resetHomeState();
+      }
+    } catch (e) {
+      print('HomeController not found: $e');
+    }
     
     // Navigate to HomeScreen as guest user
     Get.offAllNamed(AppRoutes.home);

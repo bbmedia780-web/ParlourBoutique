@@ -68,8 +68,7 @@ class LanguageController extends GetxController {
       // Update controller state
       selectedLanguageId.value = selectedLanguage.id;
 
-
-      ShowToast.success('language_updated'.tr);
+      // Toast message removed - Success toasts are disabled per requirement
 
       Get.back(); // Navigate back
     } catch (e) {

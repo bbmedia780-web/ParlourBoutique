@@ -142,7 +142,7 @@ class UnifiedBookingPageView extends StatelessWidget {
       final isActive = controller.currentStep.value > step;
       return Expanded(
         child: Container(
-          height: 2,
+          height: AppSizes.borderWidth2,
           color: isActive ? AppColors.kellyGreen : AppColors.lightGrey,
         ),
       );
@@ -183,7 +183,9 @@ class UnifiedBookingPageView extends StatelessWidget {
         const SizedBox(height: AppSizes.spacing20),
         _buildDatePicker(),
         _buildTimePicker(),
-        _buildLocationOptions(),
+        // Only show location options for parlour services, not for rent
+        if (controller.service.type == AppStrings.parlourType)
+          _buildLocationOptions(),
       ],
     );
   }
@@ -613,13 +615,16 @@ class UnifiedBookingPageView extends StatelessWidget {
                 controller.service.subtitle,
                 style: AppTextStyles.bodySmallText,
               ),
-              const SizedBox(height: AppSizes.spacing8),
-              Obx(
-                () => Text(
-                  controller.selectedLocation.value,
-                  style: AppTextStyles.bodySmallText,
+              // Only show location for parlour services, not for rent
+              if (controller.service.type == AppStrings.parlourType) ...[
+                const SizedBox(height: AppSizes.spacing8),
+                Obx(
+                  () => Text(
+                    controller.selectedLocation.value,
+                    style: AppTextStyles.bodySmallText,
+                  ),
                 ),
-              ),
+              ],
             ],
           ),
         ),
@@ -707,7 +712,7 @@ class UnifiedBookingPageView extends StatelessWidget {
               child: OutlinedButton(
                 onPressed: controller.onBookMore,
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: AppColors.primary, width: 2),
+                  side: const BorderSide(color: AppColors.primary, width: AppSizes.borderWidth2),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppSizes.spacing8),
                   ),

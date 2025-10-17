@@ -75,7 +75,7 @@ class SignInController extends GetxController {
       final response = await authServices.sendOtp(mobile);
 
       if (response.success && response.data?.otpSent == true) {
-        ShowToast.success(response.message);
+        // Toast message removed - Success toasts are disabled per requirement
 
         // Persist just the mobile number for later use
         try {

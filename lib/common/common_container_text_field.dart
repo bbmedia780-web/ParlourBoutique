@@ -81,7 +81,7 @@ class CommonContainerTextField extends StatelessWidget {
               errorText!,
               style: AppTextStyles.hintText.copyWith(
                 color: AppColors.red,
-                fontSize: 12,
+                fontSize: AppSizes.small,
               ),
             ),
           ),

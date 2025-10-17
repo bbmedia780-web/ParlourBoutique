@@ -119,7 +119,7 @@ class NotificationScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing18),
         itemCount: controller.filteredNotifications.length,
         separatorBuilder: (context, index) =>
-        const Divider(height: 1, color: AppColors.extraLightGrey),
+        const Divider(height: AppSizes.borderWidth1, color: AppColors.extraLightGrey),
         itemBuilder: (context, index) {
           final notification = controller.filteredNotifications[index];
           return NotificationTile(

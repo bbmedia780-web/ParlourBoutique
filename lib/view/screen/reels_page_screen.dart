@@ -35,17 +35,17 @@ class ReelsScreen extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.error_outline,
-                    size: 100,
+                    size: AppSizes.size100,
                     color: AppColors.primary,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppSizes.spacing20),
                   Text(
                     AppStrings.errorLoadingReels,
                     style: AppTextStyles.appBarText.copyWith(
                       color: AppColors.white,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: AppSizes.spacing10),
                   Text(
                     controller.errorMessage.value,
                     style: AppTextStyles.hintText.copyWith(
@@ -53,7 +53,7 @@ class ReelsScreen extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: AppSizes.spacing20),
                   ElevatedButton(
                     onPressed: () => controller.loadDummyData(),
                     child: Text(AppStrings.retry),
@@ -248,7 +248,7 @@ class ReelsScreen extends StatelessWidget {
                               ? NetworkImage(reel.authorProfileImage)
                               : null,
                           child: !reel.authorProfileImage.startsWith('http')
-                              ? const Icon(Icons.person, color: Colors.white, size: 16)
+                              ? const Icon(Icons.person, color: Colors.white, size: AppSizes.body)
                               : null,
                         ),
                         const SizedBox(width: AppSizes.spacing8),

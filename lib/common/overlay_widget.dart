@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import '../controller/overlay_controller.dart';
 import '../controller/upload_creation_controller.dart';
 import '../constants/app_text_style.dart';
+import '../constants/app_sizes.dart';
 
 /// A reusable overlay widget for text and stickers on video
 class OverlayWidget extends StatelessWidget {
@@ -37,12 +38,12 @@ class OverlayWidget extends StatelessWidget {
       child: Transform.scale(
         scale: item.scale,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+          padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing6, vertical: AppSizes.spacing4),
           decoration: BoxDecoration(
             color: item.type == OverlayType.text
                 ? Colors.black26
                 : Colors.transparent,
-            borderRadius: BorderRadius.circular(6),
+            borderRadius: BorderRadius.circular(AppSizes.spacing6),
           ),
           child: _buildOverlayText(),
         ),

@@ -335,7 +335,7 @@ class CategoryTabWidget extends StatelessWidget {
                     borderRadius: BorderRadius.circular(AppSizes.spacing8),
                   )
                 : const UnderlineTabIndicator(
-                    borderSide: BorderSide(color: AppColors.primary, width: 2),
+                    borderSide: BorderSide(color: AppColors.primary, width: AppSizes.borderWidth2),
                   ),
             tabs: [
               for (final title in (categories.isEmpty ? [''] : categories))

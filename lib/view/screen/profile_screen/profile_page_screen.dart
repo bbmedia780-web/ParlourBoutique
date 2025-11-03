@@ -213,6 +213,7 @@ class ProfileScreen extends StatelessWidget {
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../constants/app_assets.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sizes.dart';
@@ -323,6 +324,32 @@ class ProfileScreen extends StatelessWidget {
           image: AppAssets.booking,
           title: AppStrings.booking,
           onTap: () => controller.onMenuItemTapped(AppStrings.menuItemBooking),
+        ),
+
+        _buildMenuItem(
+          image: AppAssets.helpSupport,
+          title: AppStrings.termsCondition,
+          onTap:() async {
+            const url = "https://brightbrewmedia.in/terms.html";
+            if (await canLaunchUrl(Uri.parse(url))) {
+            await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+            } else {
+            throw 'Could not launch $url';
+            }
+          },
+        ),
+
+        _buildMenuItem(
+          image: AppAssets.helpSupport,
+          title: AppStrings.privacyPolicy,
+          onTap:() async {
+            const url = "https://brightbrewmedia.in/privacy_policy.html";
+            if (await canLaunchUrl(Uri.parse(url))) {
+              await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+            } else {
+              throw 'Could not launch $url';
+            }
+          },
         ),
 
         /*_buildMenuItem(

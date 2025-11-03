@@ -11,10 +11,9 @@ import '../auth_controller/auth_controller.dart';
 class ProfileController extends GetxController {
   final AuthController authController = Get.find<AuthController>();
 
-
   // ---------------- Menu Navigation ----------------
   /// Handles navigation when a profile menu item is tapped
-  void onMenuItemTapped(String item) {
+  Future<void> onMenuItemTapped(String item) async {
     switch (item) {
       case AppStrings.menuItemAccount:
         Get.toNamed(AppRoutes.accountInformation);
@@ -23,7 +22,6 @@ class ProfileController extends GetxController {
       case AppStrings.menuItemFavourite:
         Get.toNamed(AppRoutes.favourite);
         break;
-
       case AppStrings.menuItemBooking:
         Get.toNamed(AppRoutes.booking);
         break;
@@ -51,8 +49,6 @@ class ProfileController extends GetxController {
       case AppStrings.menuItemLogout:
         _showLogoutDialog();
         break;
-
-
     }
   }
 
@@ -61,7 +57,7 @@ class ProfileController extends GetxController {
     final ImagePicker picker = ImagePicker();
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
     if (image != null) {
-    //  authController.updateUserImage(image.path);
+      //  authController.updateUserImage(image.path);
       authController.userImage(image.path);
     }
   }
@@ -107,12 +103,8 @@ class ProfileController extends GetxController {
   Future<void> _openDeleteAccountUrl() async {
     final Uri url = Uri.parse(AppStrings.deleteAccountUrl);
 
-    if (!await launchUrl(
-      url,
-      mode: LaunchMode.externalApplication,
-    )) {
+    if (!await launchUrl(url, mode: LaunchMode.externalApplication)) {
       ShowToast.error(AppStrings.couldNotOpenDeletePage);
     }
   }
-
 }

@@ -2,7 +2,7 @@
 class AppStrings {
   // Welcome Screen
   static const welcomeTitle1 = "Welcome to";
-  static const welcomeDesc1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
+  static const welcomeDesc1 = "Find trusted salons and parlors near you, explore trending styles, and schedule your beauty services quickly and conveniently.";
 
   static const welcomeTitle2 = "Create your style";
   static const welcomeDesc2 = "Whether it's flawless bridal glam, nourishing salon rituals,or trendy fashion picks — we bring beauty and style together, made uniquely for you.";
@@ -985,6 +985,7 @@ class AppStrings {
   static const menuItemLogout = "logout";
   static const menuItemDeleteAccount = "delete_account";
   static const menuItemBooking = "booking";
+  static const terms = "terms";
   static const favourite = "Favourite";
 
   // Route Names
@@ -1124,6 +1125,8 @@ class AppStrings {
   static const booked = "Booked";
   static const selectedService = "Selected Service";
   static const paymentInCash = "Payment In Cash";
+  static const termsCondition = "Terms & conditions";
+  static const privacyPolicy = "Privacy Policy";
 
   // Booking Screen
   static const selectTime = "Select Time";

@@ -6,7 +6,7 @@ class AppTranslations extends Translations {
     'en_US': {
       // Welcome Screen
       'welcome_to': 'Welcome to',
-      'welcome_desc_1': 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      'welcome_desc_1': 'Find trusted salons and parlors near you, explore trending styles, and schedule your beauty services quickly and conveniently.',
       'create_your_style': 'Create your style',
       'welcome_desc_2': 'Whether it\'s flawless bridal glam, nourishing salon rituals,or trendy fashion picks — we bring beauty and style together, made uniquely for you.',
       'be_beautiful_boutique': 'Be Beautiful. Be Boutique',

@@ -28,6 +28,7 @@ class DetailsController extends GetxController {
   );
 
   String? currentItemId;
+  UnifiedDataModel? originalUnifiedData; // Store original UnifiedDataModel for image carousel
   // Local favorite state for details
   final RxSet<String> favoriteIds = <String>{}.obs;
   // Service favorites - store service name + business ID combinations
@@ -598,6 +599,7 @@ class DetailsController extends GetxController {
       if (arguments is UnifiedDataModel) {
         print('DEBUG: Processing UnifiedDataModel');
         final salonData = arguments;
+        originalUnifiedData = salonData; // Store for image carousel
         currentItemId = salonData.id;
         isBoutique.value = salonData.type == AppStrings.boutiqueType;
         isFavorite.value = favoriteIds.contains(currentItemId ?? '');
@@ -739,9 +741,12 @@ class DetailsController extends GetxController {
       isOpen: salonData.isOpen,
       isFavorite: salonData.isFavorite,
       category: salonData.type,
-      description: isBoutique.value
-          ? AppStrings.boutiqueDescription(salonData.title)
-          : AppStrings.parlourDescription(salonData.title),
+      description: salonData.type == AppStrings.rentType &&
+              (salonData.description != null && salonData.description!.trim().isNotEmpty)
+          ? salonData.description!.trim()
+          : (isBoutique.value
+              ? AppStrings.boutiqueDescription(salonData.title)
+              : AppStrings.parlourDescription(salonData.title)),
       promotions: promotions,
       servicesByCategory: servicesByCategory,
     );

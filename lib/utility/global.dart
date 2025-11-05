@@ -58,51 +58,61 @@ class ShowToast {
     late OverlayEntry overlayEntry;
 
     overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        bottom: AppSizes.spacing20,
-        left: AppSizes.spacing20,
-        right: AppSizes.spacing20,
-        child: Material(
-          color: AppColors.transparent,
-          child: Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSizes.spacing12, 
-              vertical: AppSizes.spacing14,
-            ),
-            decoration: BoxDecoration(
-              color: backgroundColor,
-              borderRadius: BorderRadius.circular(AppSizes.cardRadius),
-              border: Border.all(color: color, width: AppSizes.borderWidth1_5), // outline
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.white,
-                  blurRadius: AppSizes.spacing6,
-                  offset: const Offset(0, AppSizes.spacing4),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                Icon(icon, color: color, size: AppSizes.spacing24),
-                const SizedBox(width: AppSizes.spacing12),
-                Expanded(
-                  child: Text(
-                    message,
-                    style: TextStyle(
-                      color: color, 
-                      fontSize: AppSizes.caption,
+      builder: (context) {
+        // Get keyboard height to position toast above it
+        final mediaQuery = MediaQuery.of(context);
+        final keyboardHeight = mediaQuery.viewInsets.bottom;
+        // Position toast above keyboard if keyboard is open, otherwise use default bottom spacing
+        final bottomPosition = keyboardHeight > 0 
+            ? keyboardHeight + AppSizes.spacing20 
+            : AppSizes.spacing20;
+        
+        return Positioned(
+          bottom: bottomPosition,
+          left: AppSizes.spacing20,
+          right: AppSizes.spacing20,
+          child: Material(
+            color: AppColors.transparent,
+            child: Container(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSizes.spacing12, 
+                vertical: AppSizes.spacing14,
+              ),
+              decoration: BoxDecoration(
+                color: backgroundColor,
+                borderRadius: BorderRadius.circular(AppSizes.cardRadius),
+                border: Border.all(color: color, width: AppSizes.borderWidth1_5), // outline
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.white,
+                    blurRadius: AppSizes.spacing6,
+                    offset: const Offset(0, AppSizes.spacing4),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Icon(icon, color: color, size: AppSizes.spacing24),
+                  const SizedBox(width: AppSizes.spacing12),
+                  Expanded(
+                    child: Text(
+                      message,
+                      style: TextStyle(
+                        color: color, 
+                        fontSize: AppSizes.caption,
+                      ),
                     ),
                   ),
-                ),
-                GestureDetector(
-                  onTap: () => overlayEntry.remove(),
-                  child: Icon(Icons.close, color: color, size: AppSizes.spacing20),
-                ),
-              ],
+                  GestureDetector(
+                    onTap: () => overlayEntry.remove(),
+                    child: Icon(Icons.close, color: color, size: AppSizes.spacing20),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
 
     overlay.insert(overlayEntry);

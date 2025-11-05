@@ -26,7 +26,7 @@ class HelpSupportPageView extends StatelessWidget {
     );
   }
 
-  PreferredSizeWidget _buildAppBar() {
+  AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: AppColors.white,
       elevation: 0,

@@ -35,110 +35,119 @@ class AddRentProductScreen extends StatelessWidget {
       backgroundColor: AppColors.white,
       body: SafeArea(
         child: SingleChildScrollView(
-        padding: const EdgeInsets.all(AppSizes.spacing16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              AppStrings.uploadProductImages,
-              style: AppTextStyles.captionTitle,
-            ),
-            const SizedBox(height: AppSizes.spacing10),
-            _imagesRow(),
-            const SizedBox(height: AppSizes.spacing16),
-            Text(AppStrings.productName, style: AppTextStyles.captionTitle),
-            const SizedBox(height: AppSizes.spacing6),
-            CommonTextField(
-              controller: controller.nameController,
-              hintText: AppStrings.enterProductName,
-              onChanged: (v) => controller.productName.value = v,
-            ),
-            const SizedBox(height: AppSizes.spacing16),
-            Text(
-              AppStrings.chooseCategories,
-              style: AppTextStyles.captionTitle,
-            ),
-            const SizedBox(height: AppSizes.spacing6),
-            _categoryDropdown(),
-            const SizedBox(height: AppSizes.spacing16),
-            Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppStrings.rentPerDay,
-                        style: AppTextStyles.captionTitle,
-                      ),
-                      const SizedBox(height: AppSizes.spacing6),
-                      CommonTextField(
-                        controller: controller.rentController,
-                        hintText: AppStrings.hintRentAmount,
-                        keyboardType: TextInputType.number,
-                        onChanged: (v) => controller.rentPerDay.value =
-                            double.tryParse(v.replaceAll(',', '')) ?? 0,
-                      ),
-                    ],
+          padding: const EdgeInsets.all(AppSizes.spacing16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppStrings.uploadProductImages,
+                style: AppTextStyles.captionTitle,
+              ),
+              const SizedBox(height: AppSizes.spacing10),
+              _imagesRow(),
+              const SizedBox(height: AppSizes.spacing16),
+              Text(AppStrings.productName, style: AppTextStyles.captionTitle),
+              const SizedBox(height: AppSizes.spacing6),
+              CommonTextField(
+                controller: controller.nameController,
+                hintText: AppStrings.enterProductName,
+                onChanged: (v) => controller.productName.value = v,
+              ),
+              const SizedBox(height: AppSizes.spacing16),
+              Text(
+                AppStrings.chooseCategories,
+                style: AppTextStyles.captionTitle,
+              ),
+              const SizedBox(height: AppSizes.spacing6),
+              _categoryDropdown(),
+              const SizedBox(height: AppSizes.spacing16),
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppStrings.rentPerDay,
+                          style: AppTextStyles.captionTitle,
+                        ),
+                        const SizedBox(height: AppSizes.spacing6),
+                        CommonTextField(
+                          controller: controller.rentController,
+                          hintText: AppStrings.hintRentAmount,
+                          keyboardType: TextInputType.number,
+                          onChanged: (v) => controller.rentPerDay.value =
+                              double.tryParse(v.replaceAll(',', '')) ?? 0,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(width: AppSizes.spacing12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        AppStrings.discount,
-                        style: AppTextStyles.captionTitle,
-                      ),
-                      const SizedBox(height: AppSizes.spacing6),
-                      CommonTextField(
-                        controller: controller.discountController,
-                        hintText: AppStrings.hintDiscountPercent,
-                        keyboardType: TextInputType.number,
-                        onChanged: (v) => controller.discountPercent.value =
-                            double.tryParse(v) ?? 0,
-                      ),
-                    ],
+                  const SizedBox(width: AppSizes.spacing12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppStrings.discount,
+                          style: AppTextStyles.captionTitle,
+                        ),
+                        const SizedBox(height: AppSizes.spacing6),
+                        CommonTextField(
+                          controller: controller.discountController,
+                          hintText: AppStrings.hintDiscountPercent,
+                          keyboardType: TextInputType.number,
+                          onChanged: (v) => controller.discountPercent.value =
+                              double.tryParse(v.replaceAll(RegExp(r'[^0-9\\.]'), '')) ?? 0,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSizes.spacing16),
-            Text(AppStrings.productDetails, style: AppTextStyles.captionTitle),
-            const SizedBox(height: AppSizes.spacing6),
-            CommonTextField(
-              controller: controller.detailsController,
-              hintText: AppStrings.productDetailsHint,
-              keyboardType: TextInputType.multiline,
-              textInputAction: TextInputAction.newline,
-              onChanged: (v) => controller.details.value = v,
-              maxLength: null,
-            ),
-            const SizedBox(height: AppSizes.size100),
-          ],
-        ),
+                ],
+              ),
+              const SizedBox(height: AppSizes.spacing16),
+              Text(
+                AppStrings.productDetails,
+                style: AppTextStyles.captionTitle,
+              ),
+              const SizedBox(height: AppSizes.spacing6),
+              CommonTextField(
+                controller: controller.detailsController,
+                hintText: AppStrings.productDetailsHint,
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
+                onChanged: (v) => controller.details.value = v,
+                maxLength: null,
+              ),
+              const SizedBox(height: AppSizes.spacing16),
+              Text(
+                AppStrings.productAddress,
+                style: AppTextStyles.captionTitle,
+              ),
+              const SizedBox(height: AppSizes.spacing6),
+              CommonTextField(
+                controller: controller.addressController,
+                hintText: AppStrings.enterProductAddress,
+                keyboardType: TextInputType.streetAddress,
+                textInputAction: TextInputAction.done,
+                onChanged: (v) => controller.address.value = v,
+              ),
+              const SizedBox(height: AppSizes.size100),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: SafeArea(
         child: Padding(
-        padding: const EdgeInsets.only(
-          left: AppSizes.spacing20,
-          right: AppSizes.spacing20,
-          bottom: AppSizes.spacing40,
-        ),
-        child: SizedBox(
-          height: AppSizes.spacing48,
+          padding: const EdgeInsets.all(AppSizes.spacing16),
           child: AppButton(
             width: double.infinity,
-            height: AppSizes.spacing48,
-            text: AppStrings.save,
+            height: AppSizes.spacing45,
             textStyle: AppTextStyles.buttonText,
+            text: AppStrings.save.tr,
             onPressed: controller.save,
           ),
         ),
-        ),
-      ),
+      )
     );
   }
 

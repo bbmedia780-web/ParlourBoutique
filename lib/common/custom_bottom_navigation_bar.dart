@@ -11,13 +11,13 @@ import '../constants/app_text_style.dart';
 class CustomBottomNavigationBar extends StatelessWidget {
   final int selectedIndex;
   final Function(int) onItemTapped;
-  // final bool showNotch; // Commented out - Not needed for simple 4-tab layout
+  final bool showNotch;
 
   const CustomBottomNavigationBar({
     super.key,
     required this.selectedIndex,
     required this.onItemTapped,
-    // this.showNotch = false, // Commented out
+    this.showNotch = false,
   });
 
   @override
@@ -35,15 +35,36 @@ class CustomBottomNavigationBar extends StatelessWidget {
         option: AnimatedBarOptions(
           iconStyle: IconStyle.Default,
         ),
-        // fabLocation: StylishBarFabLocation.end, // Commented out - No floating button
+        fabLocation: showNotch ? StylishBarFabLocation.center : StylishBarFabLocation.end,
         notchStyle: NotchStyle.circle,
-        hasNotch: false, // No notch - simple 4-tab layout
+        hasNotch: showNotch,
         currentIndex: selectedIndex,
         onTap: onItemTapped,
         
-        // ==================== STATIC 4 ITEMS LIST ====================
-        // Simple 4-tab layout: Home, Category, Booking, Profile
-        items: [
+        // Items list: with center placeholder when notch is shown
+        items: showNotch ? [
+          _buildBottomBarItem(
+            icon: AppAssets.home,
+            title: 'home'.tr,
+            index: 0,
+          ),
+          _buildBottomBarItem(
+            icon: AppAssets.category,
+            title: 'category'.tr,
+            index: 1,
+          ),
+          _buildCenterPlaceholder(),
+          _buildBottomBarItem(
+            icon: AppAssets.reels,
+            title: AppStrings.reels,
+            index: 3,
+          ),
+          _buildBottomBarItem(
+            icon: AppAssets.profile,
+            title: 'profile'.tr,
+            index: 4,
+          ),
+        ] : [
           _buildBottomBarItem(
             icon: AppAssets.home,
             title: 'home'.tr,
@@ -55,8 +76,8 @@ class CustomBottomNavigationBar extends StatelessWidget {
             index: 1,
           ),
           _buildBottomBarItem(
-            icon: AppAssets.booktab,
-            title: AppStrings.booking,
+            icon: AppAssets.reels,
+            title: AppStrings.reels,
             index: 2,
           ),
           _buildBottomBarItem(
@@ -182,25 +203,22 @@ class CustomBottomNavigationBar extends StatelessWidget {
     );
   }
 
-  // ==================== CENTER PLACEHOLDER - COMMENTED OUT ====================
-  // Not needed anymore - floating button removed
-  // Creates empty space in center for floating button (Rent category only)
-  // This ensures proper spacing of 4 icons (2 left, 2 right) with button in center
-  // BottomBarItem _buildCenterPlaceholder() {
-  //   return BottomBarItem(
-  //     icon: const SizedBox(
-  //       width: AppSizes.spacing24,
-  //       height: AppSizes.spacing24,
-  //     ),
-  //     selectedIcon: const SizedBox(
-  //       width: AppSizes.spacing24,
-  //       height: AppSizes.spacing24,
-  //     ),
-  //     title: const Text(''), // Empty title
-  //     selectedColor: Colors.transparent,
-  //     unSelectedColor: Colors.transparent,
-  //   );
-  // }
+  // Creates empty space in center for floating button
+  BottomBarItem _buildCenterPlaceholder() {
+    return BottomBarItem(
+      icon: const SizedBox(
+        width: AppSizes.spacing24,
+        height: AppSizes.spacing24,
+      ),
+      selectedIcon: const SizedBox(
+        width: AppSizes.spacing24,
+        height: AppSizes.spacing24,
+      ),
+      title: const Text(''),
+      selectedColor: Colors.transparent,
+      unSelectedColor: Colors.transparent,
+    );
+  }
 
   // ==================== CENTER + BUTTON - COMMENTED OUT ====================
   // BottomBarItem _buildCenterItem() {

@@ -186,6 +186,10 @@ class LoginBottomSheet extends StatelessWidget {
     final mobile = signInController.phoneController.text.trim();
 
     if (mobile.isEmpty || mobile.length < 10) {
+      // Dismiss keyboard before showing toast
+      FocusScope.of(Get.context!).unfocus();
+      // Add small delay to ensure keyboard is dismissed before showing toast
+      await Future.delayed(const Duration(milliseconds: 100));
       ShowToast.error(AppStrings.mobileNumberInvalid);
       return;
     }
@@ -210,9 +214,15 @@ class LoginBottomSheet extends StatelessWidget {
           backgroundColor: AppColors.transparent,
         );
       } else {
+        // Dismiss keyboard before showing toast
+        FocusScope.of(Get.context!).unfocus();
+        await Future.delayed(const Duration(milliseconds: 100));
         ShowToast.error(response.message.isNotEmpty ? response.message : AppStrings.failedOtp);
       }
     } catch (e) {
+      // Dismiss keyboard before showing toast
+      FocusScope.of(Get.context!).unfocus();
+      await Future.delayed(const Duration(milliseconds: 100));
       ShowToast.error(e.toString());
     } finally {
       signInController.isLoading.value = false;

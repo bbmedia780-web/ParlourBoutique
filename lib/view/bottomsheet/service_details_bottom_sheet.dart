@@ -201,8 +201,8 @@ class ServiceDetailsBottomSheet extends StatelessWidget {
                   children: [
                     Text(AppStrings.offer, style: AppTextStyles.bodyTitle),
                     Text(
-                      '${AppStrings.flat} ${service.discount} ${AppStrings.off}',
-                      style: AppTextStyles.captionTitle,
+                      '${AppStrings.flat}  ${service.discount} ${AppStrings.off}',
+                       style: AppTextStyles.captionTitle,
                     ),
                     Text(
                       AppStrings.bridalPackages,

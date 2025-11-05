@@ -214,6 +214,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../../constants/app_assets.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sizes.dart';
@@ -331,10 +332,10 @@ class ProfileScreen extends StatelessWidget {
           title: AppStrings.termsCondition,
           onTap:() async {
             const url = "https://brightbrewmedia.in/terms.html";
-            if (await canLaunchUrl(Uri.parse(url))) {
-            await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-            } else {
-            throw 'Could not launch $url';
+            final uri = Uri.parse(url);
+            final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+            if (!launched) {
+              Fluttertoast.showToast(msg: 'Unable to open link. Please try again.');
             }
           },
         ),
@@ -344,10 +345,10 @@ class ProfileScreen extends StatelessWidget {
           title: AppStrings.privacyPolicy,
           onTap:() async {
             const url = "https://brightbrewmedia.in/privacy_policy.html";
-            if (await canLaunchUrl(Uri.parse(url))) {
-              await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
-            } else {
-              throw 'Could not launch $url';
+            final uri = Uri.parse(url);
+            final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+            if (!launched) {
+              Fluttertoast.showToast(msg: 'Unable to open link. Please try again.');
             }
           },
         ),

@@ -295,8 +295,7 @@ class FilterBottomSheet extends StatelessWidget {
                       height: AppSizes.spacing45,
                       textStyle: AppTextStyles.buttonText,
                       text: AppStrings.applyFilter,
-                      onPressed: () =>
-                          Get.back(result: controller.current.value),
+                      onPressed: () => Get.back(result: controller.current.value),
                     ),
                   ],
                 ),

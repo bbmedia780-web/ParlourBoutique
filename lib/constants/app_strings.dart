@@ -267,6 +267,8 @@ class AppStrings {
   static const uploadProductImages = "Upload Product Images (Up to 5 Images)";
   static const productName = "Product Name";
   static const enterProductName = "Enter Product Name";
+  static const productAddress = "Address";
+  static const enterProductAddress = "Enter Address";
   static const chooseCategories = "Choose Categories";
   static const rentPerDay = "Rent per Day";
   static const discount = "Discount";
@@ -286,6 +288,7 @@ class AppStrings {
   static const toastSuccess = "Success";
   static const toastError = "Error";
   static const toastWarning = "Warning";
+  static const productSavedSuccessfully = "Product saved successfully";
   static const toastInfo = "Info";
   static const pleaseEnterPhoneNumber = "Please enter your phone number";
   static const pleaseEnterFullName = "Please enter your full name";

@@ -244,7 +244,7 @@ class AccountInformationPageView extends StatelessWidget {
   }
 
   // ------------------ APP BAR ------------------
-  PreferredSizeWidget _buildAppBar() {
+  AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: AppColors.white,
       elevation: 0,

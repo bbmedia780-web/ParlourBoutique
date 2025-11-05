@@ -1,4 +1,5 @@
 /*
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parlour_app/constants/app_assets.dart';
@@ -309,6 +310,7 @@ class DetailsScreen extends StatelessWidget {
 }
 */
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parlour_app/constants/app_assets.dart';
@@ -441,15 +443,65 @@ class _RentDetailsLayout extends StatelessWidget {
     );
   }
 
-  Widget _buildImage() => ClipRRect(
-    borderRadius: BorderRadius.circular(AppSizes.spacing16),
-    child: Image.asset(
-      details.image,
-      width: double.infinity,
+  Widget _buildImage() {
+    // Check if we have multiple images from UnifiedDataModel
+    final unifiedData = controller.originalUnifiedData;
+    final List<String> images = unifiedData?.images ?? [];
+    
+    // If multiple images, show carousel; otherwise show single image
+    if (images.length > 1) {
+      return _buildImageCarousel(images);
+    } else {
+      // Single image - check if it's a file path or asset
+      final String imagePath = images.isNotEmpty ? images.first : details.image;
+      final bool isFile = imagePath.startsWith('/');
+      
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(AppSizes.spacing16),
+        child: isFile
+            ? Image.file(
+                File(imagePath),
+                width: double.infinity,
+                height: AppSizes.size450,
+                fit: BoxFit.cover,
+              )
+            : Image.asset(
+                imagePath,
+                width: double.infinity,
+                height: AppSizes.size450,
+                fit: BoxFit.cover,
+              ),
+      );
+    }
+  }
+
+  Widget _buildImageCarousel(List<String> images) {
+    return SizedBox(
       height: AppSizes.size450,
-      fit: BoxFit.cover,
-    ),
-  );
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(AppSizes.spacing16),
+        child: PageView.builder(
+          itemCount: images.length,
+          itemBuilder: (context, index) {
+            final String imagePath = images[index];
+            final bool isFile = imagePath.startsWith('/');
+            
+            return isFile
+                ? Image.file(
+                    File(imagePath),
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  )
+                : Image.asset(
+                    imagePath,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  );
+          },
+        ),
+      ),
+    );
+  }
 
   Widget _buildLocation() => Row(
     children: [

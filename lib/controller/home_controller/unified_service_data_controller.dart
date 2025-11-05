@@ -4,6 +4,7 @@ import '../../constants/app_strings.dart';
 import '../../model/unified_data_model.dart';
 import '../../model/service_model.dart';
 import '../favourite_controller.dart';
+import 'rent_service_controller.dart';
 
 /// Controller to manage unified data for Parlour, Boutique, and Rent tabs
 class UnifiedServiceDataController extends GetxController {
@@ -296,7 +297,8 @@ class UnifiedServiceDataController extends GetxController {
 
   // -------------------- RENT DATA --------------------
   void _loadRentData() {
-    dataList.value = [
+    // Default rent products
+    final defaultProducts = [
       UnifiedDataModel(
         id: 'rent_1',
         title: AppStrings.rentFashion,
@@ -365,6 +367,25 @@ class UnifiedServiceDataController extends GetxController {
         description: AppStrings.rentDescriptionGeneric,
       ),
     ];
+
+    // Merge with saved products from RentServiceController
+    try {
+      final rentServiceController = Get.find<RentServiceController>();
+      final savedProducts = rentServiceController.getAllProducts();
+      
+      // Update favorite status for saved products
+      final savedProductsWithFavorites = savedProducts.map((product) {
+        return product.copyWith(
+          isFavorite: favoriteIds.contains(product.id),
+        );
+      }).toList();
+
+      // Combine default products with saved products (saved products first)
+      dataList.value = [...savedProductsWithFavorites, ...defaultProducts];
+    } catch (e) {
+      // RentServiceController not found, use only default products
+      dataList.value = defaultProducts;
+    }
   }
 
   // ==================== FAVORITES MANAGEMENT ====================

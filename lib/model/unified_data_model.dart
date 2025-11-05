@@ -21,6 +21,7 @@ class UnifiedDataModel {
   final String? offerText; // e.g., "Flat 20% Off"
   final String? description; // Details description text
   final double? view; // View count
+  final List<String>? images; // Multiple images for carousel (for rent products)
 
   UnifiedDataModel({
     this.id,
@@ -39,10 +40,18 @@ class UnifiedDataModel {
     this.offerText,
     this.description,
     this.view,
+    this.images,
   });
 
   /// Creates UnifiedDataModel from JSON
   factory UnifiedDataModel.fromJson(Map<String, dynamic> json) {
+    List<String>? imagesList;
+    if (json['images'] != null) {
+      if (json['images'] is List) {
+        imagesList = (json['images'] as List).map((e) => e.toString()).toList();
+      }
+    }
+    
     return UnifiedDataModel(
       id: json['id']?.toString(),
       title: json['title']?.toString() ?? '',
@@ -60,6 +69,7 @@ class UnifiedDataModel {
       offerText: json['offerText']?.toString(),
       description: json['description']?.toString(),
       view: _parseDouble(json['view']),
+      images: imagesList,
     );
   }
 
@@ -90,6 +100,7 @@ class UnifiedDataModel {
       'offerText': offerText,
       'description': description,
       'view': view,
+      'images': images,
     };
   }
 
@@ -111,6 +122,7 @@ class UnifiedDataModel {
     String? offerText,
     String? description,
     double? view,
+    List<String>? images,
   }) {
     return UnifiedDataModel(
       id: id ?? this.id,
@@ -129,6 +141,7 @@ class UnifiedDataModel {
       offerText: offerText ?? this.offerText,
       description: description ?? this.description,
       view: view ?? this.view,
+      images: images ?? this.images,
     );
   }
 

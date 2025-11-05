@@ -16,6 +16,7 @@ import '../controller/home_controller/home_controller.dart';
 import '../controller/home_controller/main_navigation_controller.dart';
 import '../controller/home_controller/notification_controller.dart';
 import '../controller/home_controller/reels_controller.dart';
+import '../controller/home_controller/rent_service_controller.dart';
 import '../controller/home_controller/unified_service_data_controller.dart';
 import '../controller/popular_controller.dart';
 
@@ -49,6 +50,7 @@ class AppBinding extends Bindings {
     Get.put(NetworkController(), permanent: true);
     Get.put(AuthController(), permanent: true);
     Get.put(GuestModeController(), permanent: true);
+    Get.put(RentServiceController(), permanent: true);
     Get.put(UnifiedServiceDataController(), permanent: true);
 
     // ==================== Auth Flow Controllers ====================

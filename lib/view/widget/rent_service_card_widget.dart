@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parlour_app/constants/app_assets.dart';
@@ -57,17 +58,32 @@ class RentServiceCardWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppSizes.spacing12),
       child: Stack(
         children: [
-          Image.asset(
-            data.image,
-            width: AppSizes.size120,
-            height: AppSizes.size120,
-            fit: BoxFit.cover,
-          ),
+          _buildImage(data.image),
           if (data.discount.isNotEmpty) _buildDiscountBadge(),
           _buildBottomGradient(),
         ],
       ),
     );
+  }
+
+  Widget _buildImage(String imagePath) {
+    final bool isFile = imagePath.startsWith('/');
+    
+    if (isFile) {
+      return Image.file(
+        File(imagePath),
+        width: AppSizes.size120,
+        height: AppSizes.size120,
+        fit: BoxFit.cover,
+      );
+    } else {
+      return Image.asset(
+        imagePath,
+        width: AppSizes.size120,
+        height: AppSizes.size120,
+        fit: BoxFit.cover,
+      );
+    }
   }
 
   Widget _buildDiscountBadge() {

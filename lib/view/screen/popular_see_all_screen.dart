@@ -140,7 +140,7 @@ class PopularSeeAllScreen extends StatelessWidget {
 
   /// ............AppBar with back button and title............
 
-  PreferredSizeWidget _buildAppBar() {
+  AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: AppColors.white,
       elevation: 0,

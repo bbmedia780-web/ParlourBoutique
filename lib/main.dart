@@ -15,7 +15,6 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   // ==================== MEMORY OPTIMIZATION ====================
-  // Configure image cache to prevent OOM errors
   PaintingBinding.instance.imageCache.maximumSize = 100; // Limit number of images in cache
   PaintingBinding.instance.imageCache.maximumSizeBytes = 50 << 20; // 50 MB cache limit
 
@@ -32,8 +31,6 @@ void main() {
 
   final localizationService = LocalizationService();
   Get.put(localizationService, permanent: true);
-
-
   runApp(const MyApp());
 }
 
@@ -71,6 +68,4 @@ class MyApp extends StatelessWidget {
         ),
       );
   }
-
-  // Removed explicit theming to disable light/dark modes
 }

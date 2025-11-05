@@ -34,7 +34,7 @@ class UploadCreationScreen extends StatelessWidget {
             _buildToolButtons(context),
             const SizedBox(height: AppSizes.spacing16),
             _buildUploadButton(),
-            const SizedBox(height: AppSizes.spacing40),
+            const SizedBox(height: AppSizes.spacing20),
           ],
         ),
         ),
@@ -43,14 +43,13 @@ class UploadCreationScreen extends StatelessWidget {
   }
 
   /// Builds the app bar with settings and close buttons
-  PreferredSizeWidget _buildAppBar() {
+  AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: AppColors.white,
       elevation: 0,
       leading: IconButton(
         icon: const Icon(Icons.settings, color: AppColors.black),
         onPressed: () {
-          // TODO: Implement settings functionality
         },
       ),
       actions: [

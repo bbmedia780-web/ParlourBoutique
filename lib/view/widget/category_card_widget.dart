@@ -1,4 +1,5 @@
- import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:flutter/material.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_text_style.dart';
 import '../../constants/app_sizes.dart';
@@ -32,13 +33,7 @@ class CategoryCardWidget extends StatelessWidget {
                   topLeft: Radius.circular(AppSizes.spacing12),
                   topRight: Radius.circular(AppSizes.spacing12),
                 ),
-                child: Image.asset(
-                  data.image,
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.18, // 18% of screen height
-                  fit: BoxFit.cover,
-                  cacheHeight: 300, // Reduce memory usage
-                ),
+                child: _buildImage(context, data.image),
               ),
               // Gradient Overlay at bottom
               Positioned.fill(
@@ -184,5 +179,28 @@ class CategoryCardWidget extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildImage(BuildContext context, String imagePath) {
+    final bool isFile = imagePath.startsWith('/');
+    final double imageHeight = MediaQuery.of(context).size.height * 0.18;
+    
+    if (isFile) {
+      return Image.file(
+        File(imagePath),
+        width: double.infinity,
+        height: imageHeight,
+        fit: BoxFit.cover,
+        cacheHeight: 300,
+      );
+    } else {
+      return Image.asset(
+        imagePath,
+        width: double.infinity,
+        height: imageHeight,
+        fit: BoxFit.cover,
+        cacheHeight: 300,
+      );
+    }
   }
 }

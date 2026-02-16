@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parlour_app/view/screen/profile_screen/profile_page_screen.dart';
-import 'package:parlour_app/view/screen/reels_page_screen.dart';
+import 'package:parlour_app/view/screen/reels/reels_binding.dart';
+import 'package:parlour_app/view/screen/reels/reels_controller.dart';
+import 'package:parlour_app/view/screen/reels/reels_screen.dart';
 import '../../controller/home_controller/main_navigation_controller.dart';
 import '../../common/custom_bottom_navigation_bar.dart';
 import '../../constants/app_colors.dart';
@@ -19,18 +21,18 @@ class MainNavigationScreen extends StatelessWidget {
     HomeScreen(),
     CategoryScreen(),
     Container(),
-    ReelsScreen(),
+    ReelsScreen(isFromDashboard: true,),
     ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: AppColors.white,
       extendBody: true,
       body: Obx(() {
         int selectedIndex = controller.selectedBottomBarIndex.value;
-
         int screenIndex;
         switch (selectedIndex) {
           case 0:

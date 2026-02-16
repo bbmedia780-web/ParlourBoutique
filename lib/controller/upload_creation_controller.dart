@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../utility/global.dart';
@@ -117,3 +118,4 @@ class UploadCreationController extends GetxController {
     _overlayController.onScaleUpdate(details);
   }
 }
+*/

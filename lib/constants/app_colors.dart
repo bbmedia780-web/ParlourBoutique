@@ -32,7 +32,23 @@ class AppColors {
   static const Color softPink = Color(0xFFFFECF3); // Softest pink
   static const Color white = Color(0xFFFFFFFF);
   static const Color transparent = Colors.transparent;
-  
+  static const Color dividerColor = Color(0xFFF2F2F2);
+  static const Color filterBottmBg = Color(0xff25282d);
+  static const Color darkBlueColor = Color(0xff0c0f14);
+  static const Color bottomsheetbgcolor = Color(0xFF222328);
+  static const Color searchBgColor = Color(0xFF2b3036);
+  static const Color greytextcolor = Color(0xFFa3a7aa);
+  static const Color greyBgColor = Color(0xFF252624);
+  static const Color grey27282Color = Color(0xff27282d);
+  static const Color grey575654Color = Color(0xff575654);
+  static const Color toastErrorIcon = Color(0xFFE53E3E); // Red icon
+  static const Color toastInfoIcon = Color(0xFF3182CE); // Blue icon
+  static const Color toastSuccessIcon = Color(0xFF38A169); // Green icon
+  static const Color toastWarningIcon = Color(0xFFD69E2E); // Yellow icon
+  static const Color toastSuccessBg = Color(0xFFE6FFE6); // Light green background
+  static const Color toastInfoBg = Color(0xFFE6F3FF); // Light blue background
+  static const Color toastWarningBg = Color(0xFFFFF8E1); // Light yellow background
+  static const Color toastErrorBg = Color(0xFFFFE1E1);
   // Additional colors for service details
   static const Color facebookBlue = Color(0xFF1877F2);
   static const Color yellow = Color(0xFFFFD700);

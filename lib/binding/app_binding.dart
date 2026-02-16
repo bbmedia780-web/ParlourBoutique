@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:parlour_app/controller/create_reels_controller.dart';
 import 'package:parlour_app/controller/home_controller/notification_controller.dart';
 import 'package:parlour_app/controller/popular_controller.dart';
 import 'package:parlour_app/controller/favourite_controller.dart';
@@ -23,12 +24,11 @@ import '../controller/auth_controller/welcome_controller.dart';
 import '../controller/home_controller/home_controller.dart';
 import '../controller/home_controller/main_navigation_controller.dart';
 import '../controller/write_review_controller.dart';
-import '../controller/home_controller/reels_controller.dart';
-import '../controller/upload_creation_controller.dart';
 import '../controller/video_editor_controller.dart';
 import '../controller/overlay_controller.dart';
 import '../controller/effect_controller.dart';
 import '../controller/media_selection_controller.dart';
+import '../view/screen/reels/reels_controller.dart';
 
 class AppBinding extends Bindings {
   @override
@@ -61,13 +61,14 @@ class AppBinding extends Bindings {
     Get.put(ReviewController(), permanent: true);
     Get.put(WriteReviewController(), permanent: true);
     Get.put(BookingController(), permanent: true);
-    Get.put(ReelsController(), permanent: true);
-    
+
     // Upload creation controllers
     Get.put(VideoEditorController(), permanent: true);
     Get.put(OverlayController(), permanent: true);
     Get.put(EffectController(), permanent: true);
     Get.put(MediaSelectionController(), permanent: true);
-    Get.put(UploadCreationController(), permanent: true);
+    // Get.put(UploadCreationController(), permanent: true);
+    Get.put(CreateReelsController(), permanent: true);
+    Get.put(ReelsController(), permanent: true);
   }
 }

@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:parlour_app/utility/global.dart';
 import '../../constants/app_strings.dart';
 import '../../routes/app_routes.dart';
+import '../../view/screen/reels/reels_controller.dart';
 import 'home_controller.dart';
-import 'reels_controller.dart';
 
 class MainNavigationController extends GetxController {
   // -------------------- State --------------------
@@ -102,7 +102,7 @@ class MainNavigationController extends GetxController {
       Get.toNamed(AppRoutes.addRentProduct);
     } else {
       // Parlour or Boutique tab
-      Get.toNamed(AppRoutes.uploadCreation);
+      Get.toNamed(AppRoutes.createReels);
     }
   }
 
@@ -111,7 +111,7 @@ class MainNavigationController extends GetxController {
   void _setReelsActive(bool isActive) {
     if (Get.isRegistered<ReelsController>()) {
       final ReelsController reelsController = Get.find<ReelsController>();
-      reelsController.setActiveTab(isActive);
+      // reelsController.setActiveTab(isActive);
     }
   }
 }

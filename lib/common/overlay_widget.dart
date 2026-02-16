@@ -66,13 +66,13 @@ class OverlayWidget extends StatelessWidget {
 
   void _onScaleStart(ScaleStartDetails details) {
     onActive();
-    final controller = Get.find<UploadCreationController>();
-    controller.onOverlayScaleStart(details);
+    // final controller = Get.find<UploadCreationController>();
+    // controller.onOverlayScaleStart(details);
   }
 
   void _onScaleUpdate(ScaleUpdateDetails details) {
-    final controller = Get.find<UploadCreationController>();
-    controller.onOverlayScaleUpdate(details);
+    // final controller = Get.find<UploadCreationController>();
+    // controller.onOverlayScaleUpdate(details);
   }
 }
 

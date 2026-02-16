@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
+import 'package:parlour_app/controller/create_reels_controller.dart';
 import 'package:parlour_app/view/screen/profile_screen/account_information_screen.dart';
+import 'package:parlour_app/view/screen/reels/reels_binding.dart';
 import '../view/screen/profile_screen/booking_page_view.dart';
 import '../view/screen/details_screen.dart';
 import '../controller/popular_details_controller.dart';
@@ -12,6 +14,8 @@ import '../view/screen/profile_screen/payment_history_screen.dart';
 import '../view/screen/profile_screen/settings_page_screen.dart';
 import '../view/screen/profile_screen/support_ticket_form_page_screen.dart';
 import '../view/screen/profile_screen/favourite_screen.dart';
+import '../view/screen/reels/create_reels/screens/create_reels_screen.dart';
+import '../view/screen/reels/reels_screen.dart';
 import '../view/screen/sign_in_page_screen.dart';
 import '../view/screen/unified_booking_page_view.dart';
 import '../view/screen/welcome_screen.dart';
@@ -51,6 +55,8 @@ class AppRoutes {
   static const addRentProduct = '/add-rent-product';
   static const uploadCreation = '/upload-creation';
   static const information = '/information';
+  static const reels = '/reels';
+  static const createReels = '/createReels';
 
 
 
@@ -94,16 +100,26 @@ class AppRoutes {
       }),
       transition: Transition.cupertino,
     ),
-    GetPage(
+    /*GetPage(
       name: uploadCreation,
       page: () => UploadCreationScreen(),
       binding: BindingsBuilder(() {
         Get.put(UploadCreationController());
       }),
       transition: Transition.cupertino,
-    ),
+    ),*/
     GetPage(name: information, page: () => InformationScreen(), transition: Transition.cupertino),
-
-
+    GetPage(
+      name: AppRoutes.reels,
+      page: () => const ReelsScreen(),
+      binding:  ReelsBinding()
+    ),
+    GetPage(
+      name: AppRoutes.createReels,
+      page: () => const CreateReelsScreen(),
+      binding: BindingsBuilder(() {
+        Get.put(CreateReelsController());
+      }),
+    ),
   ];
 }

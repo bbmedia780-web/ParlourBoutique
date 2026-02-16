@@ -32,6 +32,13 @@ dependencies:
   geocoding: ^4.0.0
   path_provider: ^2.1.5
   responsive_framework: ^1.5.1
+  uuid: ^4.5.1
+  http: ^1.2.1
+  permission_handler: ^11.3.1
+  audioplayers: ^6.1.0
+  ffmpeg_kit_flutter_new: ^4.1.0
+  gallery_media_picker: ^0.2.0
+  video_thumbnail: ^0.5.6
 
 dev_dependencies:
   flutter_test:
@@ -47,4 +54,5 @@ flutter:
     - assets/images/
     - assets/profile/
     - assets/home/
+    - assets/audio/
 

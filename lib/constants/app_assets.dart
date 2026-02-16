@@ -1,5 +1,15 @@
 
 class AppAssets {
+
+  static const String audioBase = "assets/audio";
+
+  static const String audio1 = "$audioBase/audio1.mp3";
+  static const String audio2 = "$audioBase/audio2.mp3";
+  static const String audio3 = "$audioBase/audio6.mp3";
+  static const String audio4 = "$audioBase/audio6.mp3";
+  static const String audio5 = "$audioBase/audio7.mp3";
+
+
   static const welcome1 = 'assets/images/welcome_1.png';
   static const welcome2 = 'assets/images/welcome_2.png';
   static const welcome3 = 'assets/images/welcome_3.png';
@@ -85,5 +95,25 @@ class AppAssets {
   static const parlour = 'assets/home/parlour.png';
   static const rentIcon = 'assets/home/rent.png';
 
+  // create reels icon
+  static const String audioIcon = "assets/images/music-note.png";
+  static const String textIcon = "assets/images/font.png";
+  static const String imageFilterIcon = "assets/images/correction.png";
+  static const String trimIcon = "assets/images/trim.png";
+  static const String cameraIcon = "assets/images/photo-camera.png";
+  static const String multiImgIcon = "assets/images/photos.png";
+  static const String arrowRightIcon = "assets/images/right-arrow.png";
+  static const String playIcon = "assets/images/play-button.png";
+  static const String pauseIcon = "assets/images/pause.png";
+  static const String bookmarkFillIcon = "assets/images/bookmark_fill.png";
+  static const String bookmarkOutlineIcon = "assets/images/bookmark_outline.png";
+
+  static const String textBgFillIcon = "assets/home/a.png";
+  static const String colorPlatIcon = "assets/home/color_plate.png";
+  static const String fontAdjustmentIcon = "assets/home/font-adjustment.png";
+  static const String textAlignIcon = "assets/home/text.png";
+  static const String textEditIcon = "assets/home/text-editor.png";
+  static const String forbiddenIcon = "assets/home/forbidden.png";
+  static const String testImg = "assets/home/image-test.jpg";
 
 }

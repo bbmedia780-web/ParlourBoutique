@@ -33,10 +33,11 @@ class _CreateReelsScreenState extends State<CreateReelsScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    controller = Get.put(CreateReelsController(), permanent: false);
 
-    // Clear selection ONCE when screen opens
+    controller = Get.put(CreateReelsController());
+
     controller.clearGalleryState();
+    controller.loadGalleryOnce();
   }
 
   @override
@@ -48,7 +49,7 @@ class _CreateReelsScreenState extends State<CreateReelsScreen>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      controller.reloadGalleryMedia();
+      // controller.reloadGalleryMedia();
     }
   }
 

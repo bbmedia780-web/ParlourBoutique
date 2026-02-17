@@ -68,7 +68,7 @@ class AppBinding extends Bindings {
     Get.put(EffectController(), permanent: true);
     Get.put(MediaSelectionController(), permanent: true);
     // Get.put(UploadCreationController(), permanent: true);
-    Get.put(CreateReelsController(), permanent: true);
-    Get.put(ReelsController(), permanent: true);
+    // Get.put(CreateReelsController(), permanent: true);
+    // Get.put(ReelsController(), permanent: true);
   }
 }

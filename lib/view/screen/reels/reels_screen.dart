@@ -32,27 +32,27 @@ class _ReelsScreenState extends State<ReelsScreen> with WidgetsBindingObserver {
       ReelsBinding().dependencies();
     }
     controller = Get.find<ReelsController>();
-    
-    if (widget.isFromDashboard) {
-      _listenToDashboardTabChanges();
-    }
-    
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!_isDisposed && mounted) {
-        final route = ModalRoute.of(context);
-        if (route != null && route.isCurrent) {
-          controller.resetVideoPlayerState();
-          Future.delayed(const Duration(milliseconds: 500), () {
-            if (!_isDisposed && mounted) {
-              final route = ModalRoute.of(context);
-              if (route != null && route.isCurrent) {
-                _playCurrentVideo();
-              }
-            }
-          });
-        }
-      }
-    });
+    //
+    // if (widget.isFromDashboard) {
+    //   _listenToDashboardTabChanges();
+    // }
+    //
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (!_isDisposed && mounted) {
+    //     final route = ModalRoute.of(context);
+    //     if (route != null && route.isCurrent) {
+    //       controller.resetVideoPlayerState();
+    //       Future.delayed(const Duration(milliseconds: 500), () {
+    //         if (!_isDisposed && mounted) {
+    //           final route = ModalRoute.of(context);
+    //           if (route != null && route.isCurrent) {
+    //             _playCurrentVideo();
+    //           }
+    //         }
+    //       });
+    //     }
+    //   }
+    // });
   }
   void _playCurrentVideo() {
     try {
@@ -291,14 +291,12 @@ class _ReelsScreenState extends State<ReelsScreen> with WidgetsBindingObserver {
           bottom: true,
           child: GetBuilder<ReelsController>(
             builder: (_) {
-              // CRITICAL: Ensure first reel video is fully initialized before building PageView
-              // This prevents incorrect aspect ratio on the very first entry.
               final hasFirstController =
-                  controller.videoControllers.containsKey(0);
+              controller.videoControllers.containsKey(0);
               final firstInitialized =
                   hasFirstController &&
-                  (controller.isInitialized[0] == true) &&
-                  controller.videoControllers[0]!.value.isInitialized;
+                      (controller.isInitialized[0] == true) &&
+                      controller.videoControllers[0]!.value.isInitialized;
 
               if (!hasFirstController || !firstInitialized) {
                 // Show a single centered loader until first video is ready

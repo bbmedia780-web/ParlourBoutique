@@ -1,6 +1,7 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:parlour_app/controller/create_reels_controller.dart';
 import 'package:parlour_app/utility/global.dart';
 import '../../constants/app_strings.dart';
 import '../../routes/app_routes.dart';
@@ -19,7 +20,6 @@ class MainNavigationController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _setReelsActive(false);
     _handleLocationPermission();
   }
 
@@ -89,7 +89,13 @@ class MainNavigationController extends GetxController {
   /// Handle bottom navigation bar taps
   void onBottomNavItemTapped(int index) {
     selectedBottomBarIndex.value = index;
-    _setReelsActive(index == 3); // Reels tab at index 3
+    ReelsController controller=Get.put(ReelsController());
+
+    if(index==3){
+      controller.initializeVideos();
+    }else{
+      controller.onScreenClosed();
+    }// Reels tab at index 3
   }
 
   /// Handle Add (+) button tap
@@ -101,17 +107,9 @@ class MainNavigationController extends GetxController {
       // Rent tab
       Get.toNamed(AppRoutes.addRentProduct);
     } else {
-      // Parlour or Boutique tab
+      final controller = Get.put(ReelsController());
+      controller.onScreenClosed();
       Get.toNamed(AppRoutes.createReels);
-    }
-  }
-
-  // -------------------- Reels Handling --------------------
-  /// Activate or deactivate Reels tab
-  void _setReelsActive(bool isActive) {
-    if (Get.isRegistered<ReelsController>()) {
-      final ReelsController reelsController = Get.find<ReelsController>();
-      // reelsController.setActiveTab(isActive);
     }
   }
 }

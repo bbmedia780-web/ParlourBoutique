@@ -124,17 +124,19 @@ class CreateReelsController extends GetxController {
     {'name': 'Sepia', 'filter': 'sepia', 'icon': Icons.auto_awesome,'preview':AppAssets.testImg},
     {'name': 'Saturate', 'filter': 'saturate', 'icon': Icons.color_lens,'preview':AppAssets.testImg},
   ];
-
+  bool _isGalleryLoaded = false;
+  bool _isLoadingGallery = false;
 
   @override
   void onInit() {
     super.onInit();
     print('=============++++++++++++');
-    _clearAllSelections();
-     clearGalleryState();
-    _loadGalleryMediaInBackground();
-    _setupAudioPlayerListeners();
-    reloadGalleryMedia();  }
+    // _clearAllSelections();
+     // clearGalleryState();
+    // _loadGalleryMediaInBackground();
+    // _setupAudioPlayerListeners();
+    // reloadGalleryMedia();
+  }
 
   void _clearAllSelections() {
     // Clear preloaded thumbnails
@@ -237,11 +239,11 @@ class CreateReelsController extends GetxController {
     debugPrint('✅ All selections cleared when entering create reels screen');
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-    _checkAndReloadMedia();
-  }
+  // @override
+  // void onReady() {
+  //   super.onReady();
+  //   _checkAndReloadMedia();
+  // }
 
   @override
   void onClose() {
@@ -253,7 +255,19 @@ class CreateReelsController extends GetxController {
 
     super.onClose();
   }
+  Future<void> loadGalleryOnce() async {
+    if (_isGalleryLoaded || _isLoadingGallery) return;
 
+    _isLoadingGallery = true;
+
+    final ps = await PhotoManager.requestPermissionExtend();
+    if (!ps.isAuth) return;
+
+    await _loadGalleryMediaInBackground();
+
+    _isGalleryLoaded = true;
+    _isLoadingGallery = false;
+  }
   void _setupAudioPlayerListeners() async {
     // Configure audio player for device playback
     try {
@@ -296,7 +310,7 @@ class CreateReelsController extends GetxController {
     });
   }
 
-  void _loadGalleryMediaInBackground() async {
+  Future _loadGalleryMediaInBackground() async {
     // Set loading state to show loading indicator
     isLoadingGallery.value = true;
     clearGalleryState();
@@ -331,7 +345,7 @@ class CreateReelsController extends GetxController {
 
       final List<AssetEntity> media = await albums.first.getAssetListPaged(
         page: 0,
-        size: 100,
+        size: 60,
       );
 
       if (media.isEmpty) {
@@ -347,6 +361,7 @@ class CreateReelsController extends GetxController {
         try {
         final thumb = await asset.thumbnailDataWithSize(
           const ThumbnailSize(200, 200),
+          quality: 60
         );
 
         if (thumb == null) continue;
@@ -434,9 +449,9 @@ class CreateReelsController extends GetxController {
       isMusicPlaying.value = false;
     }
   }
-  Future<void> reloadGalleryMedia() async {
-    await _checkAndReloadMedia();
-  }
+  // Future<void> reloadGalleryMedia() async {
+  //   await _checkAndReloadMedia();
+  // }
 
   bool _isVideoFile(String path) {
     final lowerPath = path.toLowerCase();
@@ -3352,7 +3367,6 @@ class CreateReelsController extends GetxController {
               // Close dialog and navigate back
               Get.back();
               Get.back();
-              clearGalleryState();
 
               // Get.offAllNamed(AppRoutes.dashboard);// Close dialog
               // Get.offAllNamed(AppRoutes.dashboard); // Close create reels screen

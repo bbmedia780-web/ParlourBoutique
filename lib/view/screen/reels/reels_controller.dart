@@ -12,7 +12,7 @@ class ReelsController extends GetxController {
   var isPlaying = <int, bool>{}.obs;
   var showControls = <int, bool>{}.obs;
   var isInitialized = <int, bool>{}.obs;
-  var reelsReady = false.obs;
+
   // CRITICAL: Track mute state for all videos
   var isMuted = <int, bool>{}.obs;
   var globalMuteState = false.obs; // Global mute state (affects all videos)
@@ -23,9 +23,9 @@ class ReelsController extends GetxController {
     pageController = PageController();
 
     // CRITICAL: Initialize videos after a small delay to ensure controller is ready
-    // Future.delayed(const Duration(milliseconds: 100), () {
-    // _initializeVideos();
-    // });
+    Future.delayed(const Duration(milliseconds: 100), () {
+    _initializeVideos();
+    });
   }
   
   // CRITICAL: Toggle mute/unmute for all videos
@@ -108,36 +108,36 @@ class ReelsController extends GetxController {
       debugPrint('Error resetting video player state: $e');
     }
   }
-  
-  // CRITICAL: Method to ensure video plays when screen is entered/re-entered
-  // void ensureCurrentVideoPlaying() {
-  //   try {
-  //     final index = currentIndex.value;
-  //     if (videoControllers.containsKey(index) &&
-  //         isInitialized[index] == true) {
-  //       final controller = videoControllers[index]!;
-  //       if (controller.value.isInitialized) {
-  //         // CRITICAL: Reset to beginning before playing
-  //         controller.seekTo(Duration.zero);
-  //         // CRITICAL: Set volume based on mute state
-  //         controller.setVolume(globalMuteState.value ? 0.0 : 1.0);
-  //         isMuted[index] = globalMuteState.value;
-  //         // CRITICAL: Play if not already playing
-  //         if (!controller.value.isPlaying) {
-  //           playVideo(index);
-  //           debugPrint('✅ Ensuring video $index is playing (screen re-entry, muted: ${globalMuteState.value})');
-  //         } else {
-  //           // Already playing, just ensure volume is correct
-  //           controller.setVolume(globalMuteState.value ? 0.0 : 1.0);
-  //         }
-  //       }
-  //     }
-  //   } catch (e) {
-  //     debugPrint('Error ensuring video is playing: $e');
-  //   }
-  // }
 
-  void initializeVideos() {
+  // CRITICAL: Method to ensure video plays when screen is entered/re-entered
+  void ensureCurrentVideoPlaying() {
+    try {
+      final index = currentIndex.value;
+      if (videoControllers.containsKey(index) &&
+          isInitialized[index] == true) {
+        final controller = videoControllers[index]!;
+        if (controller.value.isInitialized) {
+          // CRITICAL: Reset to beginning before playing
+          controller.seekTo(Duration.zero);
+          // CRITICAL: Set volume based on mute state
+          controller.setVolume(globalMuteState.value ? 0.0 : 1.0);
+          isMuted[index] = globalMuteState.value;
+          // CRITICAL: Play if not already playing
+          if (!controller.value.isPlaying) {
+            playVideo(index);
+            debugPrint('✅ Ensuring video $index is playing (screen re-entry, muted: ${globalMuteState.value})');
+          } else {
+            // Already playing, just ensure volume is correct
+            controller.setVolume(globalMuteState.value ? 0.0 : 1.0);
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Error ensuring video is playing: $e');
+    }
+  }
+
+  void _initializeVideos() {
     // Initialize video controllers for each reel
     for (int i = 0; i < reels.length; i++) {
       final videoUrl = reels[i]['videoUrl'] as String;
@@ -148,16 +148,6 @@ class ReelsController extends GetxController {
         isInitialized[i] = false;
       }
     }
-  }
-  Future<void> onScreenClosed() async {
-    for (final c in videoControllers.values) {
-      await c.pause();
-      await c.dispose();
-    }
-    videoControllers.clear();
-    isInitialized.clear();
-
-    reelsReady.value = false; // important
   }
 
   void _initVideoController(int index, String url) async {

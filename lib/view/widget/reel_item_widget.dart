@@ -57,7 +57,7 @@ class _ReelItemWidgetState extends State<ReelItemWidget> with WidgetsBindingObse
         videoController.pause();
         videoController.setVolume(0.0);
         videoController.seekTo(Duration.zero);
-        controller.isPlaying[widget.index] = false;
+        // controller.isPlaying[widget.index] = false;
       }
     }
     super.dispose();
@@ -71,7 +71,7 @@ class _ReelItemWidgetState extends State<ReelItemWidget> with WidgetsBindingObse
         state == AppLifecycleState.inactive ||
         state == AppLifecycleState.hidden) {
       if (controller.videoControllers.containsKey(widget.index)) {
-        controller.pauseVideo(widget.index);
+        // controller.pauseVideo(widget.index);
       }
     }
   }
@@ -95,7 +95,7 @@ class _ReelItemWidgetState extends State<ReelItemWidget> with WidgetsBindingObse
               videoController.seekTo(Duration.zero);
               // CRITICAL: Set volume based on mute state
               videoController.setVolume(controller.globalMuteState.value ? 0.0 : 1.0);
-              controller.playVideo(widget.index);
+              // controller.playVideo(widget.index);
               debugPrint('✅ Playing video ${widget.index} (muted: ${controller.globalMuteState.value})');
             }
           }
@@ -111,7 +111,7 @@ class _ReelItemWidgetState extends State<ReelItemWidget> with WidgetsBindingObse
           videoController.pause();
           videoController.setVolume(0.0);
           videoController.seekTo(Duration.zero);
-          controller.isPlaying[widget.index] = false;
+          // controller.isPlaying[widget.index] = false;
           debugPrint('✅ Stopped video ${widget.index} (not current reel)');
         }
       }
@@ -122,7 +122,7 @@ class _ReelItemWidgetState extends State<ReelItemWidget> with WidgetsBindingObse
     setState(() {
       _showLikeAnimation = true;
     });
-    controller.onDoubleTapLike(widget.index);
+    // controller.onDoubleTapLike(widget.index);
     Future.delayed(const Duration(milliseconds: 800), () {
       if (mounted) {
         setState(() {
@@ -133,8 +133,8 @@ class _ReelItemWidgetState extends State<ReelItemWidget> with WidgetsBindingObse
   }
 
   void _handleTap() {
-    controller.showVideoControls(widget.index);
-    controller.togglePlayPause(widget.index);
+    // controller.showVideoControls(widget.index);
+    // controller.togglePlayPause(widget.index);
   }
 
   @override
@@ -323,11 +323,14 @@ class _ReelItemWidgetState extends State<ReelItemWidget> with WidgetsBindingObse
             right: 0,
             child: Obx(() {
               final videoController = controller.videoControllers[widget.index];
-              final isPlaying = controller.isPlaying[widget.index] ?? false;
+              // final isPlaying = controller.isPlaying[widget.index] ?? false;
               
-              if (videoController != null && 
-                  videoController.value.isInitialized && 
-                  isPlaying) {
+              // if (videoController != null &&
+              //     videoController.value.isInitialized &&
+              //     isPlaying)
+                if (videoController != null &&
+                  videoController.value.isInitialized)
+              {
                 final position = videoController.value.position;
                 final duration = videoController.value.duration;
                 final progress = duration.inMilliseconds > 0

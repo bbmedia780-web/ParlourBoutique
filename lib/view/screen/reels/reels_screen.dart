@@ -54,85 +54,86 @@ class _ReelsScreenState extends State<ReelsScreen> with WidgetsBindingObserver {
     //   }
     // });
   }
-  void _playCurrentVideo() {
-    try {
-      print('isVideo initialize ------> ');
-      if (controller.currentIndex.value != 0) {
-        controller.currentIndex.value = 0;
-        if (controller.pageController.hasClients) {
-          controller.pageController.jumpToPage(0);
-        }
-      }
-      final currentIndex = controller.currentIndex.value;
-      if (!controller.videoControllers.containsKey(currentIndex)) {
-        debugPrint('Video controller not found for index $currentIndex, waiting...');
-        Future.delayed(const Duration(milliseconds: 300), () {
-          if (!_isDisposed && mounted) {
-            _playCurrentVideo();
-          }
-        });
-        return;
-      }
-      final videoController = controller.videoControllers[currentIndex]!;
-      if (controller.isInitialized[currentIndex] == true &&
-          videoController.value.isInitialized) {
-          videoController.seekTo(Duration.zero);
-          videoController.setVolume(controller.globalMuteState.value ? 0.0 : 1.0);
-          controller.playVideo(currentIndex);
-          debugPrint('✅ Auto-playing video $currentIndex (muted: ${controller.globalMuteState.value})');
-      } else {
-        debugPrint('Video $currentIndex not initialized yet, waiting...');
-        Future.delayed(const Duration(milliseconds: 200), () {
-          if (!_isDisposed && mounted) {
-            _playCurrentVideo();
-          }
-        });
-      }
-    } catch (e) {
-      debugPrint('Error playing current video: $e');
-      Future.delayed(const Duration(milliseconds: 300), () {
-        if (!_isDisposed && mounted) {
-          _playCurrentVideo();
-        }
-      });
-    }
-  }
-  void _listenToDashboardTabChanges() {
-    try {
-      if (Get.isRegistered<MainNavigationController>()) {
-        final dashboardController = Get.find<MainNavigationController>();
-        _dashboardTabListener = ever(dashboardController.selectedBottomBarIndex, (int index) {
-          if (_isDisposed || !mounted) return;
-          if (index != 2) {
-            if (_isVisible) {
-              _isVisible = false;
-              _stopAllVideos();
-              controller.stopAllVideos();
-              debugPrint('✅ Tab changed away from Reels (index: $index) - videos and audio stopped');
-            }
-          } else {
-            _isVisible = true;
-            debugPrint('✅ Switched back to Reels tab - resetting and auto-playing video');
-            controller.resetVideoPlayerState();
-            Future.delayed(const Duration(milliseconds: 500), () {
-              if (!_isDisposed && mounted && _isVisible) {
-                if (Get.isRegistered<MainNavigationController>()) {
-                  final dashboardCtrl = Get.find<MainNavigationController>();
-                  if (dashboardCtrl.selectedBottomBarIndex.value == 2) {
-                    _playCurrentVideo();
-                  }
-                } else {
-                  _playCurrentVideo();
-                }
-              }
-            });
-          }
-        });
-      }
-    } catch (e) {
-      debugPrint('Error listening to dashboard tab changes: $e');
-    }
-  }
+  // void _playCurrentVideo() {
+  //   try {
+  //     print('isVideo initialize ------> ');
+  //     if (controller.currentIndex.value != 0) {
+  //       controller.currentIndex.value = 0;
+  //       if (controller.pageController.hasClients) {
+  //         controller.pageController.jumpToPage(0);
+  //       }
+  //     }
+  //     final currentIndex = controller.currentIndex.value;
+  //     if (!controller.videoControllers.containsKey(currentIndex)) {
+  //       debugPrint('Video controller not found for index $currentIndex, waiting...');
+  //       Future.delayed(const Duration(milliseconds: 300), () {
+  //         if (!_isDisposed && mounted) {
+  //           _playCurrentVideo();
+  //         }
+  //       });
+  //       return;
+  //     }
+  //     final videoController = controller.videoControllers[currentIndex]!;
+  //     if (controller.isInitialized[currentIndex] == true &&
+  //         videoController.value.isInitialized) {
+  //         videoController.seekTo(Duration.zero);
+  //         videoController.setVolume(controller.globalMuteState.value ? 0.0 : 1.0);
+  //         controller.playVideo(currentIndex);
+  //         debugPrint('✅ Auto-playing video $currentIndex (muted: ${controller.globalMuteState.value})');
+  //     } else {
+  //       debugPrint('Video $currentIndex not initialized yet, waiting...');
+  //       Future.delayed(const Duration(milliseconds: 200), () {
+  //         if (!_isDisposed && mounted) {
+  //           _playCurrentVideo();
+  //         }
+  //       });
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Error playing current video: $e');
+  //     Future.delayed(const Duration(milliseconds: 300), () {
+  //       if (!_isDisposed && mounted) {
+  //         _playCurrentVideo();
+  //       }
+  //     });
+  //   }
+  // }
+
+  // void _listenToDashboardTabChanges() {
+  //   try {
+  //     if (Get.isRegistered<MainNavigationController>()) {
+  //       final dashboardController = Get.find<MainNavigationController>();
+  //       _dashboardTabListener = ever(dashboardController.selectedBottomBarIndex, (int index) {
+  //         if (_isDisposed || !mounted) return;
+  //         if (index != 2) {
+  //           if (_isVisible) {
+  //             _isVisible = false;
+  //             _stopAllVideos();
+  //             controller.stopAllVideos();
+  //             debugPrint('✅ Tab changed away from Reels (index: $index) - videos and audio stopped');
+  //           }
+  //         } else {
+  //           _isVisible = true;
+  //           debugPrint('✅ Switched back to Reels tab - resetting and auto-playing video');
+  //           controller.resetVideoPlayerState();
+  //           Future.delayed(const Duration(milliseconds: 500), () {
+  //             if (!_isDisposed && mounted && _isVisible) {
+  //               if (Get.isRegistered<MainNavigationController>()) {
+  //                 final dashboardCtrl = Get.find<MainNavigationController>();
+  //                 if (dashboardCtrl.selectedBottomBarIndex.value == 2) {
+  //                   _playCurrentVideo();
+  //                 }
+  //               } else {
+  //                 _playCurrentVideo();
+  //               }
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+  //   } catch (e) {
+  //     debugPrint('Error listening to dashboard tab changes: $e');
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -142,7 +143,7 @@ class _ReelsScreenState extends State<ReelsScreen> with WidgetsBindingObserver {
     _dashboardTabListener = null;
     _isDisposed = true;
     // CRITICAL: Stop all videos when screen is disposed
-    _stopAllVideos();
+    // _stopAllVideos();
     super.dispose();
   }
 
@@ -154,122 +155,122 @@ class _ReelsScreenState extends State<ReelsScreen> with WidgetsBindingObserver {
         state == AppLifecycleState.inactive ||
         state == AppLifecycleState.hidden ||
         state == AppLifecycleState.detached) {
-      _stopAllVideos();
+      // _stopAllVideos();
       controller.stopAllVideos();
       debugPrint('✅ App lifecycle changed to $state - videos and audio stopped');
     } else if (state == AppLifecycleState.resumed) {
       // CRITICAL: When app resumes, check if we're still on reels screen and play video
-      _playCurrentVideo();
+      // _playCurrentVideo();
     }
   }
 
-  void _stopAllVideos() {
-    if (_isDisposed) return;
-    
-    try {
-      // CRITICAL: Stop all playing videos immediately and completely
-      for (var entry in controller.videoControllers.entries) {
-        try {
-          final videoController = entry.value;
-          if (videoController.value.isInitialized) {
-            // CRITICAL: Stop playback immediately
-            videoController.pause();
-            // CRITICAL: Mute audio to stop sound completely
-            videoController.setVolume(0.0);
-            // CRITICAL: Seek to beginning to reset position (prevents looping)
-            videoController.seekTo(Duration.zero);
-            // CRITICAL: Remove listeners to prevent auto-playback
-            videoController.removeListener(() {});
-            debugPrint('✅ Stopped video ${entry.key} completely');
-          }
-        } catch (e) {
-          debugPrint('Error stopping video ${entry.key}: $e');
-        }
-      }
-      
-      // CRITICAL: Update playing state for all videos
-      for (var key in controller.isPlaying.keys.toList()) {
-        controller.isPlaying[key] = false;
-      }
-      
-      // CRITICAL: Clear show controls
-      for (var key in controller.showControls.keys.toList()) {
-        controller.showControls[key] = false;
-      }
-      
-      // CRITICAL: Defer update to avoid calling during widget tree lock
-      Future.microtask(() {
-        if (!_isDisposed) {
-          controller.update();
-        }
-      });
-      
-      debugPrint('✅ All reels videos and audio stopped forcefully');
-    } catch (e) {
-      debugPrint('Error in _stopAllVideos: $e');
-    }
-  }
+  // void _stopAllVideos() {
+  //   if (_isDisposed) return;
+  //
+  //   try {
+  //     // CRITICAL: Stop all playing videos immediately and completely
+  //     for (var entry in controller.videoControllers.entries) {
+  //       try {
+  //         final videoController = entry.value;
+  //         if (videoController.value.isInitialized) {
+  //           // CRITICAL: Stop playback immediately
+  //           videoController.pause();
+  //           // CRITICAL: Mute audio to stop sound completely
+  //           videoController.setVolume(0.0);
+  //           // CRITICAL: Seek to beginning to reset position (prevents looping)
+  //           videoController.seekTo(Duration.zero);
+  //           // CRITICAL: Remove listeners to prevent auto-playback
+  //           videoController.removeListener(() {});
+  //           debugPrint('✅ Stopped video ${entry.key} completely');
+  //         }
+  //       } catch (e) {
+  //         debugPrint('Error stopping video ${entry.key}: $e');
+  //       }
+  //     }
+  //
+  //     // CRITICAL: Update playing state for all videos
+  //     for (var key in controller.isPlaying.keys.toList()) {
+  //       controller.isPlaying[key] = false;
+  //     }
+  //
+  //     // CRITICAL: Clear show controls
+  //     for (var key in controller.showControls.keys.toList()) {
+  //       controller.showControls[key] = false;
+  //     }
+  //
+  //     // CRITICAL: Defer update to avoid calling during widget tree lock
+  //     Future.microtask(() {
+  //       if (!_isDisposed) {
+  //         controller.update();
+  //       }
+  //     });
+  //
+  //     debugPrint('✅ All reels videos and audio stopped forcefully');
+  //   } catch (e) {
+  //     debugPrint('Error in _stopAllVideos: $e');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     print('Reels list screen -------->');
     // CRITICAL: Check if route is still active when building
     // This catches cases where navigation happens but dispose() hasn't been called yet
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!_isDisposed && mounted) {
-        final route = ModalRoute.of(context);
-        if (route == null || !route.isCurrent) {
-          // Route is no longer active, stop videos
-          _stopAllVideos();
-        }
-        
-        // CRITICAL: Check dashboard tab index if from dashboard
-        if (widget.isFromDashboard) {
-          try {
-            if (Get.isRegistered<MainNavigationController>()) {
-              final dashboardController = Get.find<MainNavigationController>();
-              final currentTabIndex = dashboardController.selectedBottomBarIndex.value;
-              
-              // Reels tab is index 2
-              if (currentTabIndex != 2) {
-                // CRITICAL: Not on reels tab, stop videos and audio immediately
-                if (_isVisible) {
-                  _isVisible = false;
-                  _stopAllVideos();
-                  controller.stopAllVideos();
-                }
-              } else {
-                // CRITICAL: On reels tab - reset and ensure current video plays with audio automatically
-                // This ensures video plays every time user enters/returns to reels screen
-                if (!_isVisible || currentTabIndex == 2) {
-                  _isVisible = true;
-                  
-                  // CRITICAL: Reset video player state first
-                  controller.resetVideoPlayerState();
-                  
-                  // CRITICAL: Play current video with audio after reset
-                  Future.delayed(const Duration(milliseconds: 500), () {
-                    if (!_isDisposed && mounted && currentTabIndex == 2 && _isVisible) {
-                      // Double-check we're still on reels tab
-                      if (Get.isRegistered<MainNavigationController>()) {
-                        final dashboardCtrl = Get.find<MainNavigationController>();
-                        if (dashboardCtrl.selectedBottomBarIndex.value == 2) {
-                          _playCurrentVideo();
-                        }
-                      } else {
-                        _playCurrentVideo();
-                      }
-                    }
-                  });
-                }
-              }
-            }
-          } catch (e) {
-            debugPrint('Error checking dashboard tab in build: $e');
-          }
-        }
-      }
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (!_isDisposed && mounted) {
+    //     final route = ModalRoute.of(context);
+    //     if (route == null || !route.isCurrent) {
+    //       // Route is no longer active, stop videos
+    //       _stopAllVideos();
+    //     }
+    //
+    //     // CRITICAL: Check dashboard tab index if from dashboard
+    //     if (widget.isFromDashboard) {
+    //       try {
+    //         if (Get.isRegistered<MainNavigationController>()) {
+    //           final dashboardController = Get.find<MainNavigationController>();
+    //           final currentTabIndex = dashboardController.selectedBottomBarIndex.value;
+    //
+    //           // Reels tab is index 2
+    //           if (currentTabIndex != 2) {
+    //             // CRITICAL: Not on reels tab, stop videos and audio immediately
+    //             if (_isVisible) {
+    //               _isVisible = false;
+    //               _stopAllVideos();
+    //               controller.stopAllVideos();
+    //             }
+    //           } else {
+    //             // CRITICAL: On reels tab - reset and ensure current video plays with audio automatically
+    //             // This ensures video plays every time user enters/returns to reels screen
+    //             if (!_isVisible || currentTabIndex == 2) {
+    //               _isVisible = true;
+    //
+    //               // CRITICAL: Reset video player state first
+    //               controller.resetVideoPlayerState();
+    //
+    //               // CRITICAL: Play current video with audio after reset
+    //               Future.delayed(const Duration(milliseconds: 500), () {
+    //                 if (!_isDisposed && mounted && currentTabIndex == 2 && _isVisible) {
+    //                   // Double-check we're still on reels tab
+    //                   if (Get.isRegistered<MainNavigationController>()) {
+    //                     final dashboardCtrl = Get.find<MainNavigationController>();
+    //                     if (dashboardCtrl.selectedBottomBarIndex.value == 2) {
+    //                       _playCurrentVideo();
+    //                     }
+    //                   } else {
+    //                     _playCurrentVideo();
+    //                   }
+    //                 }
+    //               });
+    //             }
+    //           }
+    //         }
+    //       } catch (e) {
+    //         debugPrint('Error checking dashboard tab in build: $e');
+    //       }
+    //     }
+    //   }
+    // });
     
     // Use WillPopScope to detect back button press
     return PopScope(
@@ -277,7 +278,7 @@ class _ReelsScreenState extends State<ReelsScreen> with WidgetsBindingObserver {
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) {
           // Stop all videos and audio
-          _stopAllVideos();
+          // _stopAllVideos();
           controller.stopAllVideos();
           debugPrint('✅ Back button pressed - all videos and audio stopped');
         }
@@ -315,9 +316,9 @@ class _ReelsScreenState extends State<ReelsScreen> with WidgetsBindingObserver {
                   return ReelItemWidget(
                     reel: reel,
                     index: index,
-                    onLike: () => controller.toggleLike(index),
-                    onComment: () => controller.onCommentTap(index),
-                    onShare: () => controller.onShareTap(index),
+                    onLike: () {},
+                    onComment: (){},
+                    onShare: (){},
                   );
                 },
               );

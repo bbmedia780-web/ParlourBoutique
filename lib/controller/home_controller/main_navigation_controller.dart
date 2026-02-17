@@ -89,12 +89,9 @@ class MainNavigationController extends GetxController {
   /// Handle bottom navigation bar taps
   void onBottomNavItemTapped(int index) {
     selectedBottomBarIndex.value = index;
-    ReelsController controller=Get.put(ReelsController());
-
     if(index==3){
-      controller.initializeVideos();
-    }else{
-      controller.onScreenClosed();
+      // ReelsController controller=Get.put(ReelsController());
+
     }// Reels tab at index 3
   }
 
@@ -107,8 +104,6 @@ class MainNavigationController extends GetxController {
       // Rent tab
       Get.toNamed(AppRoutes.addRentProduct);
     } else {
-      final controller = Get.put(ReelsController());
-      controller.onScreenClosed();
       Get.toNamed(AppRoutes.createReels);
     }
   }

@@ -9,7 +9,8 @@ import 'package:responsive_framework/responsive_framework.dart';
 
 import 'binding/app_binding.dart';
 
-
+final RouteObserver<ModalRoute<void>> routeObserver =
+RouteObserver<ModalRoute<void>>();
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      navigatorObservers: [routeObserver],
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.splash,
       getPages: AppRoutes.routes,

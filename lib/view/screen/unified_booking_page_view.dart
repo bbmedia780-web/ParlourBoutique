@@ -1,9 +1,9 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:parlour_app/constants/app_colors.dart';
 import '../../common/common_container_text_field.dart';
 import '../../constants/app_assets.dart';
-import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_strings.dart';
 import '../../constants/app_text_style.dart';

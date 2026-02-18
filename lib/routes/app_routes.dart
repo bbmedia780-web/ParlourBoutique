@@ -109,11 +109,11 @@ class AppRoutes {
       transition: Transition.cupertino,
     ),*/
     GetPage(name: information, page: () => InformationScreen(), transition: Transition.cupertino),
-    GetPage(
-      name: AppRoutes.reels,
-      page: () => const ReelsScreen(),
-      binding:  ReelsBinding()
-    ),
+    // GetPage(
+    //   name: AppRoutes.reels,
+    //   page: () => const ReelsScreen(),
+    //   binding:  ReelsBinding()
+    // ),
     GetPage(
       name: AppRoutes.createReels,
       page: () => const CreateReelsScreen(),

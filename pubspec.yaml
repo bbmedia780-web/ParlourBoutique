@@ -25,7 +25,7 @@ dependencies:
   image_picker: ^1.2.0
   dio: ^5.9.0
   shared_preferences: ^2.5.3
-  reels: ^1.0.0
+  reels_viewer: ^2.0.0
   video_player: ^2.8.2
   app_settings: ^6.1.1
   geolocator: ^14.0.2

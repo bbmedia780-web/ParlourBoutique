@@ -933,7 +933,7 @@ class _CreateReelsScreenState extends State<CreateReelsScreen>
 
                             return GestureDetector(
                               onTap: () async {
-                                // CRITICAL: Track if music was playing before opening bottom sheet
+                            /*    // CRITICAL: Track if music was playing before opening bottom sheet
                                 final wasMusicPlaying = controller.isMusicPlaying.value;
                                 final hadMusicSelected = controller.selectedMusicPath.value.isNotEmpty;
 
@@ -971,7 +971,7 @@ class _CreateReelsScreenState extends State<CreateReelsScreen>
                                 controller.selectedMusicImgPath.value = '';
                                 controller.selectedMusicIndex.value = (-1);
                                 controller.isNextForTrim.value=false;
-
+*/
                                 showModalBottomSheet(
                                     isScrollControlled: true,
                                     isDismissible: true,
@@ -981,8 +981,8 @@ class _CreateReelsScreenState extends State<CreateReelsScreen>
                                     controller: controller,
                                   );
                                 }).then((_) async {
-                                  debugPrint('Bottom sheet closed, wasMusicPlaying: $wasMusicPlaying, isMusicAppliedToVideo: ${controller.isMusicAppliedToVideo.value}');
-                                  await Future.delayed(const Duration(milliseconds: 150));
+                                  // debugPrint('Bottom sheet closed, wasMusicPlaying: $wasMusicPlaying, isMusicAppliedToVideo: ${controller.isMusicAppliedToVideo.value}');
+                                  /*await Future.delayed(const Duration(milliseconds: 150));
 
                                   // CRITICAL: Ensure music selection state is preserved and UI updates
                                   if (controller.selectedMusicPath.value.isNotEmpty) {
@@ -1057,67 +1057,68 @@ class _CreateReelsScreenState extends State<CreateReelsScreen>
                                         debugPrint('Error resuming video: $e');
                                       }
                                     }
-                                  }
+                                  }*/
                                 }
-                                ).catchError((error) {
-                                  // CRITICAL: Handle errors and still resume playback if needed
-                                  debugPrint('Error in bottom sheet callback: $error');
-
-                                  controller.isMusicSelectionActive.value = false;
-
-                                  // CRITICAL: Ensure music state is preserved even on error
-                                  if (controller.selectedMusicPath.value.isNotEmpty) {
-                                    controller.selectedMusic.refresh();
-                                    controller.selectedMusicArtist.refresh();
-                                    controller.selectedMusicImgPath.refresh();
-                                    controller.isMusicAppliedToVideo.refresh();
-                                    controller.update();
-                                  }
-
-                                  // Handle based on whether music is applied to video
-                                  if (controller.isMusicAppliedToVideo.value) {
-                                    // Resume video with embedded music
-                                    if (controller.isVideo.value &&
-                                        controller.videoController.value != null &&
-                                        controller.videoController.value!.value.isInitialized) {
-                                      try {
-                                        controller.videoController.value!.addListener(
-                                          controller.ensureVideoLooping,
-                                        );
-                                        controller.videoController.value!.setVolume(1.0);
-                                        controller.videoController.value!.play();
-                                      } catch (e) {
-                                        debugPrint('Error resuming video in error handler: $e');
-                                      }
-                                    }
-                                  } else {
-                                    // Resume separate music
-                                    if (hadMusicSelected &&
-                                        controller.selectedMusicPath.value.isNotEmpty &&
-                                        wasMusicPlaying &&
-                                        !controller.isMusicPlaying.value) {
-                                      controller.playSelectedMusic();
-                                    }
-                                    // Resume video
-                                    if (controller.isVideo.value &&
-                                        controller.videoController.value != null &&
-                                        controller.videoController.value!.value.isInitialized) {
-                                      try {
-                                        controller.videoController.value!.addListener(
-                                          controller.ensureVideoLooping,
-                                        );
-                                        if (wasMusicPlaying && controller.selectedMusicPath.value.isNotEmpty) {
-                                          controller.videoController.value!.setVolume(0.0);
-                                        } else {
-                                          controller.videoController.value!.setVolume(1.0);
-                                        }
-                                        controller.videoController.value!.play();
-                                      } catch (e) {
-                                        debugPrint('Error resuming video in error handler: $e');
-                                      }
-                                    }
-                                  }
-                                });
+                                );
+                                //     .catchError((error) {
+                                //   // CRITICAL: Handle errors and still resume playback if needed
+                                //   debugPrint('Error in bottom sheet callback: $error');
+                                //
+                                //   controller.isMusicSelectionActive.value = false;
+                                //
+                                //   // CRITICAL: Ensure music state is preserved even on error
+                                //   if (controller.selectedMusicPath.value.isNotEmpty) {
+                                //     controller.selectedMusic.refresh();
+                                //     controller.selectedMusicArtist.refresh();
+                                //     controller.selectedMusicImgPath.refresh();
+                                //     controller.isMusicAppliedToVideo.refresh();
+                                //     controller.update();
+                                //   }
+                                //
+                                //   // Handle based on whether music is applied to video
+                                //   if (controller.isMusicAppliedToVideo.value) {
+                                //     // Resume video with embedded music
+                                //     if (controller.isVideo.value &&
+                                //         controller.videoController.value != null &&
+                                //         controller.videoController.value!.value.isInitialized) {
+                                //       try {
+                                //         controller.videoController.value!.addListener(
+                                //           controller.ensureVideoLooping,
+                                //         );
+                                //         controller.videoController.value!.setVolume(1.0);
+                                //         controller.videoController.value!.play();
+                                //       } catch (e) {
+                                //         debugPrint('Error resuming video in error handler: $e');
+                                //       }
+                                //     }
+                                //   } else {
+                                //     // Resume separate music
+                                //     if (hadMusicSelected &&
+                                //         controller.selectedMusicPath.value.isNotEmpty &&
+                                //         wasMusicPlaying &&
+                                //         !controller.isMusicPlaying.value) {
+                                //       controller.playSelectedMusic();
+                                //     }
+                                //     // Resume video
+                                //     if (controller.isVideo.value &&
+                                //         controller.videoController.value != null &&
+                                //         controller.videoController.value!.value.isInitialized) {
+                                //       try {
+                                //         controller.videoController.value!.addListener(
+                                //           controller.ensureVideoLooping,
+                                //         );
+                                //         if (wasMusicPlaying && controller.selectedMusicPath.value.isNotEmpty) {
+                                //           controller.videoController.value!.setVolume(0.0);
+                                //         } else {
+                                //           controller.videoController.value!.setVolume(1.0);
+                                //         }
+                                //         controller.videoController.value!.play();
+                                //       } catch (e) {
+                                //         debugPrint('Error resuming video in error handler: $e');
+                                //       }
+                                //     }
+                                //   }
+                                // });
                               },
                                     child: Container(
                                 padding: const EdgeInsets.symmetric(

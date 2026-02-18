@@ -3,8 +3,10 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:parlour_app/controller/create_reels_controller.dart';
 import 'package:parlour_app/utility/global.dart';
+import 'package:parlour_app/view/screen/add_rent_product_screen.dart';
 import '../../constants/app_strings.dart';
 import '../../routes/app_routes.dart';
+import '../../view/screen/reels/create_reels/screens/create_reels_screen.dart';
 import '../../view/screen/reels/reels_controller.dart';
 import 'home_controller.dart';
 
@@ -89,22 +91,29 @@ class MainNavigationController extends GetxController {
   /// Handle bottom navigation bar taps
   void onBottomNavItemTapped(int index) {
     selectedBottomBarIndex.value = index;
-    if(index==3){
-      // ReelsController controller=Get.put(ReelsController());
-
-    }// Reels tab at index 3
+    print('++++++++++=>>> index ${index}');
+    if (Get.isRegistered<ReelsController>()) {
+      Get.find<ReelsController>()
+          .updateActivation(index == 3); // 2 = reels tab
+    }
   }
 
   /// Handle Add (+) button tap
-  void onAddButtonTapped() {
+  void onAddButtonTapped() async{
     final HomeController homeController = Get.find<HomeController>();
     final int topTab = homeController.selectedTopTabIndex.value;
+    if (Get.isRegistered<ReelsController>()) {
+      Get.find<ReelsController>().updateActivation(false);
+    }
+
+    await Future.delayed(const Duration(milliseconds: 100));
 
     if (topTab == 2) {
       // Rent tab
-      Get.toNamed(AppRoutes.addRentProduct);
+      Get.to(() =>  AddRentProductScreen());
+
     } else {
-      Get.toNamed(AppRoutes.createReels);
+      Get.to(() => const CreateReelsScreen());
     }
   }
 }

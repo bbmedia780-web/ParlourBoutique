@@ -17,53 +17,28 @@ class MainNavigationScreen extends StatelessWidget {
   final MainNavigationController controller =
   Get.put(MainNavigationController(), permanent: true);
 
-  final List<Widget> _screens = [
-    HomeScreen(),
-    CategoryScreen(),
-    Container(),
-    ReelsScreen(isFromDashboard: true,),
-    ProfileScreen(),
-  ];
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: AppColors.white,
       extendBody: true,
       body: Obx(() {
         int selectedIndex = controller.selectedBottomBarIndex.value;
-        int screenIndex;
-        switch (selectedIndex) {
-          case 0:
-            screenIndex = 0;
-            break;
-          case 1:
-            screenIndex = 1;
-            break;
-          case 2:
-            screenIndex = 0;
-            break;
-          case 3:
-            screenIndex = 2;
-            break;
-          case 4:
-            screenIndex = 3;
-            break;
-          default:
-            screenIndex = 0;
-        }
 
         return IndexedStack(
-          index: screenIndex,
+          index: selectedIndex,
           children: [
-            _screens[0],
-            _screens[1],
-            _screens[3],
-            _screens[4],
+            HomeScreen(),
+            CategoryScreen(),
+            Container(), // Add screen
+            ReelsScreen(
+              isActive: selectedIndex == 3, // 👈 VERY IMPORTANT
+            ),
+            ProfileScreen(),
           ],
         );
       }),
+
       floatingActionButton: Container(
         width: AppSizes.spacing54,
         height: AppSizes.spacing54,
@@ -71,8 +46,6 @@ class MainNavigationScreen extends StatelessWidget {
           shape: BoxShape.circle,
           gradient: LinearGradient(
             colors: [AppColors.rosePink, AppColors.primary],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
           ),
         ),
         child: RawMaterialButton(
@@ -88,7 +61,9 @@ class MainNavigationScreen extends StatelessWidget {
           ),
         ),
       ),
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+
       bottomNavigationBar: Obx(
             () => CustomBottomNavigationBar(
           selectedIndex: controller.selectedBottomBarIndex.value,

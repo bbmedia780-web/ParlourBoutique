@@ -35,7 +35,7 @@ class PopularNowSection extends StatelessWidget {
         ),
         const SizedBox(height: AppSizes.spacing10),
         SizedBox(
-          height: AppSizes.size250,
+          height: AppSizes.size270,
           child: Obx(() {
             final filteredItems =
             controller.getFilteredPopularItems(popularController.popularList);

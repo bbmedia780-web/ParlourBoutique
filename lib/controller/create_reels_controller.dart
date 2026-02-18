@@ -1520,35 +1520,35 @@ class CreateReelsController extends GetxController {
         debugPrint('❌ Music path is empty');
         return;
       }
-      
+
       // STEP 3: CRITICAL: Ensure video is paused (but don't play music yet)
       if (isVideo.value &&
           videoController.value != null &&
           videoController.value!.value.isInitialized) {
         // Remove auto-play listener to prevent video from restarting
         videoController.value!.removeListener(_ensureVideoLooping);
-        
+
         // Set music selection active to prevent auto-play
         isMusicSelectionActive.value = true;
-        
+
         // Pause video first to stop playback
         await videoController.value!.pause();
         // Set volume to 0 to release audio focus
         await videoController.value!.setVolume(0.0);
         debugPrint('✅ Video paused for music selection');
       }
-      
+
       // Reset trim times to full audio duration when selecting new music
       musicStartTime.value = 0.0;
       // musicEndTime.value = 60.0; // Default max duration
-      
+
       // STEP 4: Wait for audio focus release
       await Future.delayed(const Duration(milliseconds: 200));
-      
+
       // STEP 5: Configure AudioPlayer BEFORE playing
       final audioPathForPlayer = selectedMusicPath.value.replaceFirst('assets/', '');
       debugPrint('🎵 Auto-playing selected music: $audioPathForPlayer');
-      
+
       try {
         // Configure AudioPlayer to request audio focus (Android 12/13 compatible)
         await _audioPlayer.setPlayerMode(PlayerMode.mediaPlayer);
@@ -1558,14 +1558,14 @@ class CreateReelsController extends GetxController {
       } catch (e) {
         debugPrint('❌ Error configuring audio player: $e');
       }
-      
+
       // Small delay to ensure configuration is applied
       await Future.delayed(Duration(milliseconds: 100));
-      
+
       // STEP 6: Play music automatically after selection
       await _audioPlayer.play(AssetSource(audioPathForPlayer), volume: 1.0);
       update();
-      
+
       debugPrint('✅ Music selected and playing: ${selectedMusic.value}, isPlaying: ${isMusicPlaying.value}');
     } catch (e) {
       isMusicPlaying.value = false;
@@ -1574,6 +1574,7 @@ class CreateReelsController extends GetxController {
       update();
     }
   }
+
 
   // Helper method to retry music playback with full reconfiguration
   Future<void> _retryMusicPlayback(String audioPathForPlayer) async {

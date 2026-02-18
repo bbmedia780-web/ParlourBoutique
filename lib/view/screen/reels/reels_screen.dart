@@ -349,14 +349,14 @@ class _ReelsScreenState extends State<ReelsScreen> {
   Key _reelsKey = UniqueKey();
   final List<ReelModel> reelsList = [
     ReelModel(
-      'https://samplelib.com/lib/preview/mp4/sample-10s.mp4',
+      'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
       "BrightBrew",
       reelDescription: "Beautiful Nature 🌿",
       musicName: "Original Audio",
       isLiked: false,
     ),
     ReelModel(
-      'https://samplelib.com/lib/preview/mp4/sample-15s.mp4',
+      'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4',
       "Riddhi",
       reelDescription: "Beautiful 🌿",
       musicName: "Original Audio",

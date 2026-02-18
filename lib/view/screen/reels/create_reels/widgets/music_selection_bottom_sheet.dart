@@ -14,6 +14,7 @@ import '../../../../../constants/app_text_style.dart';
 import '../services/trimmed_music_db.dart';
 import 'music_trimming_bottom_sheet.dart';
 
+
 class MusicSelectionBottomSheet extends StatelessWidget {
   final CreateReelsController controller;
 
@@ -77,24 +78,24 @@ class MusicSelectionBottomSheet extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: Obx(
-                    () => Row(
+                        () => Row(
                       children: [
                         _buildCategoryTab(
                           'For you',
                           controller.selectedMusicTab.value == 0,
-                          () => controller.changeMusicTab(0),
+                              () => controller.changeMusicTab(0),
                         ),
                         8.width,
                         _buildCategoryTab(
                           'Trending',
                           controller.selectedMusicTab.value == 1,
-                          () => controller.changeMusicTab(1),
+                              () => controller.changeMusicTab(1),
                         ),
                         8.width,
                         _buildCategoryTab(
                           'Saved',
                           controller.selectedMusicTab.value == 2,
-                          () => controller.changeMusicTab(2),
+                              () => controller.changeMusicTab(2),
                         ),
                         8.width,
                         // _buildCategoryTab('Original audio', controller.selectedMusicTab.value == 3, () => controller.changeMusicTab(3)),
@@ -121,7 +122,7 @@ class MusicSelectionBottomSheet extends StatelessWidget {
                 //                 color: Colors.grey[700],
                 //                 borderRadius: BorderRadius.circular(8),
                 //               ),
-                //               child: Icon(Icons.music_note, color: AppColors.white),
+                //               child: Icon(Icons.music_note, color: white),
                 //             ),
                 //             12.width,
                 //             Expanded(
@@ -131,7 +132,7 @@ class MusicSelectionBottomSheet extends StatelessWidget {
                 //                   Text(
                 //                     controller.selectedMusic.value,
                 //                     style: AppTextStyles.regular.copyWith(
-                //                       color: AppColors.white,
+                //                       color: white,
                 //                       fontSize: 14,
                 //                       fontWeight: FontWeight.bold,
                 //                     ),
@@ -153,7 +154,7 @@ class MusicSelectionBottomSheet extends StatelessWidget {
                 //                 controller.isMusicPlaying.value
                 //                     ? Icons.pause_circle_outline
                 //                     : Icons.play_circle_outline,
-                //                 color: AppColors.white,
+                //                 color: white,
                 //                 size: 28,
                 //               ),
                 //             ),
@@ -191,7 +192,7 @@ class MusicSelectionBottomSheet extends StatelessWidget {
                           final music = filteredMusicList[index];
                           final musicName = music['name'] as String;
                           final originalIndex = controller.musicList.indexWhere(
-                            (m) => m['name'] == musicName,
+                                (m) => m['name'] == musicName,
                           );
 
                           return Obx(() {
@@ -207,8 +208,8 @@ class MusicSelectionBottomSheet extends StatelessWidget {
                                 // padding: EdgeInsets.only(bottom: 4),
                                 decoration: BoxDecoration(
                                   color:
-                                      controller.selectedMusicIndex.value ==
-                                          originalIndex
+                                  controller.selectedMusicIndex.value ==
+                                      originalIndex
                                       ? Color(0xff2b3036)
                                       : Colors.transparent,
                                 ),
@@ -241,16 +242,16 @@ class MusicSelectionBottomSheet extends StatelessWidget {
                                       Expanded(
                                         child: Column(
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               musicName,
                                               style: AppTextStyles.regular
                                                   .copyWith(
-                                                    color: AppColors.white,
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
+                                                color: AppColors.white,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                              ),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -259,9 +260,9 @@ class MusicSelectionBottomSheet extends StatelessWidget {
                                               '${music['artist'] ?? ''}',
                                               style: AppTextStyles.regular
                                                   .copyWith(
-                                                    color: AppColors.greytextcolor,
-                                                    fontSize: 12,
-                                                  ),
+                                                color: AppColors.greytextcolor,
+                                                fontSize: 12,
+                                              ),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
                                             ),
@@ -279,8 +280,8 @@ class MusicSelectionBottomSheet extends StatelessWidget {
                                             child: Image.asset(
                                               isSavedNow
                                                   ? AppAssets.bookmarkFillIcon
-                                                  : AppAssets
-                                                        .bookmarkOutlineIcon,
+                                                  :  AppAssets
+                                                  .bookmarkOutlineIcon,
                                               color: AppColors.white,
                                             ),
                                           ),
@@ -374,6 +375,7 @@ class MusicSelectionBottomSheet extends StatelessWidget {
                           final isActuallyPlaying =
                               controller.isMusicPlaying.value;
 
+                          print('isActuallyPlaying ==${isActuallyPlaying}');
                           return IconButton(
                             icon: SizedBox(
                               height: 20,
@@ -446,104 +448,104 @@ class MusicSelectionBottomSheet extends StatelessWidget {
                                 controller: controller,
                               );
                             }).then((_) async {
-                                  // CRITICAL: Add small delay to ensure bottom sheet is fully closed
-                                  await Future.delayed(
-                                    Duration(milliseconds: 100),
-                                  );
+                              // CRITICAL: Add small delay to ensure bottom sheet is fully closed
+                              await Future.delayed(
+                                Duration(milliseconds: 100),
+                              );
 
-                                  // CRITICAL: Ensure music selection state is preserved and UI updates
-                                  if (controller
-                                      .selectedMusicPath
+                              // CRITICAL: Ensure music selection state is preserved and UI updates
+                              if (controller
+                                  .selectedMusicPath
+                                  .value
+                                  .isNotEmpty) {
+                                controller.selectedMusic.refresh();
+                                controller.selectedMusicArtist.refresh();
+                                controller.selectedMusicImgPath.refresh();
+                                controller.isMusicAppliedToVideo.refresh();
+                                controller.update();
+                              }
+                              Map<String, dynamic>? data =
+                              await TrimmedMusicDB.getStoredTrimmedMusic();
+
+                              if (data != null) {
+                                controller.selectedMusic.value =
+                                    data['musicName'].toString();
+                                controller.selectedMusicArtist.value =
+                                    data['musicArtist'].toString();
+                                controller.selectedMusicImgPath.value =
+                                    data['musicImagePath'].toString();
+                                controller.selectedMusicPath.value =
+                                    data['musicPath'].toString();
+                                controller.musicStartTime.value =
+                                    double.tryParse(
+                                      data['startTime'].toString(),
+                                    ) ??
+                                        0.0;
+                                controller.musicEndTime.value =
+                                    double.tryParse(
+                                      data['endTime'].toString(),
+                                    ) ??
+                                        0.0;
+                              }
+                              // When trimming sheet closes, resume video if music is not applied
+                              if (controller.isVideo.value &&
+                                  controller.videoController.value !=
+                                      null &&
+                                  controller
+                                      .videoController
+                                      .value!
                                       .value
-                                      .isNotEmpty) {
-                                    controller.selectedMusic.refresh();
-                                    controller.selectedMusicArtist.refresh();
-                                    controller.selectedMusicImgPath.refresh();
-                                    controller.isMusicAppliedToVideo.refresh();
-                                    controller.update();
-                                  }
-                                  Map<String, dynamic>? data =
-                                      await TrimmedMusicDB.getStoredTrimmedMusic();
-
-                                  if (data != null) {
-                                    controller.selectedMusic.value =
-                                        data['musicName'].toString();
-                                    controller.selectedMusicArtist.value =
-                                        data['musicArtist'].toString();
-                                    controller.selectedMusicImgPath.value =
-                                        data['musicImagePath'].toString();
-                                    controller.selectedMusicPath.value =
-                                        data['musicPath'].toString();
-                                    controller.musicStartTime.value =
-                                        double.tryParse(
-                                          data['startTime'].toString(),
-                                        ) ??
-                                        0.0;
-                                    controller.musicEndTime.value =
-                                        double.tryParse(
-                                          data['endTime'].toString(),
-                                        ) ??
-                                        0.0;
-                                  }
-                                  // When trimming sheet closes, resume video if music is not applied
-                                  if (controller.isVideo.value &&
-                                      controller.videoController.value !=
-                                          null &&
-                                      controller
-                                          .videoController
-                                          .value!
-                                          .value
-                                          .isInitialized &&
-                                      !controller.isMusicAppliedToVideo.value) {
-                                    try {
-                                      // Restore video volume and resume playback
-                                      controller.videoController.value!
-                                          .setVolume(1.0);
-                                      controller.videoController.value!.play();
-                                      debugPrint(
-                                        '✅ Video resumed after closing music trimming',
-                                      );
-                                    } catch (e) {
-                                      debugPrint('Error resuming video: $e');
-                                    }
-                                  }
-                                })
-                                .catchError((error) {
+                                      .isInitialized &&
+                                  !controller.isMusicAppliedToVideo.value) {
+                                try {
+                                  // Restore video volume and resume playback
+                                  controller.videoController.value!
+                                      .setVolume(1.0);
+                                  controller.videoController.value!.play();
                                   debugPrint(
-                                    'Error in trimming bottom sheet callback: $error',
+                                    '✅ Video resumed after closing music trimming',
                                   );
-                                  // CRITICAL: Ensure music state is preserved even on error
-                                  if (controller
-                                      .selectedMusicPath
+                                } catch (e) {
+                                  debugPrint('Error resuming video: $e');
+                                }
+                              }
+                            })
+                                .catchError((error) {
+                              debugPrint(
+                                'Error in trimming bottom sheet callback: $error',
+                              );
+                              // CRITICAL: Ensure music state is preserved even on error
+                              if (controller
+                                  .selectedMusicPath
+                                  .value
+                                  .isNotEmpty) {
+                                controller.selectedMusic.refresh();
+                                controller.selectedMusicArtist.refresh();
+                                controller.selectedMusicImgPath.refresh();
+                                controller.isMusicAppliedToVideo.refresh();
+                                controller.update();
+                              }
+                              // Still try to resume video
+                              if (controller.isVideo.value &&
+                                  controller.videoController.value !=
+                                      null &&
+                                  controller
+                                      .videoController
+                                      .value!
                                       .value
-                                      .isNotEmpty) {
-                                    controller.selectedMusic.refresh();
-                                    controller.selectedMusicArtist.refresh();
-                                    controller.selectedMusicImgPath.refresh();
-                                    controller.isMusicAppliedToVideo.refresh();
-                                    controller.update();
-                                  }
-                                  // Still try to resume video
-                                  if (controller.isVideo.value &&
-                                      controller.videoController.value !=
-                                          null &&
-                                      controller
-                                          .videoController
-                                          .value!
-                                          .value
-                                          .isInitialized &&
-                                      !controller.isMusicAppliedToVideo.value) {
-                                    try {
-                                      controller.videoController.value!
-                                          .setVolume(1.0);
-                                      controller.videoController.value!.play();
-                                    } catch (e) {
-                                      debugPrint(
-                                        'Error resuming video in error handler: $e',
-                                      );
-                                    }
-                                  }
-                                });
+                                      .isInitialized &&
+                                  !controller.isMusicAppliedToVideo.value) {
+                                try {
+                                  controller.videoController.value!
+                                      .setVolume(1.0);
+                                  controller.videoController.value!.play();
+                                } catch (e) {
+                                  debugPrint(
+                                    'Error resuming video in error handler: $e',
+                                  );
+                                }
+                              }
+                            });
                           },
                         ),
                       ],

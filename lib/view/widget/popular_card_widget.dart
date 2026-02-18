@@ -22,7 +22,7 @@ class PopularCard extends StatelessWidget {
     return GestureDetector(
       onTap: () => Get.toNamed(AppRoutes.details, arguments: data),
       child: SizedBox(
-        width: AppSizes.size160,
+        width: AppSizes.size180,
         child: CommonPopularCard(
           data: data,
           onFavoriteTap: onFavoriteTap,

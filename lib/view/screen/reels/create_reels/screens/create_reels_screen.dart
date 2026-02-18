@@ -933,7 +933,7 @@ class _CreateReelsScreenState extends State<CreateReelsScreen>
 
                             return GestureDetector(
                               onTap: () async {
-                            /*    // CRITICAL: Track if music was playing before opening bottom sheet
+                                // CRITICAL: Track if music was playing before opening bottom sheet
                                 final wasMusicPlaying = controller.isMusicPlaying.value;
                                 final hadMusicSelected = controller.selectedMusicPath.value.isNotEmpty;
 
@@ -971,39 +971,20 @@ class _CreateReelsScreenState extends State<CreateReelsScreen>
                                 controller.selectedMusicImgPath.value = '';
                                 controller.selectedMusicIndex.value = (-1);
                                 controller.isNextForTrim.value=false;
-*/
-                                showModalBottomSheet(
-                                    isScrollControlled: true,
-                                    isDismissible: true,
-                                    enableDrag: true,
-                                    context: context, builder: (context){
-                                  return MusicSelectionBottomSheet(
-                                    controller: controller,
-                                  );
-                                }).then((_) async {
-                                  // debugPrint('Bottom sheet closed, wasMusicPlaying: $wasMusicPlaying, isMusicAppliedToVideo: ${controller.isMusicAppliedToVideo.value}');
-                                  /*await Future.delayed(const Duration(milliseconds: 150));
 
-                                  // CRITICAL: Ensure music selection state is preserved and UI updates
-                                  if (controller.selectedMusicPath.value.isNotEmpty) {
-                                    controller.selectedMusic.refresh();
-                                    controller.selectedMusicArtist.refresh();
-                                    controller.selectedMusicImgPath.refresh();
-                                    controller.isMusicAppliedToVideo.refresh();
-                                    controller.update();
-                                  }
-                                  if(!controller.isNextForTrim.value){
-                                    Map<String, dynamic>? data=await TrimmedMusicDB.getStoredTrimmedMusic();
+                                Get.bottomSheet(
+                                  MusicSelectionBottomSheet(controller: controller),
+                                  isScrollControlled: true,
+                                  backgroundColor: Colors.transparent,
+                                  isDismissible: true,
+                                  enableDrag: true,
+                                ).then((_) async {
+                                  debugPrint('Bottom sheet closed (music button), wasMusicPlaying: $wasMusicPlaying, isMusicAppliedToVideo: ${controller.isMusicAppliedToVideo.value}');
 
-                                    if(data!=null){
-                                      controller.selectedMusic.value=data['musicName'].toString();
-                                      controller.selectedMusicArtist.value=data['musicArtist'].toString();
-                                      controller.selectedMusicImgPath.value=data['musicImagePath'].toString();
-                                      controller.selectedMusicPath.value=data['musicPath'].toString();
-                                      controller.musicStartTime.value=double.tryParse(data['startTime'].toString())??0.0;
-                                      controller.musicEndTime.value=double.tryParse(data['endTime'].toString())??0.0;
-                                    }
-                                  }
+                                  // CRITICAL: Add small delay to ensure bottom sheet is fully closed
+                                  await Future.delayed(Duration(milliseconds: 100));
+
+                                  controller.isMusicSelectionActive.value = false;
 
                                   // CRITICAL: Handle two cases:
                                   // 1. Music NOT applied to video: Resume separate audio player
@@ -1029,10 +1010,13 @@ class _CreateReelsScreenState extends State<CreateReelsScreen>
                                     }
                                   } else {
                                     // Music is separate - resume audio player first, then video
-                                    if (wasMusicPlaying &&
-                                        controller.selectedMusicPath.value.isNotEmpty) {
-                                      debugPrint('✅ Resuming separate music after bottom sheet');
-                                      await controller.resumeMusic();
+                                    final currentMusicPath = controller.selectedMusicPath.value;
+                                    if (hadMusicSelected &&
+                                        currentMusicPath.isNotEmpty &&
+                                        wasMusicPlaying &&
+                                        !controller.isMusicPlaying.value) {
+                                      debugPrint('✅ Resuming previous music after closing selection sheet (barrier tap)');
+                                      await controller.playSelectedMusic();
                                     }
 
                                     // Resume video (muted if music is playing separately)
@@ -1052,114 +1036,84 @@ class _CreateReelsScreenState extends State<CreateReelsScreen>
                                           await controller.videoController.value!.setVolume(1.0);
                                         }
                                         await controller.videoController.value!.play();
-                                        debugPrint('✅ Video resumed after closing bottom sheet');
+                                        debugPrint('✅ Video resumed after closing music selection');
                                       } catch (e) {
                                         debugPrint('Error resuming video: $e');
                                       }
                                     }
-                                  }*/
-                                }
-                                );
-                                //     .catchError((error) {
-                                //   // CRITICAL: Handle errors and still resume playback if needed
-                                //   debugPrint('Error in bottom sheet callback: $error');
-                                //
-                                //   controller.isMusicSelectionActive.value = false;
-                                //
-                                //   // CRITICAL: Ensure music state is preserved even on error
-                                //   if (controller.selectedMusicPath.value.isNotEmpty) {
-                                //     controller.selectedMusic.refresh();
-                                //     controller.selectedMusicArtist.refresh();
-                                //     controller.selectedMusicImgPath.refresh();
-                                //     controller.isMusicAppliedToVideo.refresh();
-                                //     controller.update();
-                                //   }
-                                //
-                                //   // Handle based on whether music is applied to video
-                                //   if (controller.isMusicAppliedToVideo.value) {
-                                //     // Resume video with embedded music
-                                //     if (controller.isVideo.value &&
-                                //         controller.videoController.value != null &&
-                                //         controller.videoController.value!.value.isInitialized) {
-                                //       try {
-                                //         controller.videoController.value!.addListener(
-                                //           controller.ensureVideoLooping,
-                                //         );
-                                //         controller.videoController.value!.setVolume(1.0);
-                                //         controller.videoController.value!.play();
-                                //       } catch (e) {
-                                //         debugPrint('Error resuming video in error handler: $e');
-                                //       }
-                                //     }
-                                //   } else {
-                                //     // Resume separate music
-                                //     if (hadMusicSelected &&
-                                //         controller.selectedMusicPath.value.isNotEmpty &&
-                                //         wasMusicPlaying &&
-                                //         !controller.isMusicPlaying.value) {
-                                //       controller.playSelectedMusic();
-                                //     }
-                                //     // Resume video
-                                //     if (controller.isVideo.value &&
-                                //         controller.videoController.value != null &&
-                                //         controller.videoController.value!.value.isInitialized) {
-                                //       try {
-                                //         controller.videoController.value!.addListener(
-                                //           controller.ensureVideoLooping,
-                                //         );
-                                //         if (wasMusicPlaying && controller.selectedMusicPath.value.isNotEmpty) {
-                                //           controller.videoController.value!.setVolume(0.0);
-                                //         } else {
-                                //           controller.videoController.value!.setVolume(1.0);
-                                //         }
-                                //         controller.videoController.value!.play();
-                                //       } catch (e) {
-                                //         debugPrint('Error resuming video in error handler: $e');
-                                //       }
-                                //     }
-                                //   }
-                                // });
+                                  }
+                                }).catchError((error) {
+                                  // CRITICAL: Handle errors and still resume music if needed
+                                  debugPrint('Error in bottom sheet callback: $error');
+
+                                  controller.isMusicSelectionActive.value = false;
+
+                                  // Still try to resume music if it was playing
+                                  if (hadMusicSelected &&
+                                      controller.selectedMusicPath.value.isNotEmpty &&
+                                      !controller.isMusicAppliedToVideo.value &&
+                                      wasMusicPlaying &&
+                                      !controller.isMusicPlaying.value) {
+                                    controller.playSelectedMusic();
+                                  }
+
+                                  // Still try to resume video
+                                  if (controller.isVideo.value &&
+                                      controller.videoController.value != null &&
+                                      controller.videoController.value!.value.isInitialized &&
+                                      !controller.isMusicAppliedToVideo.value) {
+                                    try {
+                                      controller.videoController.value!.addListener(
+                                        controller.ensureVideoLooping,
+                                      );
+                                      controller.videoController.value!.setVolume(1.0);
+                                      controller.videoController.value!.play();
+                                    } catch (e) {
+                                      debugPrint('Error resuming video in error handler: $e');
+                                    }
+                                  }
+                                });
                               },
-                                    child: Container(
+                              child: Container(
                                 padding: const EdgeInsets.symmetric(
-                                        horizontal: 8,
-                                        vertical: 4,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.black.withValues(
-                                            alpha:0.3),
-                                        borderRadius: BorderRadius.circular(25),
-                                      ),
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Container(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.black.withValues(
+                                      alpha:0.3),
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
                                       padding: const EdgeInsets.all(6),
-                                            decoration: BoxDecoration(
-                                              color: AppColors.primary.withValues(
-                                                  alpha: 0.2),
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: Icon(
-                                              Icons.music_note,
-                                              color: AppColors.primary,
-                                              size: 16,
-                                            ),
-                                          ),
-                                          10.width,
-                                          Flexible(
-                                            child: Text(
-                                              controller.selectedMusic.value,
-                                              style: TextStyle(
-                                                color: AppColors.white,
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                          10.width,
+                                      decoration: BoxDecoration(
+                                        color: AppColors.primary.withValues(
+                                            alpha: 0.2),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Icon(
+                                        Icons.music_note,
+                                        color: AppColors.primary,
+                                        size: 16,
+                                      ),
+                                    ),
+                                    10.width,
+                                    Flexible(
+                                      child: Text(
+                                        controller.selectedMusic.value,
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    10.width,
                                     // Obx(() => GestureDetector(
                                     //   onTap: () {
                                     //     controller.toggleMusicPlayPause();
@@ -1180,9 +1134,9 @@ class _CreateReelsScreenState extends State<CreateReelsScreen>
                                     //     ),
                                     //   ),
                                     // )),
-                                        ],
-                                      ),
-                                    ),
+                                  ],
+                                ),
+                              ),
                             );
                           }),
                         ],

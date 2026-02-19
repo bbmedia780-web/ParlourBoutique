@@ -985,7 +985,18 @@ class _CreateReelsScreenState extends State<CreateReelsScreen>
                                   await Future.delayed(Duration(milliseconds: 100));
 
                                   controller.isMusicSelectionActive.value = false;
+                                  if(!controller.isNextForTrim.value){
+                                    Map<String, dynamic>? data=await TrimmedMusicDB.getStoredTrimmedMusic();
 
+                                    if(data!=null){
+                                      controller.selectedMusic.value=data['musicName'].toString();
+                                      controller.selectedMusicArtist.value=data['musicArtist'].toString();
+                                      controller.selectedMusicImgPath.value=data['musicImagePath'].toString();
+                                      controller.selectedMusicPath.value=data['musicPath'].toString();
+                                      controller.musicStartTime.value=double.tryParse(data['startTime'].toString())??0.0;
+                                      controller.musicEndTime.value=double.tryParse(data['endTime'].toString())??0.0;
+                                    }
+                                  }
                                   // CRITICAL: Handle two cases:
                                   // 1. Music NOT applied to video: Resume separate audio player
                                   // 2. Music IS applied to video: Resume video (which contains music)

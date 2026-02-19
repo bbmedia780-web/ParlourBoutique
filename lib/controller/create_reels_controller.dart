@@ -1564,6 +1564,7 @@ class CreateReelsController extends GetxController {
 
       // STEP 6: Play music automatically after selection
       await _audioPlayer.play(AssetSource(audioPathForPlayer), volume: 1.0);
+      isMusicPlaying.value = true;
       update();
 
       debugPrint('✅ Music selected and playing: ${selectedMusic.value}, isPlaying: ${isMusicPlaying.value}');

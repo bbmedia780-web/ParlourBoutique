@@ -44,7 +44,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-<<<<<<< HEAD
       navigatorObservers: [routeObserver],
       debugShowCheckedModeBanner: false,
       initialRoute: AppRoutes.splash,
@@ -67,32 +66,8 @@ class MyApp extends StatelessWidget {
           Breakpoint(start: 451, end: 800, name: TABLET),
           Breakpoint(start: 801, end: 1200, name: DESKTOP),
           Breakpoint(start: 1201, end: double.infinity, name: '4K'),
-=======
-        debugShowCheckedModeBanner: false,
-        initialRoute: AppRoutes.splash,
-        getPages: AppRoutes.routes,
-        initialBinding: AppBinding(),
-        // Localization
-        translations: AppTranslations(),
-        locale: Get.find<LocalizationService>().currentLocale.value,
-        fallbackLocale: LocalizationService.defaultLocale,
-        supportedLocales: LocalizationService.supportedLocales,
-        localizationsDelegates: const [
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
->>>>>>> 917eac2 (07-10-25 || code optimize and proper working smoothly)
-        ],
-        builder: (context, child) => ResponsiveBreakpoints.builder(
-          child: child!,
-          breakpoints: const [
-            Breakpoint(start: 0, end: 450, name: MOBILE),
-            Breakpoint(start: 451, end: 800, name: TABLET),
-            Breakpoint(start: 801, end: 1200, name: DESKTOP),
-            Breakpoint(start: 1201, end: double.infinity, name: '4K'),
-          ],
-        ),
-      );
+
+      ]));
   }
 
   // Removed explicit theming to disable light/dark modes

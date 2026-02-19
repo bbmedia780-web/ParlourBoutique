@@ -1,482 +1,680 @@
+/*
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../constants/app_assets.dart';
-import '../../constants/app_strings.dart';
-import '../../model/unified_data_model.dart';
-import '../../model/service_model.dart';
-import '../favourite_controller.dart';
+import 'package:intl/intl.dart';
+import 'package:parlour_app/utility/global.dart';
+import '../constants/app_colors.dart';
+import '../model/booking_service_model.dart';
+import '../model/payment_method_model.dart';
+import '../model/details_model.dart';
+import '../constants/app_strings.dart';
+import '../constants/app_assets.dart';
+import '../controller/auth_controller/auth_controller.dart';
+import '../routes/app_routes.dart';
 
-/// Controller to manage unified data for Parlour, Boutique, and Rent tabs
-class UnifiedServiceDataController extends GetxController {
-  // -------------------- STATE --------------------
-  final RxList<UnifiedDataModel> dataList = <UnifiedDataModel>[].obs; // All data
-  final RxList<UnifiedDataModel> filteredDataList = <UnifiedDataModel>[].obs; // Filtered based on service
-  final RxList<ServiceModel> serviceList = <ServiceModel>[].obs; // List of services per tab
-  final RxInt selectedTabIndex = 0.obs;
-  final RxInt selectedServiceIndex = 0.obs;
-  final RxBool isLoading = false.obs;
+class UnifiedBookingController extends GetxController {
+  late BookingServiceModel service;
+  TextEditingController dateController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
 
-  // Track favorites locally within this controller
-  final RxSet<String> favoriteIds = <String>{}.obs;
+  // Step management
+  final RxInt currentStep = 0.obs;
+  final RxInt totalSteps = 3.obs;
 
-  // -------------------- LIFECYCLE --------------------
+  // Step 1: Appointment details
+  final RxString selectedDate = "12 aug, 2025".obs;
+  final RxString selectedTime = "12:00 Pm".obs;
+  final RxString selectedLocation = AppStrings.homeService.obs;
+
+  final RxBool isHomeServiceSelected = true.obs;
+  final RxBool isParlourServiceSelected = false.obs;
+
+  // Step 2: Payment
+  final RxList<PaymentMethodModel> paymentMethods = <PaymentMethodModel>[].obs;
+  final RxString selectedPaymentId = "".obs;
+
+  // Step 3: Confirmation
+  final RxString bookingId = "123456781".obs;
+
   @override
   void onInit() {
     super.onInit();
-    loadDataByTab(0);
-  }
+    final args = Get.arguments;
 
-  // ==================== DATA LOADING ====================
+    // Check if this is a return from login with stored booking data
+    if (args is Map && args['returnFromLogin'] == true) {
+      _restoreBookingStateFromArgs(Map<String, dynamic>.from(args));
+    } else if (args is BookingServiceModel) {
+      service = args;
+    } else if (args is ServiceCategoryModel) {
+      // Convert ServiceCategoryModel to BookingServiceModel
+      final price = double.tryParse(args.price) ?? 0.0;
+      service = BookingServiceModel(
+        id: 'service_${args.name.toLowerCase().replaceAll(' ', '_')}',
+        image: args.image,
+        title: args.name,
+        subtitle: args.description ?? AppStrings.getProfessionalServiceDescription(args.name.toLowerCase()),
+        address: null,
+        price: price,
+        // ServiceCategoryModel doesn't contain category type; default to parlour
+        type: AppStrings.parlourType,
+      );
 
-  /// Load data for the selected tab (0: Parlour, 1: Boutique, 2: Rent)
-  void loadDataByTab(int tabIndex) {
-    selectedTabIndex.value = tabIndex;
-
-    if (tabIndex == 0) {
-      _loadParlourData();
-    } else if (tabIndex == 1) {
-      _loadBoutiqueData();
+    } else if (args is Map && args['service'] is BookingServiceModel) {
+      service = args['service'] as BookingServiceModel;
     } else {
-      _loadRentData();
+      // Fallback to a default service if no valid arguments
+      service = BookingServiceModel(
+        id: 'default_service',
+        image: AppAssets.beauty1,
+        title: AppStrings.hairCutting,
+        subtitle: AppStrings.hairCuttingHomeService,
+        address: null,
+        price: 12.00,
+        type: AppStrings.parlourType,
+      );
     }
 
-    loadServicesByTab(tabIndex);
-
-    // Reset service filter when tab changes
-    _clearServiceSelection();
-    _applyServiceFilter();
+    // Initialize payment methods
+    _initializePaymentMethods();
   }
 
-  // -------------------- PARLOUR DATA --------------------
-/*
-  void _loadParlourData() {
-    dataList.value = [
-      UnifiedDataModel(
-        id: 'parlour_1',
-        title: AppStrings.bhavinsBeautySalon,
-        subtitle: AppStrings.trendyCuts,
-        location: AppStrings.bhavinsBeautySalonAddress,
-        rating: AppStrings.rating38120Reviews,
-        image: AppAssets.beauty1,
-        discount: AppStrings.discount20Off,
-        isOpen: true,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_1'),
+  /// Restore booking state from arguments when returning from login
+  void _restoreBookingStateFromArgs(Map<String, dynamic> args) {
+    service = args['service'] as BookingServiceModel;
+    selectedDate.value = args['selectedDate'] as String;
+    selectedTime.value = args['selectedTime'] as String;
+    selectedLocation.value = args['selectedLocation'] as String;
+    selectedPaymentId.value = args['selectedPaymentId'] as String;
+
+    // Update text controllers
+    dateController.text = selectedDate.value;
+    timeController.text = selectedTime.value;
+
+    // Update location selection
+    isHomeServiceSelected.value = selectedLocation.value == AppStrings.homeService;
+    isParlourServiceSelected.value = selectedLocation.value == AppStrings.parlourService;
+
+    // Set current step to payment step (step 1) since user was trying to confirm payment
+    currentStep.value = 1;
+  }
+
+  void _initializePaymentMethods() {
+    paymentMethods.value = [
+      PaymentMethodModel(
+        id: AppStrings.visaId,
+        type: AppStrings.card,
+        name: AppStrings.visa,
+        maskedNumber: AppStrings.maskedCardNumber,
+        logo: AppStrings.visaLogo,
+        isSelected: true,
       ),
-      UnifiedDataModel(
-        id: 'parlour_2',
-        title: AppStrings.cherHairAndBeautyLounge,
-        subtitle: AppStrings.bridalMakeup,
-        location: AppStrings.cherHairAndBeautyLoungeAddress,
-        rating: AppStrings.rating38120Reviews,
-        image: AppAssets.beauty2,
-        discount: AppStrings.discount15Off,
-        isOpen: false,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_2'),
+      PaymentMethodModel(
+        id: AppStrings.mastercardId,
+        type: AppStrings.card,
+        name: AppStrings.mastercard,
+        maskedNumber: AppStrings.maskedCardNumber,
+        logo: AppStrings.mastercardLogo,
+        isSelected: false,
       ),
-      UnifiedDataModel(
-        id: 'parlour_3',
-        title: AppStrings.enrichBeauty,
-        subtitle: AppStrings.facialHairCuts,
-        location: AppStrings.enrichSalonAddress1,
-        rating: AppStrings.rating47_210,
-        image: AppAssets.beauty1,
-        discount: AppStrings.discount10OffFull,
-        isOpen: true,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_3'),
-      ),
-      UnifiedDataModel(
-        id: 'parlour_4',
-        title: AppStrings.missGlamourBeautyParlour,
-        subtitle: AppStrings.makeupStudio,
-        location: AppStrings.missGlamourBeautyParlourAddress,
-        rating: AppStrings.rating46_180,
-        image: AppAssets.beauty2,
-        discount: AppStrings.discount15OffFull,
-        isOpen: true,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_4'),
-      ),
-      UnifiedDataModel(
-        id: 'parlour_5',
-        title: AppStrings.looksSalon,
-        subtitle: AppStrings.trendyHairCutSpa,
-        location: AppStrings.looksSalonAddress,
-        rating: AppStrings.rating45_95,
-        image: AppAssets.beauty1,
-        discount: AppStrings.discount20OffFull,
-        isOpen: true,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_5'),
-      ),
-      UnifiedDataModel(
-        id: 'parlour_6',
-        title: AppStrings.theRedScissorsHairAndBeautySalon,
-        subtitle: AppStrings.bridalMakeupFacial,
-        location: AppStrings.theRedScissorsHairAndBeautySalonAddress1,
-        rating: AppStrings.rating48_320,
-        image: AppAssets.beauty2,
-        discount: AppStrings.discount25OffFull,
-        isOpen: true,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_6'),
-      ),
-      UnifiedDataModel(
-        id: 'parlour_7',
-        title: AppStrings.ashaBeautyStudio,
-        subtitle: AppStrings.waxingSpa,
-        location: AppStrings.ashaBeautyStudioAddress,
-        rating: AppStrings.rating43_60,
-        image: AppAssets.beauty1,
-        discount: AppStrings.discount5OffFull,
-        isOpen: false,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_7'),
+      PaymentMethodModel(
+        id: AppStrings.cashId,
+        type: AppStrings.cash,
+        name: AppStrings.paymentInCash,
+        maskedNumber: "",
+        logo: null,
+        isSelected: false,
       ),
     ];
-  }
-*/
 
-  void _loadParlourData() {
-    dataList.value = [
-      UnifiedDataModel(
-        id: 'parlour_1',
-        title: AppStrings.bhavinsBeautySalon,
-        subtitle: AppStrings.trendyCuts,
-        location: AppStrings.bhavinsBeautySalonAddress,
-        rating: AppStrings.rating38120Reviews,
-        image: AppAssets.bhavinsBeautySalon,
-        discount: AppStrings.discount20Off,
-        isOpen: true,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_1'),
-      ),
-      UnifiedDataModel(
-        id: 'parlour_2',
-        title: AppStrings.cherHairAndBeautyLounge,
-        subtitle: AppStrings.bridalMakeup,
-        location: AppStrings.cherHairAndBeautyLoungeAddress,
-        rating: AppStrings.rating38120Reviews,
-        image: AppAssets.cherHairAndBeautyLounge,
-        discount: AppStrings.discount15Off,
-        isOpen: false,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_2'),
-      ),
-      UnifiedDataModel(
-        id: 'parlour_3',
-        title: AppStrings.enrichBeauty,
-        subtitle: AppStrings.facialHairCuts,
-        location: AppStrings.enrichSalonAddress1,
-        rating: AppStrings.rating47_210,
-        image: AppAssets.enrichSalon,
-        discount: AppStrings.discount10OffFull,
-        isOpen: true,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_3'),
-      ),
-      UnifiedDataModel(
-        id: 'parlour_4',
-        title: AppStrings.missGlamourBeautyParlour,
-        subtitle: AppStrings.makeupStudio,
-        location: AppStrings.missGlamourBeautyParlourAddress,
-        rating: AppStrings.rating46_180,
-        image: AppAssets.missGlamourBeautyParlour,
-        discount: AppStrings.discount15OffFull,
-        isOpen: true,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_4'),
-      ),
-      UnifiedDataModel(
-        id: 'parlour_5',
-        title: AppStrings.looksSalon,
-        subtitle: AppStrings.trendyHairCutSpa,
-        location: AppStrings.looksSalonAddress,
-        rating: AppStrings.rating45_95,
-        image: AppAssets.looksSalon,
-        discount: AppStrings.discount20OffFull,
-        isOpen: true,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_5'),
-      ),
-      UnifiedDataModel(
-        id: 'parlour_7',
-        title: AppStrings.ashaBeautyStudio,
-        subtitle: AppStrings.waxingSpa,
-        location: AppStrings.ashaBeautyStudioAddress,
-        rating: AppStrings.rating43_60,
-        image: AppAssets.ashaBeautyStudio,
-        discount: AppStrings.discount5OffFull,
-        isOpen: false,
-        type: AppStrings.parlourType,
-        isFavorite: favoriteIds.contains('parlour_7'),
-      ),
-    ];
-  }
-
-
-  // -------------------- BOUTIQUE DATA --------------------
-  void _loadBoutiqueData() {
-    dataList.value = [
-      UnifiedDataModel(
-        id: 'boutique_1',
-        title: AppStrings.vrutiBoutique,
-        subtitle: AppStrings.bridalCollection,
-        location: AppStrings.oneKmMottaVarachhaSurat,
-        rating: AppStrings.rating4890Reviews,
-        image: AppAssets.boutique1,
-        discount: AppStrings.discount20Off,
-        isOpen: true,
-        type: AppStrings.boutiqueType,
-        isFavorite: favoriteIds.contains('boutique_1'),
-      ),
-      UnifiedDataModel(
-        id: 'boutique_2',
-        title: AppStrings.rasmiBoutique,
-        subtitle: AppStrings.formalWear,
-        location: AppStrings.twoKmSarthanaSurat,
-        rating: AppStrings.rating38120Reviews,
-        image: AppAssets.boutique2,
-        discount: AppStrings.discount10Off,
-        isOpen: false,
-        type: AppStrings.boutiqueType,
-        isFavorite: favoriteIds.contains('boutique_2'),
-      ),
-      UnifiedDataModel(
-        id: 'boutique_3',
-        title: AppStrings.threadNeedle,
-        subtitle: AppStrings.customizableDesigns,
-        location: AppStrings.location12kmAdajan,
-        rating: AppStrings.rating46_150,
-        image: AppAssets.boutique3,
-        discount: AppStrings.discount10OffFull,
-        isOpen: true,
-        type: AppStrings.boutiqueType,
-        isFavorite: favoriteIds.contains('boutique_3'),
-      ),
-      UnifiedDataModel(
-        id: 'boutique_4',
-        title: AppStrings.royalStitches,
-        subtitle: AppStrings.embroideryBridal,
-        location: AppStrings.location23kmVesu,
-        rating: AppStrings.rating45_115,
-        image: AppAssets.boutique4,
-        discount: AppStrings.discount12OffFull,
-        isOpen: true,
-        type: AppStrings.boutiqueType,
-        isFavorite: favoriteIds.contains('boutique_4'),
-      ),
-      UnifiedDataModel(
-        id: 'boutique_5',
-        title: AppStrings.indoWearStudio,
-        subtitle: AppStrings.indoWesternSubtitle,
-        location: AppStrings.location27kmPal,
-        rating: AppStrings.rating47_210Boutique,
-        image: AppAssets.boutique1,
-        discount: AppStrings.discount18OffFull,
-        isOpen: true,
-        type: AppStrings.boutiqueType,
-        isFavorite: favoriteIds.contains('boutique_5'),
-      ),
-      UnifiedDataModel(
-        id: 'boutique_6',
-        title: AppStrings.fashionLoom,
-        subtitle: AppStrings.formalWear,
-        location: AppStrings.location35kmCityLight,
-        rating: AppStrings.rating42_75,
-        image: AppAssets.boutique2,
-        discount: AppStrings.discount8OffFull,
-        isOpen: false,
-        type: AppStrings.boutiqueType,
-        isFavorite: favoriteIds.contains('boutique_6'),
-      ),
-    ];
-  }
-
-  // -------------------- RENT DATA --------------------
-  void _loadRentData() {
-    dataList.value = [
-      UnifiedDataModel(
-        id: 'rent_1',
-        title: AppStrings.rentFashion,
-        subtitle: AppStrings.lehengaRentalSubtitle,
-        location: AppStrings.location18kmAdajan,
-        rating: AppStrings.rating49_180,
-        image: AppAssets.rent1,
-        discount: AppStrings.discount30OffFull,
-        isOpen: true,
-        type: AppStrings.rentType,
-        isFavorite: favoriteIds.contains('rent_1'),
-        price: 799,
-        oldPrice: 899,
-        offerText: AppStrings.flat30Off,
-        view: 4.5,
-        description: AppStrings.rentDescriptionGeneric,
-      ),
-      UnifiedDataModel(
-        id: 'rent_2',
-        title: AppStrings.bridalRentalsStudio,
-        subtitle: AppStrings.sareeRentalSubtitle,
-        location: AppStrings.location25kmVesu,
-        rating: AppStrings.rating48_150,
-        image: AppAssets.rent2,
-        discount: AppStrings.discount22OffFull,
-        isOpen: true,
-        type: AppStrings.rentType,
-        isFavorite: favoriteIds.contains('rent_2'),
-        price: 1099,
-        oldPrice: 1399,
-        offerText: AppStrings.flat22Off,
-        description: AppStrings.rentDescriptionGeneric,
-      ),
-      UnifiedDataModel(
-        id: 'rent_3',
-        title: AppStrings.designerRentalsHub,
-        subtitle: AppStrings.gownRentalSubtitle,
-        location: AppStrings.location32kmVarachha,
-        rating: AppStrings.rating47_120,
-        image: AppAssets.rent3,
-        discount: AppStrings.discount28OffFull,
-        isOpen: true,
-        type: AppStrings.rentType,
-        isFavorite: favoriteIds.contains('rent_3'),
-        price: 999,
-        oldPrice: 1299,
-        offerText: AppStrings.flat28Off,
-        view: 4.8,
-        description: AppStrings.rentDescriptionGeneric,
-      ),
-      UnifiedDataModel(
-        id: 'rent_4',
-        title: AppStrings.partyWearRentals,
-        subtitle: AppStrings.suitRentalSubtitle,
-        location: AppStrings.location12kmKatargam,
-        rating: AppStrings.rating46_90,
-        image: AppAssets.rent4,
-        discount: AppStrings.discount35OffFull,
-        isOpen: false,
-        type: AppStrings.rentType,
-        isFavorite: favoriteIds.contains('rent_4'),
-        price: 1299,
-        oldPrice: 1699,
-        offerText: AppStrings.flat35Off,
-        view: 3.5,
-        description: AppStrings.rentDescriptionGeneric,
-      ),
-    ];
-  }
-
-  // ==================== FAVORITES MANAGEMENT ====================
-  void toggleFavorite(int index) {
-    final item = dataList[index];
-    final itemId = item.id ?? '';
-
-    if (favoriteIds.contains(itemId)) {
-      favoriteIds.remove(itemId);
-    } else {
-      favoriteIds.add(itemId);
+    // Set initial selected payment
+    if (paymentMethods.isNotEmpty) {
+      selectedPaymentId.value = paymentMethods.first.id;
     }
 
-    dataList[index] = dataList[index].copyWith(isFavorite: favoriteIds.contains(itemId));
 
+  }
+
+  void onBackTap() {
+    if (currentStep.value > 0) {
+      currentStep.value--;
+    } else {
+      Get.back();
+    }
+  }
+
+  // Step 1 methods
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (picked != null) {
+      final formattedDate = DateFormat(AppStrings.dateFormat).format(picked);
+      selectedDate.value = formattedDate;
+      dateController.text = formattedDate;
+    }
+  }
+
+  Future<void> selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+
+    if (picked != null) {
+      final now = DateTime.now();
+      final selectedDateTime = DateTime(
+        now.year,
+        now.month,
+        now.day,
+        picked.hour,
+        picked.minute,
+      );
+      final formattedTime = DateFormat(AppStrings.timeFormat).format(selectedDateTime);
+      selectedTime.value = formattedTime;
+      timeController.text = formattedTime;
+    }
+  }
+
+  void chooseLocation(String location) {
+    selectedLocation.value = location;
+    isHomeServiceSelected.value = location == AppStrings.homeService;
+    isParlourServiceSelected.value = location == AppStrings.parlourService;
+  }
+
+  void onNextStep() {
+    if (currentStep.value < totalSteps.value - 1) {
+      currentStep.value++;
+    }
+  }
+
+  // Step 2 methods
+  void selectPayment(String paymentId) {
+    selectedPaymentId.value = paymentId;
+
+    // Update selection state for all payment methods
+    for (int i = 0; i < paymentMethods.length; i++) {
+      paymentMethods[i] = paymentMethods[i].copyWith(
+        isSelected: paymentMethods[i].id == paymentId,
+      );
+    }
+  }
+
+  PaymentMethodModel? get selectedPaymentMethod {
     try {
-      final favouriteController = Get.find<FavouriteController>();
-      favouriteController.loadFavourites();
-    } catch (_) {}
-  }
-
-  void toggleFavoriteById(String itemId) {
-    final index = dataList.indexWhere((item) => item.id == itemId);
-    if (index != -1) toggleFavorite(index);
-  }
-
-  // ==================== SERVICE MANAGEMENT ====================
-  void loadServicesByTab(int tabIndex) {
-    if (tabIndex == 0) {
-      serviceList.value = [
-        ServiceModel(title: AppStrings.hairCutting, icon: AppAssets.parlour1, type: AppStrings.parlourType),
-        ServiceModel(title: AppStrings.facial, icon: AppAssets.parlour2, type: AppStrings.parlourType),
-        ServiceModel(title: AppStrings.makeup, icon: AppAssets.parlour3, type: AppStrings.parlourType),
-        ServiceModel(title: AppStrings.waxing, icon: AppAssets.parlour4, type: AppStrings.parlourType),
-        ServiceModel(title: AppStrings.spa, icon: AppAssets.parlour1, type: AppStrings.parlourType),
-      ];
-    } else if (tabIndex == 1) {
-      serviceList.value = [
-        ServiceModel(title: AppStrings.customizable, icon: AppAssets.boutique1, type: AppStrings.boutiqueType),
-        ServiceModel(title: AppStrings.indoWestern, icon: AppAssets.boutique2, type: AppStrings.boutiqueType),
-        ServiceModel(title: AppStrings.bridalCholi, icon: AppAssets.boutique3, type: AppStrings.boutiqueType),
-        ServiceModel(title: AppStrings.embroidery, icon: AppAssets.boutique4, type: AppStrings.boutiqueType),
-      ];
-    } else {
-      serviceList.value = [
-        ServiceModel(title: AppStrings.lehengaRental, icon: AppAssets.rent1, type: AppStrings.rentType),
-        ServiceModel(title: AppStrings.sareeRental, icon: AppAssets.rent2, type: AppStrings.rentType),
-        ServiceModel(title: AppStrings.gownRental, icon: AppAssets.rent3, type: AppStrings.rentType),
-        ServiceModel(title: AppStrings.suitRental, icon: AppAssets.rent4, type: AppStrings.rentType),
-      ];
+      return paymentMethods.firstWhere((method) => method.id == selectedPaymentId.value);
+    } catch (e) {
+      return null;
     }
   }
 
-  void selectService(int index) {
-    for (int i = 0; i < serviceList.length; i++) {
-      serviceList[i] = serviceList[i].copyWith(isSelected: false);
-    }
-    serviceList[index] = serviceList[index].copyWith(isSelected: true);
-    selectedServiceIndex.value = index;
-    _applyServiceFilter();
-  }
+  void onConfirmPayment() async {
+    // Check if user is logged in
+    final authController = Get.find<AuthController>();
 
-  void _clearServiceSelection() {
-    for (int i = 0; i < serviceList.length; i++) {
-      serviceList[i] = serviceList[i].copyWith(isSelected: false);
-    }
-    selectedServiceIndex.value = -1;
-  }
+    if (!authController.isLoggedIn.value) {
+      // User is not logged in, show login bottom sheet
+      // Store current booking state for returning after login
+      _storeBookingStateForReturn();
 
-  void _applyServiceFilter() {
-    if (selectedServiceIndex.value < 0 || selectedServiceIndex.value >= serviceList.length) {
-      filteredDataList.value = List.from(dataList);
+      // Show login bottom sheet
+      final guestController = Get.find<GuestModeController>();
+      guestController.showLoginBottomSheet();
+      ShowToast.warning(AppStrings.pleaseLogin);
       return;
     }
 
-    final selectedTitle = serviceList[selectedServiceIndex.value].title.toLowerCase();
-
-    bool matches(UnifiedDataModel item) {
-      final title = item.title.toLowerCase();
-      final subtitle = item.subtitle.toLowerCase();
-      return title.contains(selectedTitle) || subtitle.contains(selectedTitle);
-    }
-
-    filteredDataList.value = dataList.where(matches).toList();
+    // User is logged in, proceed with payment confirmation
+    currentStep.value = 2; // Move to final step
   }
 
-  // ==================== BANNER DATA ====================
-  Map<String, String> getBannerData() {
-    if (selectedTabIndex.value == 0) {
-      return {
-        'title': AppStrings.vivahGlam,
-        'highlightText': AppStrings.off,
-        'btnLabel': AppStrings.joinOne,
-        'image': AppAssets.cosmetic,
-        'discountImage': AppAssets.off30,
-      };
-    } else if (selectedTabIndex.value == 1) {
-      return {
-        'title': AppStrings.rangrezBoutique,
-        'highlightText': AppStrings.off,
-        'btnLabel': AppStrings.joinOne,
-        'image': AppAssets.couple,
-        'discountImage': AppAssets.off30,
-      };
-    } else {
-      return {
-        'title': AppStrings.firstRentFlat,
-        'highlightText': AppStrings.off,
-        'btnLabel': AppStrings.joinOne,
-        'image': AppAssets.rent,
-        'discountImage': AppAssets.off20,
-      };
+  /// Store current booking state so user can return after login
+  void _storeBookingStateForReturn() {
+    // Store the current booking data in GetX arguments for returning after login
+    final bookingData = {
+      'service': service,
+      'selectedDate': selectedDate.value,
+      'selectedTime': selectedTime.value,
+      'selectedLocation': selectedLocation.value,
+      'selectedPaymentId': selectedPaymentId.value,
+      'returnFromLogin': true, // Flag to indicate this is a return from login
+    };
+
+    // Store in GetX storage for access after login
+    Get.put(bookingData, tag: 'pending_booking');
+  }
+
+  /// Restore booking state after successful login
+  void restoreBookingStateAfterLogin() {
+    try {
+      final bookingData = Get.find<Map<String, dynamic>>(tag: 'pending_booking');
+      if (bookingData['returnFromLogin'] == true) {
+        // Restore the booking state
+        service = bookingData['service'] as BookingServiceModel;
+        selectedDate.value = bookingData['selectedDate'] as String;
+        selectedTime.value = bookingData['selectedTime'] as String;
+        selectedLocation.value = bookingData['selectedLocation'] as String;
+        selectedPaymentId.value = bookingData['selectedPaymentId'] as String;
+
+        // Update text controllers
+        dateController.text = selectedDate.value;
+        timeController.text = selectedTime.value;
+
+        // Update location selection
+        isHomeServiceSelected.value = selectedLocation.value == AppStrings.homeService;
+        isParlourServiceSelected.value = selectedLocation.value == AppStrings.parlourService;
+
+        // Navigate back to unified booking page
+        Get.toNamed(AppRoutes.unifiedBooking, arguments: bookingData);
+
+        // Clean up the stored data
+        Get.delete<Map<String, dynamic>>(tag: 'pending_booking');
+      }
+    } catch (e) {
+      // No pending booking data found, this is normal for new users
+      print('No pending booking data found: $e');
     }
+  }
+
+  // Step 3 methods
+  void onDone() {
+    Get.back();
+  }
+
+  void onBookMore() {
+    currentStep.value = 0; // Reset to first step
+  }
+
+  @override
+  void onClose() {
+    dateController.dispose();
+    timeController.dispose();
+    super.onClose();
+  }
+}
+
+*/
+
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import '../../routes/app_routes.dart';
+import '../booking_controller.dart';
+import '../constants/app_colors.dart';
+import '../constants/app_strings.dart';
+import '../constants/app_assets.dart';
+import '../controller/auth_controller/auth_controller.dart';
+import '../controller/booking_controller.dart';
+import '../controller/guest_mode_controller.dart';
+import '../controller/home_controller/home_controller.dart';
+import '../model/booking_service_model.dart';
+import '../model/payment_method_model.dart';
+import '../model/details_model.dart';
+import '../routes/app_routes.dart';
+import '../utility/global.dart';
+import 'home_controller.dart';
+
+/// Handles 3 steps: Appointment Details -> Payment -> Confirmation
+class UnifiedBookingController extends GetxController {
+  /// Booking service selected by user
+  late BookingServiceModel service;
+
+  /// Controllers for date and time input fields
+  TextEditingController dateController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
+
+  /// Step management
+  final RxInt currentStep = 0.obs; // Current step index
+  final RxInt totalSteps = 3.obs;  // Total steps
+
+  // ---------------- STEP 1: Appointment Details ----------------
+  final RxString selectedDate = "12 Aug, 2025".obs;
+  final RxString selectedTime = "12:00 PM".obs;
+  final RxString selectedLocation = AppStrings.homeService.obs;
+
+  final RxBool isHomeServiceSelected = true.obs;
+  final RxBool isParlourServiceSelected = false.obs;
+
+  // ---------------- STEP 2: Payment ----------------
+  final RxList<PaymentMethodModel> paymentMethods = <PaymentMethodModel>[].obs;
+  final RxString selectedPaymentId = "".obs;
+
+  // ---------------- STEP 3: Confirmation ----------------
+  final RxString bookingId = "123456781".obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    _handleArguments(Get.arguments); // Initialize booking service from arguments
+    _initializePaymentMethods();      // Setup available payment methods
+  }
+
+  @override
+  void onClose() {
+    dateController.dispose();
+    timeController.dispose();
+    super.onClose();
+  }
+
+  // ------------------------ ARGUMENT HANDLING ------------------------
+
+  /// Handles incoming arguments and restores booking state if returning from login
+  void _handleArguments(dynamic args) {
+    if (args is Map && args['returnFromLogin'] == true) {
+      _restoreBookingStateFromArgs(Map<String, dynamic>.from(args));
+    } else if (args is BookingServiceModel) {
+      service = args;
+    } else if (args is ServiceCategoryModel) {
+      // Convert ServiceCategoryModel to BookingServiceModel
+      final price = double.tryParse(args.price) ?? 0.0;
+      service = BookingServiceModel(
+        id: 'service_${args.name.toLowerCase().replaceAll(' ', '_')}',
+        image: args.image,
+        title: args.name,
+        subtitle: args.description ??
+            AppStrings.getProfessionalServiceDescription(args.name.toLowerCase()),
+        address: null,
+        price: price,
+        type: AppStrings.parlourType, // Default type
+      );
+    } else if (args is Map && args['service'] is BookingServiceModel) {
+      service = args['service'] as BookingServiceModel;
+    } else {
+      // Fallback default service
+      service = BookingServiceModel(
+        id: 'default_service',
+        image: AppAssets.beauty1,
+        title: AppStrings.hairCutting,
+        subtitle: AppStrings.hairCuttingHomeService,
+        address: null,
+        price: 12.00,
+        type: AppStrings.parlourType,
+      );
+    }
+  }
+
+  /// Restore booking state from stored arguments
+  void _restoreBookingStateFromArgs(Map<String, dynamic> args) {
+    service = args['service'] as BookingServiceModel;
+    selectedDate.value = args['selectedDate'] as String;
+    selectedTime.value = args['selectedTime'] as String;
+    selectedLocation.value = args['selectedLocation'] as String;
+    selectedPaymentId.value = args['selectedPaymentId'] as String;
+
+    // Update text controllers
+    dateController.text = selectedDate.value;
+    timeController.text = selectedTime.value;
+
+    // Update location flags
+    isHomeServiceSelected.value = selectedLocation.value == AppStrings.homeService;
+    isParlourServiceSelected.value = selectedLocation.value == AppStrings.parlourService;
+
+    // Move to payment step
+    currentStep.value = 1;
+  }
+
+  // ------------------------ PAYMENT METHODS ------------------------
+
+  /// Initialize available payment methods
+  void _initializePaymentMethods() {
+    paymentMethods.value = [
+      PaymentMethodModel(
+        id: AppStrings.visaId,
+        type: AppStrings.card,
+        name: AppStrings.visa,
+        maskedNumber: AppStrings.maskedCardNumber,
+        logo: AppStrings.visaLogo,
+        isSelected: true,
+      ),
+      PaymentMethodModel(
+        id: AppStrings.mastercardId,
+        type: AppStrings.card,
+        name: AppStrings.mastercard,
+        maskedNumber: AppStrings.maskedCardNumber,
+        logo: AppStrings.mastercardLogo,
+        isSelected: false,
+      ),
+      PaymentMethodModel(
+        id: AppStrings.cashId,
+        type: AppStrings.cash,
+        name: AppStrings.paymentInCash,
+        maskedNumber: "",
+        logo: null,
+        isSelected: false,
+      ),
+    ];
+
+    // Set initial selected payment
+    if (paymentMethods.isNotEmpty) {
+      selectedPaymentId.value = paymentMethods.first.id;
+    }
+  }
+
+  /// Returns currently selected payment method
+  PaymentMethodModel? get selectedPaymentMethod {
+    try {
+      return paymentMethods.firstWhere((m) => m.id == selectedPaymentId.value);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  /// Select payment method by ID
+  void selectPayment(String paymentId) {
+    selectedPaymentId.value = paymentId;
+    for (int i = 0; i < paymentMethods.length; i++) {
+      paymentMethods[i] = paymentMethods[i].copyWith(
+        isSelected: paymentMethods[i].id == paymentId,
+      );
+    }
+  }
+
+  // ------------------------ APPOINTMENT DETAILS ------------------------
+
+  /// Choose appointment location
+  void chooseLocation(String location) {
+    selectedLocation.value = location;
+    isHomeServiceSelected.value = location == AppStrings.homeService;
+    isParlourServiceSelected.value = location == AppStrings.parlourService;
+  }
+
+  /// Show date picker and update selected date
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppColors.primary,
+              onPrimary: AppColors.white,
+              surface: AppColors.white,
+              onSurface: AppColors.black,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.primary,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      final formattedDate = DateFormat(AppStrings.dateFormat).format(picked);
+      selectedDate.value = formattedDate;
+      dateController.text = formattedDate;
+    }
+  }
+
+  /// Show time picker and update selected time
+
+  Future<void> selectTime(BuildContext context) async {
+    final TimeOfDay? picked = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: AppColors.primary,
+              onPrimary: AppColors.white,
+              surface: AppColors.white,
+              onSurface: AppColors.black,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: AppColors.primary,
+              ),
+            ),
+            timePickerTheme: TimePickerThemeData(
+              dialHandColor: AppColors.primary,
+              entryModeIconColor: AppColors.white,
+              dayPeriodColor: MaterialStateColor.resolveWith((states) {
+                if (states.contains(MaterialState.selected)) {
+                  return AppColors.primary;
+                }
+                return AppColors.white;
+              }),
+              dayPeriodTextColor: MaterialStateColor.resolveWith((states) {
+                if (states.contains(MaterialState.selected)) {
+                  return AppColors.white;
+                }
+                return AppColors.primary;
+              }),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null) {
+      final now = DateTime.now();
+      final selectedDateTime =
+      DateTime(now.year, now.month, now.day, picked.hour, picked.minute);
+      final formattedTime =
+      DateFormat(AppStrings.timeFormat).format(selectedDateTime);
+      selectedTime.value = formattedTime;
+      timeController.text = formattedTime;
+    }
+  }
+
+
+  // ------------------------ STEP NAVIGATION ------------------------
+
+  /// --- Booking Step Controller ---
+  void onNextStep() {
+    // Move to next step if not on the last one
+    if (currentStep.value < totalSteps.value - 1) {
+      currentStep.value++;
+    } else {
+      onConfirmPayment();
+    }
+  }
+
+
+/*
+  void onConfirmPayment() {
+    currentStep.value = 2;
+  }*/
+  void onConfirmPayment() {
+    currentStep.value = totalSteps.value - 1;
+  }
+
+
+  /// Move to previous step or exit if first step
+  void onBackTap() {
+    if (currentStep.value > 0) {
+      currentStep.value--;
+    } else {
+      Get.back();
+    }
+  }
+
+  // ------------------------ PAYMENT CONFIRMATION ------------------------
+
+  /// Confirm payment after login check
+  /*
+  void onConfirmPayment() async {
+    final authController = Get.find<AuthController>();
+
+    if (!authController.isLoggedIn.value) {
+      // Save current booking state to return after login
+      _storeBookingStateForReturn();
+
+      // Redirect to login
+      Get.toNamed(AppRoutes.signIn);
+      ShowToast.error(AppStrings.pleaseLogin);
+      return;
+    }
+
+    // Move to confirmation step
+    currentStep.value = 2;
+  }
+*/
+
+
+  /// Store booking state before login
+  void _storeBookingStateForReturn() {
+    final bookingData = {
+      'service': service,
+      'selectedDate': selectedDate.value,
+      'selectedTime': selectedTime.value,
+      'selectedLocation': selectedLocation.value,
+      'selectedPaymentId': selectedPaymentId.value,
+      'returnFromLogin': true,
+    };
+
+    Get.put(bookingData, tag: 'pending_booking');
+  }
+
+  /// Restore booking state after login
+  void restoreBookingStateAfterLogin() {
+    try {
+      final bookingData = Get.find<Map<String, dynamic>>(tag: 'pending_booking');
+      if (bookingData['returnFromLogin'] == true) {
+        Get.toNamed(AppRoutes.unifiedBooking, arguments: bookingData);
+        Get.delete<Map<String, dynamic>>(tag: 'pending_booking');
+      }
+    } catch (e) {
+      print('No pending booking data found: $e');
+    }
+  }
+
+  // ------------------------ FINAL STEP ------------------------
+
+  void onDone() async {
+    // Mark the service as booked
+    try {
+      final bookingController = Get.find<BookingController>();
+      await bookingController.markServiceAsBooked(service.id);
+    } catch (e) {
+      print('Error marking service as booked: $e');
+    }
+
+    // Reset home controller state before navigating back
+    try {
+      final homeController = Get.find<HomeController>();
+      homeController.resetHomeState();
+    } catch (e) {
+      print('HomeController not found: $e');
+    }
+
+    // Navigate to home screen after successful booking
+    Get.offAllNamed(AppRoutes.home);
+  }
+
+  void onBookMore() {
+    currentStep.value = 0; // Reset to first step
   }
 }

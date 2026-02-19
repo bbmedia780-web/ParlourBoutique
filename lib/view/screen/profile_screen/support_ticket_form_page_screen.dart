@@ -90,7 +90,7 @@ class SupportTicketFormPageView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(AppStrings.category.tr, style: AppTextStyles.cardTitle),
+        Text(AppStrings.category.tr, style: AppTextStyles.captionTitle),
         const SizedBox(height: AppSizes.spacing12),
         Obx(() => _buildCategoryDropdown()),
       ],
@@ -181,7 +181,7 @@ class SupportTicketFormPageView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(AppStrings.subject.tr, style: AppTextStyles.cardTitle),
+        Text(AppStrings.subject.tr, style: AppTextStyles.captionTitle),
         const SizedBox(height: AppSizes.spacing12),
         TextFormField(
           controller: controller.subjectController,
@@ -216,7 +216,7 @@ class SupportTicketFormPageView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(AppStrings.description.tr, style: AppTextStyles.cardTitle),
+        Text(AppStrings.description.tr, style: AppTextStyles.captionTitle),
         const SizedBox(height: AppSizes.spacing12),
         TextFormField(
           controller: controller.descriptionController,

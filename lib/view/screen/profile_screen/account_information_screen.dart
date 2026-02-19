@@ -154,7 +154,7 @@ class AccountInformationPageView extends StatelessWidget {
             controller: controller.fullNameController,
             keyboardType: TextInputType.name,
             textStyle: AppTextStyles.hintText,
-            enabled: false,
+            hintText: 'Enter your full name',
           ).paddingOnly(bottom: AppSizes.spacing20),
           Text(
             AppStrings.yourEmail,
@@ -164,35 +164,40 @@ class AccountInformationPageView extends StatelessWidget {
             controller: controller.emailController,
             textStyle: AppTextStyles.hintText,
             keyboardType: TextInputType.emailAddress,
-            enabled: false,
+            hintText: 'Enter your email',
           ).paddingOnly(bottom: AppSizes.spacing20),
           Text(
             AppStrings.dateOfBirth,
             style: AppTextStyles.profilePageText,
           ).paddingOnly(bottom: AppSizes.spacing8),
-          CommonContainerTextField(
-            controller: controller.dateOfBirthController,
-            textStyle: AppTextStyles.hintText,
-            keyboardType: TextInputType.none,
-            readOnly: true,
-            enabled: false,
-            suffixIcon: Container(
-              height: AppSizes.size100,
-              width: AppSizes.size50,
-              decoration: BoxDecoration(
-                color: AppColors.lightPink,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(AppSizes.buttonRadius),
-                  bottomRight: Radius.circular(
-                    AppSizes.buttonRadius,
+          GestureDetector(
+            onTap: () => controller.selectDate(context),
+            child: AbsorbPointer(
+              child: CommonContainerTextField(
+                controller: controller.dateOfBirthController,
+                textStyle: AppTextStyles.hintText,
+                keyboardType: TextInputType.none,
+                readOnly: true,
+                hintText: 'Select date of birth',
+                suffixIcon: Container(
+                  height: AppSizes.size100,
+                  width: AppSizes.size50,
+                  decoration: BoxDecoration(
+                    color: AppColors.lightPink,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(AppSizes.buttonRadius),
+                      bottomRight: Radius.circular(
+                        AppSizes.buttonRadius,
+                      ),
+                    ),
+                  ),
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    AppAssets.calender,
+                    color: AppColors.primary,
+                    height: AppSizes.spacing26,
                   ),
                 ),
-              ),
-              alignment: Alignment.center,
-              child: Image.asset(
-                AppAssets.calender,
-                color: AppColors.primary,
-                height: AppSizes.spacing26,
               ),
             ),
           ).paddingOnly(bottom: AppSizes.spacing20),

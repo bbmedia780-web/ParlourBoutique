@@ -14,14 +14,11 @@ class MainNavigationController extends GetxController {
   // -------------------- State --------------------
   final RxInt selectedBottomBarIndex = 0.obs;
 
-  final RxDouble latitude = 0.0.obs;
-  final RxDouble longitude = 0.0.obs;
-  final RxString currentAddress = "".obs;
-
   // -------------------- Lifecycle --------------------
   @override
   void onInit() {
     super.onInit();
+<<<<<<< HEAD
     _handleLocationPermission();
   }
 
@@ -85,6 +82,9 @@ class MainNavigationController extends GetxController {
     } catch (e) {
       print("Error in reverse geocoding: $e");
     }
+=======
+    _setReelsActive(false);
+>>>>>>> 917eac2 (07-10-25 || code optimize and proper working smoothly)
   }
 
   // -------------------- Navigation --------------------

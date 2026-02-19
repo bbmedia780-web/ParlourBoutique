@@ -546,8 +546,10 @@ class DetailsController extends GetxController {
   void initializeData() {
     try {
       final dynamic arguments = Get.arguments;
+      print('DEBUG: DetailsController initializeData called with arguments: $arguments');
       
       if (arguments is UnifiedDataModel) {
+        print('DEBUG: Processing UnifiedDataModel');
         final salonData = arguments;
         currentItemId = salonData.id;
         isBoutique.value = salonData.type == AppStrings.boutiqueType;
@@ -556,7 +558,9 @@ class DetailsController extends GetxController {
         // Create business details model from UnifiedDataModel
         businessDetails.value = _createBusinessDetailsModelFromUnified(salonData);
         _computeRentPricing(arguments, businessDetails.value);
+        print('DEBUG: Business details set successfully for UnifiedDataModel');
       } else if (arguments is PopularModel) {
+        print('DEBUG: Processing PopularModel');
         final salonData = arguments;
         currentItemId = salonData.id;
         isBoutique.value = salonData.category == AppStrings.boutiqueType;
@@ -565,11 +569,14 @@ class DetailsController extends GetxController {
         // Create business details model
         businessDetails.value = _createBusinessDetailsModel(salonData);
         _computeRentPricing(arguments, businessDetails.value);
+        print('DEBUG: Business details set successfully for PopularModel');
       } else {
+        print('DEBUG: Invalid arguments type: ${arguments.runtimeType}');
         // Handle invalid arguments gracefully
         businessDetails.value = null;
       }
     } catch (e) {
+      print('DEBUG: Error in initializeData: $e');
       businessDetails.value = null;
     }
   }
@@ -762,7 +769,9 @@ class DetailsController extends GetxController {
       }
     } else {
       final selectedCategory = parlourCategories[selectedCategoryIndex.value];
-      return parlourServicesByCategory[selectedCategory] ?? [];
+      final services = parlourServicesByCategory[selectedCategory] ?? [];
+      print('DEBUG: Selected category: $selectedCategory, Services count: ${services.length}');
+      return services;
     }
   }
 
@@ -839,6 +848,8 @@ class DetailsController extends GetxController {
 
   void onServiceCategorySelected(int index) {
     selectedCategoryIndex.value = index;
+    // Force UI update when category is selected
+    update();
   }
 
   void onServiceItemPressed(ServiceCategoryModel service) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:parlour_app/routes/app_routes.dart';
-import 'package:parlour_app/utility/global.dart';
 import '../../common/common_button.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_strings.dart';

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../utility/global.dart';
 import '../constants/app_colors.dart';
@@ -54,7 +53,18 @@ class VideoEditorController extends GetxController {
 
   Future<void> _initializePreview(String path) async {
     try {
-      await previewController?.dispose();
+      // Properly dispose existing controller
+      if (previewController != null) {
+        await previewController!.pause();
+        await previewController!.dispose();
+        previewController = null;
+        isPreviewInitialized.value = false;
+      }
+
+      // Add a small delay to ensure MediaCodec is released
+      await Future.delayed(const Duration(milliseconds: 100));
+
+      // Create and initialize new controller
       previewController = VideoPlayerController.file(File(path));
       await previewController!.initialize();
       previewController!.setLooping(true);
@@ -63,6 +73,8 @@ class VideoEditorController extends GetxController {
     } catch (e) {
       _showError('Failed to initialize video preview: $e');
       isPreviewInitialized.value = false;
+      previewController?.dispose();
+      previewController = null;
     }
   }
 
@@ -72,7 +84,26 @@ class VideoEditorController extends GetxController {
 
   @override
   void onClose() {
-    previewController?.dispose();
+    _disposeController();
     super.onClose();
+  }
+
+  /// Properly dispose video controller
+  Future<void> _disposeController() async {
+    try {
+      if (previewController != null) {
+        await previewController!.pause();
+        await previewController!.dispose();
+        previewController = null;
+        isPreviewInitialized.value = false;
+      }
+    } catch (e) {
+      print('Error disposing video controller: $e');
+    }
+  }
+
+  /// Public method to dispose controller
+  Future<void> disposePreview() async {
+    await _disposeController();
   }
 }

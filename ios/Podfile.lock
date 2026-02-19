@@ -34,11 +34,14 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
+<<<<<<< HEAD
   - permission_handler_apple (9.3.0):
     - Flutter
   - photo_manager (3.8.3):
     - Flutter
     - FlutterMacOS
+=======
+>>>>>>> 917eac2 (07-10-25 || code optimize and proper working smoothly)
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
@@ -64,8 +67,11 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+<<<<<<< HEAD
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
   - photo_manager (from `.symlinks/plugins/photo_manager/darwin`)
+=======
+>>>>>>> 917eac2 (07-10-25 || code optimize and proper working smoothly)
   - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
   - sqflite_darwin (from `.symlinks/plugins/sqflite_darwin/darwin`)
   - video_player_avfoundation (from `.symlinks/plugins/video_player_avfoundation/darwin`)
@@ -95,10 +101,13 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+<<<<<<< HEAD
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
   photo_manager:
     :path: ".symlinks/plugins/photo_manager/darwin"
+=======
+>>>>>>> 917eac2 (07-10-25 || code optimize and proper working smoothly)
   shared_preferences_foundation:
     :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
   sqflite_darwin:
@@ -121,8 +130,11 @@ SPEC CHECKSUMS:
   libwebp: 02b23773aedb6ff1fd38cec7a77b81414c6842a8
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+<<<<<<< HEAD
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
   photo_manager: fe4cbb0808b96f8be4af7ce6ae18dcd9c9b983c6
+=======
+>>>>>>> 917eac2 (07-10-25 || code optimize and proper working smoothly)
   shared_preferences_foundation: 9e1978ff2562383bd5676f64ec4e9aa8fa06a6f7
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
   video_player_avfoundation: 2cef49524dd1f16c5300b9cd6efd9611ce03639b

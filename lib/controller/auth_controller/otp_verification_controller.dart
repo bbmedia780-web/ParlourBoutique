@@ -9,7 +9,6 @@ import '../../utility/global.dart';
 import 'auth_controller.dart';
 import 'information_controller.dart';
 import 'sign_in_controller.dart';
-import '../../controller/unified_booking_controller.dart';
 
 class OtpVerificationController extends GetxController {
   // ------------------ Services ------------------

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
+import '../../../common/app_enums.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sizes.dart';
 import '../../../constants/app_text_style.dart';
@@ -36,8 +36,8 @@ class SettingsPageView extends StatelessWidget {
         onPressed: () => Get.back(),
       ),
       title: Text(
-        'setting'.tr,
-        style: AppTextStyles.appBarText
+          'setting'.tr,
+          style: AppTextStyles.appBarText
       ),
       centerTitle: true,
     );
@@ -64,7 +64,7 @@ class SettingsPageView extends StatelessWidget {
 
   Widget _buildSettingItem(SettingsModel setting) {
     return InkWell(
-      onTap: setting.type == SettingsType.navigation 
+      onTap: setting.type == SettingsType.navigation
           ? () => controller.onSettingTapped(setting)
           : null,
       borderRadius: BorderRadius.circular(AppSizes.spacing12),
@@ -77,17 +77,17 @@ class SettingsPageView extends StatelessWidget {
           children: [
             // Icon Container
             _buildIconContainer(setting),
-            
+
             const SizedBox(width: AppSizes.spacing16),
-            
+
             // Content
             Expanded(
               child: Text(
-                _getTranslatedTitle(setting.id),
-                style: AppTextStyles.profilePageText
+                  _getTranslatedTitle(setting.id),
+                  style: AppTextStyles.profilePageText
               ),
             ),
-            
+
             // Control
             _buildControl(setting),
           ],
@@ -135,7 +135,7 @@ class SettingsPageView extends StatelessWidget {
         );
       default:
         return const Icon(
-          Icons.settings,
+          Icons.dark_mode,
           color: AppColors.mediumGrey,
           size: AppSizes.spacing24,
         );
@@ -169,7 +169,7 @@ class SettingsPageView extends StatelessWidget {
           ),
         );
       case SettingsType.navigation:
-        // Removed language value rendering to hide 'English'
+      // Removed language value rendering to hide 'English'
         return const Icon(
           Icons.arrow_forward_ios,
           color: AppColors.mediumGrey,

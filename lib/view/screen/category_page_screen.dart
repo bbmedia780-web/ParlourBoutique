@@ -22,14 +22,14 @@ class CategoryScreen extends StatelessWidget {
     final MainNavigationController mainNavController = Get.find<MainNavigationController>();
 
     return Scaffold(
-      backgroundColor: AppColors.white,
+      backgroundColor: AppColors.getBackgroundColor(context),
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.getBackgroundColor(context),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(
+          icon: Icon(
             Icons.arrow_back_ios,
-            color: AppColors.black,
+            color: AppColors.getTextColor(context),
             size: AppSizes.spacing20,
           ),
           onPressed: () {
@@ -40,7 +40,7 @@ class CategoryScreen extends StatelessWidget {
             }
           },
         ),
-        title: Text(AppStrings.category.tr, style: AppTextStyles.appBarText),
+        title: Text(AppStrings.category.tr, style: AppTextStyles.getAppBarText(context)),
         centerTitle: true,
         actions: [
           Padding(
@@ -105,7 +105,6 @@ class CategoryScreen extends StatelessWidget {
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:parlour_app/constants/app_assets.dart';
 import 'package:parlour_app/routes/app_routes.dart';
 import '../../constants/app_colors.dart';
 import '../../constants/app_strings.dart';
@@ -113,8 +112,6 @@ import '../../constants/app_text_style.dart';
 import '../../constants/app_sizes.dart';
 import '../../controller/home_controller/main_navigation_controller.dart';
 import '../../controller/home_controller/unified_service_data_controller.dart';
-import '../../view/bottomsheet/filter_bottom_sheet.dart';
-import '../../controller/home_controller/filter_controller.dart';
 import '../widget/category_card_widget.dart';
 
 class CategoryScreen extends StatelessWidget {
@@ -162,43 +159,12 @@ class _CategoryAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       title: Text(AppStrings.category.tr, style: AppTextStyles.appBarText),
       centerTitle: true,
-      actions: const [_FilterButton()],
     );
   }
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }
-
-/* -------------------- FILTER BUTTON -------------------- */
-
-class _FilterButton extends StatelessWidget {
-  const _FilterButton();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: AppSizes.spacing12),
-      child: CircleAvatar(
-        backgroundColor: Colors.black.withOpacity(0.05),
-        radius: AppSizes.spacing20,
-        child: IconButton(
-          icon: Image.asset(AppAssets.filterBlack,
-              scale: AppSizes.scaleSize, color: AppColors.black),
-          onPressed: _openFilter,
-        ),
-      ),
-    );
-  }
-
-  void _openFilter() {
-    Get.bottomSheet(
-      const FilterBottomSheet(),
-      isScrollControlled: true,
-    );
-  }
-}
-
 
 
 

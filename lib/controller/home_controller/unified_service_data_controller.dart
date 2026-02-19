@@ -361,7 +361,6 @@ class UnifiedServiceDataController extends GetxController {
     }
 
     final selectedTitle = serviceList[selectedServiceIndex.value].title.toLowerCase();
-    final tab = selectedTabIndex.value;
 
     bool matches(UnifiedDataModel item) {
       final title = item.title.toLowerCase();

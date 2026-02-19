@@ -4,9 +4,7 @@ import '../../constants/app_colors.dart';
 import '../../constants/app_sizes.dart';
 import '../../constants/app_text_style.dart';
 import '../../constants/app_strings.dart';
-import '../../constants/app_assets.dart';
 import '../../controller/review_controller.dart';
-import '../../model/review_model.dart';
 import '../../routes/app_routes.dart';
 import '../widget/review_tile_widget.dart';
 

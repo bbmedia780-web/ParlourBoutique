@@ -1,12 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import '../model/auth/auth_otp_response.dart';
 import '../api/base_api.dart';
 import '../config/api_config.dart';
 import '../model/auth/auth_verify_response.dart';
 import 'package:get/get.dart';
 import '../controller/auth_controller/auth_controller.dart';
-import '../utility/global.dart';
 
 class AuthServices extends BaseApi {
 

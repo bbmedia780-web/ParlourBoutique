@@ -52,4 +52,5 @@ class AppColors {
   // Additional colors for service details
   static const Color facebookBlue = Color(0xFF1877F2);
   static const Color yellow = Color(0xFFFFD700);
+
 }

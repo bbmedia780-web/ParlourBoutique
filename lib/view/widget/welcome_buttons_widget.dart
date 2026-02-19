@@ -5,7 +5,6 @@ import '../../../constants/app_strings.dart';
 import '../../controller/auth_controller/welcome_controller.dart';
 import '../../common/common_button.dart';
 import '../../constants/app_text_style.dart';
-import '../../routes/app_routes.dart';
 
 class WelcomeButtonsWidget extends StatelessWidget {
   final PageController pageController;

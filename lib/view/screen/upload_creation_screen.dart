@@ -141,12 +141,15 @@ class UploadCreationScreen extends StatelessWidget {
 
   /// Builds the upload button
   Widget _buildUploadButton() {
-    return AppButton(
-      text: AppStrings.upload,
-      onPressed: controller.upload,
-      width: double.infinity,
-      height: AppSizes.spacing45,
-    );
+    return Obx(() {
+      final isUploading = controller.isUploading.value;
+      return AppButton(
+        text: isUploading ? 'Uploading...' : AppStrings.upload,
+        onPressed: isUploading ? null : () => controller.upload(),
+        width: double.infinity,
+        height: AppSizes.spacing45,
+      );
+    });
   }
 
   // Modal picker methods using the new reusable components

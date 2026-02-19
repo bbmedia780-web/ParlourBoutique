@@ -44,6 +44,7 @@ class CommonPopularCard extends StatelessWidget {
                   width: double.infinity,
                   height: AppSizes.size160,
                   fit: BoxFit.cover,
+                  cacheHeight: 300, // Optimize memory
                 ),
               ),
               // Gradient, discount badge, favorite icon...
@@ -146,6 +147,7 @@ class CommonPopularCard extends StatelessWidget {
                   width: double.infinity,
                   height: AppSizes.size160,
                   fit: BoxFit.cover,
+                  cacheHeight: 300, // Optimize memory
                 ),
               ),
               // Gradient, discount badge, favorite icon...
@@ -164,7 +166,7 @@ class CommonPopularCard extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.all(AppSizes.spacing8),
+            padding: const EdgeInsets.all(AppSizes.spacing6),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

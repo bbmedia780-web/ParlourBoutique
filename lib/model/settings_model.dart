@@ -1,3 +1,5 @@
+import '../common/app_enums.dart';
+
 class SettingsModel {
   final String id;
   final String title;
@@ -35,7 +37,4 @@ class SettingsModel {
   }
 }
 
-enum SettingsType {
-  toggle,
-  navigation,
-}
+

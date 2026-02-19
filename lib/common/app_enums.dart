@@ -4,3 +4,5 @@ enum GenderType { male, female,other }
 
 enum ParlourServiceType { homeService, parlourService }
 
+enum SettingsType { toggle, navigation}
+

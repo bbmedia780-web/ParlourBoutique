@@ -99,7 +99,6 @@ class ReelsScreen extends StatelessWidget {
     final videoController = controller.getVideoController(reel.id!);
     final EdgeInsets viewPadding = MediaQuery.of(context).padding;
     final double bottomSafeInset = viewPadding.bottom;
-    final double topSafeInset = viewPadding.top;
 
     return GestureDetector(
       onTap: controller.onVideoTap,
@@ -131,16 +130,25 @@ class ReelsScreen extends StatelessWidget {
                 height: double.infinity,
                 color: Colors.black,
                 child: reel.thumbnailUrl.startsWith('http')
-                    ? DecoratedBox(
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(reel.thumbnailUrl),
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        child: const Center(
-                          child: CircularProgressIndicator(color: AppColors.primary),
-                        ),
+                    ? Image.network(
+                        reel.thumbnailUrl,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
+                        cacheWidth: 400, // Reduce memory by caching at lower resolution
+                        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+                          if (frame == null) {
+                            return const Center(
+                              child: CircularProgressIndicator(color: AppColors.primary),
+                            );
+                          }
+                          return child;
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Center(
+                            child: Icon(Icons.error, color: AppColors.white),
+                          );
+                        },
                       )
                     : const Center(
                         child: CircularProgressIndicator(color: AppColors.primary),

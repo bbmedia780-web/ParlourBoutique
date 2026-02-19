@@ -50,6 +50,9 @@ class UploadCreationController extends GetxController {
   void chooseLocation(String location) => _mediaController.chooseLocation(location);
   void toggleHashtag(String tag) => _mediaController.toggleHashtag(tag);
 
+  // Loading state
+  final RxBool isUploading = false.obs;
+
   /// Upload the video with all selected effects and overlays
   Future<void> upload() async {
     final file = _videoController.selectedVideo.value;
@@ -58,19 +61,45 @@ class UploadCreationController extends GetxController {
       return;
     }
 
+    // Prevent multiple uploads
+    if (isUploading.value) {
+      return;
+    }
+
     try {
+      isUploading.value = true;
+
+      // Properly dispose preview controller to free MediaCodec resources
+      await _videoController.disposePreview();
+      
+      // Add delay to ensure MediaCodec is fully released
+      await Future.delayed(const Duration(milliseconds: 200));
+
+      // Create reel model
       final newReel = _createReelsModel(file);
       
       // Insert into reels
       if (Get.isRegistered<ReelsController>()) {
         final rc = Get.find<ReelsController>();
         await rc.addLocalReel(newReel);
+        
+        ShowSnackBar.show(AppStrings.success, 'Video uploaded successfully', backgroundColor: AppColors.green);
+      } else {
+        throw Exception('ReelsController not found');
       }
+
+      // Clear uploaded video and reset state
+      _videoController.selectedVideo.value = null;
+      _overlayController.clearAllOverlays();
+      _mediaController.clearAllSelections();
 
       // Navigate back after upload
       Get.back();
     } catch (e) {
+      print('DEBUG: Upload error: $e');
       ShowSnackBar.show(AppStrings.error, 'Failed to upload video: $e', backgroundColor: AppColors.red);
+    } finally {
+      isUploading.value = false;
     }
   }
 

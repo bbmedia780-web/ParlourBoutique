@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'dart:io';
 import '../../../constants/app_assets.dart';
 import '../../../constants/app_colors.dart';
 import '../../../constants/app_sizes.dart';
@@ -50,9 +51,29 @@ class ProfileScreen extends StatelessWidget {
         Container(
           width: AppSizes.size120,
           height: AppSizes.size120,
-          decoration: BoxDecoration(shape: BoxShape.circle),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(
+              color: AppColors.lightGrey,
+              width: AppSizes.spacing2,
+            ),
+          ),
           child: ClipOval(
-            child: Image.asset(AppAssets.user, fit: BoxFit.cover),
+            child: Obx(() {
+              // Display image from SharedPreferences if available
+              if (authController.userImage.value.isNotEmpty) {
+                return Image.file(
+                  File(authController.userImage.value),
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) {
+                    // Fallback to default image if file not found
+                    return Image.asset(AppAssets.user, fit: BoxFit.cover);
+                  },
+                );
+              } else {
+                return Image.asset(AppAssets.user, fit: BoxFit.cover);
+              }
+            }),
           ),
         ),
 
@@ -65,7 +86,7 @@ class ProfileScreen extends StatelessWidget {
 
         const SizedBox(height: AppSizes.spacing2),
 
-        // User Mobile Number - Display actual user data
+        // User Email - Display actual user data
         Obx(() => Text(
           authController.userEmail.value.isNotEmpty
             ? authController.userEmail.value
